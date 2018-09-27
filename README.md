@@ -13,7 +13,9 @@ for pros, there are a few main functions:
  		make - compile
  		upload - upload to v5 brain
  		mu - short for make and upload(does both)
- 		configure new-project [dir] - makes a new pros project in the specified directory
+ 		condcutor new-project [dir] - makes a new pros project in the specified directory
 
 we're gonna use this mostly bc im not about to use some trash ass ide (vcs) thatll take 1304912309 years to start up, 
-so im just gonna stick with vcs
+so im just gonna stick with sublime
+
+test change

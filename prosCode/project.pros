@@ -1,7 +1,7 @@
 {
     "py/object": "pros.conductor.project.Project",
     "py/state": {
-        "project_name": "18-19-7405N",
+        "project_name": "prosCode",
         "target": "v5",
         "templates": {
             "kernel": {
