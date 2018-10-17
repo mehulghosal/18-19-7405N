@@ -29,3 +29,13 @@ void opcontrol() {
 		pros::delay(20);
 	}
 }
+
+void pid (ind d){
+	motor1.move((d-motor.getpositon())*kp);
+	motor2.move((d-motor.getpositon())*kp);
+	motor3.move((d-motor.getpositon())*kp);
+	motor4.move((d-motor.getpositon())*kp);
+}
+
+
+
