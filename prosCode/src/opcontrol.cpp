@@ -16,11 +16,11 @@
 
 
 //declaring global vars, controler and motors
-pros::Controller master(pros::E_CONTROLLER_MASTER);z
+pros::Controller master(pros::E_CONTROLLER_MASTER);
 pros::Motor backLeftMtr(1);
 pros::Motor backRightMtr(2);
-pros::Motor frontLeftMtr(2);
-pros::Motor frontRightMrt(2);
+pros::Motor frontLeftMtr(3);
+pros::Motor frontRightMrt(4);
 
 void opcontrol() {
 	while (true) {
@@ -32,7 +32,7 @@ void opcontrol() {
 
 		backRightMtr, frontRightMrt = right;
 		backLeftMtr, frontLeftMtr = left;
-		
+
 	}
 }
 
