@@ -19,10 +19,10 @@
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 //drive motors
-pros::Motor backLeftMtr(1);
-pros::Motor backRightMtr(2);
-pros::Motor frontLeftMtr(3);
-pros::Motor frontRightMrt(4);
+pros::Motor backLeftMtr(9);
+pros::Motor backRightMtr(1);
+pros::Motor frontLeftMtr(10);
+pros::Motor frontRightMtr(2);
 
 
 
@@ -36,7 +36,7 @@ pros::Motor intakeMotor(7);
 //lift (?)
 pros::Motor liftMotor(8);
 
-pros::Motor motors [7] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMrt, flyWheelMotor, intakeMotor, liftMotor};
+pros::Motor motors [7] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, liftMotor};
 // i honestly dont know why i have an array of motors - incase we need to iterate
 
 
@@ -50,6 +50,20 @@ void intake(){
 	pros::lcd::print(1, "Intake Motor SPEEd: %d", (intakeMotor.get_actual_velocity()));
 }
 
+void motorStop() {
+	for (int i = 0; i < 7; i++) {
+		motors[i] = 0;
+	}
+}
+
+//only forward/back for now
+void drive(int driveX, int driveY) {
+	backLeftMtr = driveY;
+	backRightMtr = driveY;
+	frontLeftMtr = driveY;
+	frontRightMtr = driveY;
+		//, backRightMtr, frontLeftMtr, frontRightMtr = driveY;
+}
 
 void opcontrol() {
 	while (true) {
@@ -70,7 +84,11 @@ void opcontrol() {
 			intake();
 		}
 
+		if (powerOff == 1) {
+			motorStop();
+		}
 
+		drive(driveX, driveY);
 
 		//backRightMtr, frontRightMrt = right;
 		//backLeftMtr, frontLeftMtr = left;
@@ -80,10 +98,6 @@ void opcontrol() {
 	}
 }
 
-void drive(){
-
-
-}
 
 void lift(){
 
