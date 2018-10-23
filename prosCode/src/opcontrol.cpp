@@ -24,8 +24,6 @@ pros::Motor backRightMtr(1);
 pros::Motor frontLeftMtr(10);
 pros::Motor frontRightMtr(2);
 
-
-
 //until we get more motor wires, we wont be able to declare all of the motors - upload error
 //flywheel
 pros::Motor flyWheelMotor(6);
@@ -47,7 +45,7 @@ void flywheel(){
 
 void intake(){
 	intakeMotor = -127;
-	pros::lcd::print(1, "Intake Motor SPEEd: %d", (intakeMotor.get_actual_velocity()));
+	pros::lcd::print(1, "Intake Motor Speed: %d", (intakeMotor.get_actual_velocity()));
 }
 
 void motorStop() {
@@ -56,18 +54,36 @@ void motorStop() {
 	}
 }
 
-//only forward/back for now
 void drive(int driveX, int driveY) {
-	backLeftMtr = driveY;
-	backRightMtr = driveY;
-	frontLeftMtr = driveY;
-	frontRightMtr = driveY;
-		//, backRightMtr, frontLeftMtr, frontRightMtr = driveY;
+	
+	if(driveX == 0){
+		backLeftMtr = driveY;
+		backRightMtr = driveY;
+		frontLeftMtr = driveY;
+		frontRightMtr = driveY;
+	}
+	else if(driveX>0){ //turn right
+		backRightMtr = -driveX;
+		frontRightMtr = -driveX;
+		backLeftMtr = driveX;
+		frontLeftMtr = driveX;
+	}
+	else{ //turn left
+		backRightMtr = driveX;
+		frontRightMtr = driveX;
+		backLeftMtr = -driveX;
+		frontLeftMtr = -driveX;
+	}
+
+	pros::lcd::print(1, "Drive motor speeds (BR, BL, FR, FL): %d %d %d %d", (backRightMtr.get_actual_velocity(), 
+					 backLeftMtr.get_actual_velocity(), 
+					 frontRightMtr.get_actual_velocity(), 
+					 frontLeftMtr.get_actual_velocity()));
 }
 
 void opcontrol() {
 	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
+		pros::lcd::print(0, "hello this is initialized%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 		int driveX = master.get_analog(ANALOG_RIGHT_X); //controls right and left
