@@ -15,12 +15,26 @@
  */
 
 
-//declaring global vars, controler and motors
+//declaring global vars, controler
 pros::Controller master(pros::E_CONTROLLER_MASTER);
+
+//drive motors
 pros::Motor backLeftMtr(1);
 pros::Motor backRightMtr(2);
 pros::Motor frontLeftMtr(3);
 pros::Motor frontRightMrt(4);
+
+
+/*until we get more motor wires, we wont be able to declare all of the motors - upload error
+//flywheel
+pros::Motor flyWheelMotor(6);
+
+//intake
+pros::Motor intakeMotor(7);
+
+//lift (?)
+pros::Motor liftMotor(8);
+*/
 
 void opcontrol() {
 	while (true) {
@@ -37,6 +51,16 @@ void opcontrol() {
 }
 
 void drive(){
+
+
+}
+
+void flywheel(){
+
+
+}
+
+void lift(){
 
 
 }
