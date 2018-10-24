@@ -81,6 +81,11 @@ void drive(int driveX, int driveY) {
 					 frontLeftMtr.get_actual_velocity()));
 }
 
+void lift(){
+
+
+}
+
 void opcontrol() {
 	pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
 	while (true) {
@@ -116,8 +121,6 @@ void opcontrol() {
 	}
 }
 
-
-void lift(){
-
-
+void auton1(){
+	pros::lcd::print(0, "INIT auton1");
 }
