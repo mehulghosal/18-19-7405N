@@ -42,5 +42,5 @@ void disabled() {}
  * starts.
  */
 void competition_initialize() {
-	auton1();
+	//auton1();
 }
