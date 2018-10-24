@@ -55,7 +55,7 @@ void motorStop() {
 }
 
 void drive(int driveX, int driveY) {
-	
+
 	if(driveX == 0){
 		backLeftMtr = driveY;
 		backRightMtr = driveY;
@@ -75,17 +75,19 @@ void drive(int driveX, int driveY) {
 		frontLeftMtr = -driveX;
 	}
 
-	pros::lcd::print(1, "Drive motor speeds (BR, BL, FR, FL): %d %d %d %d", (backRightMtr.get_actual_velocity(), 
-					 backLeftMtr.get_actual_velocity(), 
-					 frontRightMtr.get_actual_velocity(), 
+	pros::lcd::print(1, "Drive motor speeds (BR, BL, FR, FL): %d %d %d %d", (backRightMtr.get_actual_velocity(),
+					 backLeftMtr.get_actual_velocity(),
+					 frontRightMtr.get_actual_velocity(),
 					 frontLeftMtr.get_actual_velocity()));
 }
 
 void opcontrol() {
+	pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
 	while (true) {
-		pros::lcd::print(0, "hello this is initialized%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
+		pros::lcd::print(0, "hello this is initialized %d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
+
 		int driveX = master.get_analog(ANALOG_RIGHT_X); //controls right and left
 		int driveY = master.get_analog(ANALOG_LEFT_Y);  //controls forward/back
 
