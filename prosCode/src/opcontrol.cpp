@@ -37,27 +37,23 @@ pros::Motor liftMotor(8);
 pros::Motor motors [7] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, liftMotor};
 // i honestly dont know why i have an array of motors - incase we need to iterate
 
-int flyToggle = 0;
-void flywheel(){
-	if(flyToggle % 2 == 0){
+void flywheel(int toggle){
+	if(toggle == 1){
 		flyWheelMotor = 127;
 	}
 	else{
 		flyWheelMotor = 0;
 	}
-	flyToggle += 1;
 	pros::lcd::print(0, "Flywheel Speed: %d", (flyWheelMotor.get_actual_velocity()));
 }
 
-int intakeToggle = 0;
-void intake(){
-	if(intakeToggle%2==0){
+void intake(int toggle){
+	if(toggle == 1){
 		intakeMotor = -127;
 	}
 	else{
 		intakeMotor = 0;
 	}
-	intakeToggle += 1;
 	pros::lcd::print(1, "Intake Motor Speed: %d", (intakeMotor.get_actual_velocity()));
 }
 
@@ -93,19 +89,31 @@ void opcontrol() {
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y); //controls left motors
 		int driveRight = master.get_analog(ANALOG_RIGHT_Y);  //controls right motors
 
-		int intakeOn = master.get_digital(DIGITAL_UP);	//only intake
 		int powerOff = master.get_digital(DIGITAL_B);	//turn of all motors
 
-		if (master.get_digital(DIGITAL_LEFT) || master.get_digital(DIGITAL_RIGHT)){
-			flywheel();
+		int intakeToggle = 0;
+		if(master.get_digital(DIGITAL_UP) == 1){
+			intakeToggle = 1;
 		}
-		if(master.get_digital(DIGITAL_UP) || master.get_digital(DIGITAL_DOWN)){
-			intake();
+		else if(master.get_digital(DIGITAL_DOWN) == 1){
+			intakeToggle = 0;
 		}
+
+		int flyWheelToggle = 0;
+		if(master.get_digital(DIGITAL_LEFT) == 1){
+			flyWheelToggle = 1;
+		}
+		else if(master.get_digital(DIGITAL_RIGHT) == 1){
+			flyWheelToggle = 0;
+		}
+
+		
 		if (powerOff == 1) {
 			motorStop();
 		}
 
+		intake(intakeToggle);
+		flywheel(flyWheelToggle);
 		drive(driveLeft, -driveRight);
 
 		//backRightMtr, frontRightMrt = right;
