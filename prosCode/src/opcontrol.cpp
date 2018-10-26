@@ -65,8 +65,18 @@ void motorStop() {
 
 void drive(int driveL, int driveR) {
 
-	backLeftMtr = driveL; frontLeftMtr = driveL;
-	backRightMtr = driveR; frontRightMtr = driveR;
+	if(driveL > 15 || driveL < -15){
+		backLeftMtr = driveL; frontLeftMtr = driveL;
+	}
+	else{
+		backLeftMtr = 0; frontLeftMtr = 0;
+	}
+	if(driveR > 15 || driveR < -15){
+		backRightMtr = driveR; frontRightMtr = driveR;
+	}
+	else{
+		backRightMtr = 0; frontRightMtr = 0;
+	}
 
 	pros::lcd::print(1, "Drive motor speeds (BR, BL, FR, FL): %d %d %d %d", (backRightMtr.get_actual_velocity(),
 					 backLeftMtr.get_actual_velocity(),
@@ -81,6 +91,9 @@ void lift(){
 
 void opcontrol() {
 	pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
+	int flyWheelToggle = 0;
+	int intakeToggle = 0;
+
 	while (true) {
 		pros::lcd::print(0, "hello this is initialized %d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
@@ -89,26 +102,24 @@ void opcontrol() {
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y); //controls left motors
 		int driveRight = master.get_analog(ANALOG_RIGHT_Y);  //controls right motors
 
-		int powerOff = master.get_digital(DIGITAL_B);	//turn of all motors
-
-		int intakeToggle = 0;
-		if(master.get_digital(DIGITAL_UP) == 1){
+		//intake toggling
+		if(master.get_digital(DIGITAL_Y) == 1){
 			intakeToggle = 1;
 		}
-		else if(master.get_digital(DIGITAL_DOWN) == 1){
+		else if(master.get_digital(DIGITAL_A) == 1){
 			intakeToggle = 0;
 		}
 
-		int flyWheelToggle = 0;
-		if(master.get_digital(DIGITAL_LEFT) == 1){
+		//flywheel toggling
+		if(master.get_digital(DIGITAL_X) == 1){
 			flyWheelToggle = 1;
 		}
-		else if(master.get_digital(DIGITAL_RIGHT) == 1){
+		else if(master.get_digital(DIGITAL_B) == 1){
 			flyWheelToggle = 0;
 		}
 
 		
-		if (powerOff == 1) {
+		if (master.get_digital(DIGITAL_L1) == 1) {
 			motorStop();
 		}
 
