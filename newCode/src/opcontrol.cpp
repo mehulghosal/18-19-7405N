@@ -22,15 +22,16 @@ pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 //drive motors
 pros::Motor backLeftMtr(9);
-pros::Motor backRightMtr(1);
 pros::Motor frontLeftMtr(10);
-pros::Motor frontRightMtr(2);
+pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
+
 
 //flywheel
 pros::Motor flyWheelMotor(6);
 
 //intake
-pros::Motor intakeMotor(7);
+pros::Motor intakeMotor(7, pros::E_MOTOR_GEARSET_18, true);
 
 //lift (?)
 pros::Motor liftMotor(8);
@@ -51,7 +52,7 @@ void flywheel(int toggle){
 
 void intake(int toggle){
 	if(toggle == 1){
-		intakeMotor = -127;
+		intakeMotor = 127;
 	}
 	else{
 		intakeMotor = 0;
@@ -67,7 +68,6 @@ void motorStop() {
 
 void drive(int driveL, int driveR) {
 
-	driveR = -driveR;
 	if(driveL > 15 || driveL < -15){
 		backLeftMtr = driveL; frontLeftMtr = driveL;
 	}
