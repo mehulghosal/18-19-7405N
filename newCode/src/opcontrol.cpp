@@ -19,7 +19,7 @@
 //declaring global vars, controler
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-/*
+
 //drive motors
 pros::Motor backLeftMtr(9);
 pros::Motor backRightMtr(1);
@@ -34,9 +34,9 @@ pros::Motor intakeMotor(7);
 
 //lift (?)
 pros::Motor liftMotor(8);
-*/
 
-pros::Motor motors [7] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, liftMotor};
+
+//pros::Motor motors [7] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, liftMotor};
 // i honestly dont know why i have an array of motors - incase we need to iterate
 
 void flywheel(int toggle){
@@ -61,7 +61,7 @@ void intake(int toggle){
 
 void motorStop() {
 	for (int i = 0; i < 7; i++) {
-		motors[i] = 0;
+		//motors[i] = 0;
 	}
 }
 
@@ -92,7 +92,7 @@ void lift(){
 }
 
 void opcontrol() {
-	pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
+	//pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
 	int flyWheelToggle = 0;
 	int intakeToggle = 0;
 
@@ -101,6 +101,7 @@ void opcontrol() {
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 
+		
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y); //controls left motors
 		int driveRight = master.get_analog(ANALOG_RIGHT_Y);  //controls right motors
 
@@ -133,6 +134,7 @@ void opcontrol() {
 		//backLeftMtr, frontLeftMtr = left;
 		//backLeftMtr = left;
 		//backRightMtr = right;
+		
 
 	}
 }

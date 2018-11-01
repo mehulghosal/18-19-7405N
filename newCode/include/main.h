@@ -68,17 +68,6 @@ void disabled(void);
 void competition_initialize(void);
 void opcontrol(void);
 
-extern pros::Motor backLeftMtr(9);
-extern pros::Motor backRightMtr(1);
-extern pros::Motor frontLeftMtr(10);
-extern pros::Motor frontRightMtr(2);
-
-extern pros::Motor flyWheelMotor(6);
-extern pros::Motor intakeMotor(7);
-extern pros::Motor liftMotor(8);
-
-
-
 #ifdef __cplusplus
 }
 #endif
