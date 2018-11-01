@@ -18,9 +18,9 @@ void on_center_button() {
  */
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
-	pros::c::delay(3000);
-	opcontrol();
+	pros::lcd::set_text(0, "Hello PROS User!");
+	pros::c::delay(500);
+	//opcontrol();
 	//pros::lcd::register_btn1_cb(on_center_button);
 }
 

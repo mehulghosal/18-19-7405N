@@ -47,7 +47,8 @@ void flywheel(int toggle){
 	else{
 		flyWheelMotor = 0;
 	}
-	pros::lcd::print(0, "Flywheel Speed: %d", (flyWheelMotor.get_actual_velocity()));
+	pros::lcd::print(1, "Flywheel Speed: %f", (flyWheelMotor.get_actual_velocity()));
+	pros::c::delay(100);
 }
 
 void intake(int toggle){
@@ -57,7 +58,7 @@ void intake(int toggle){
 	else{
 		intakeMotor = 0;
 	}
-	pros::lcd::print(1, "Intake Motor Speed: %d", (intakeMotor.get_actual_velocity()));
+	pros::lcd::print(2, "Intake Motor Speed: %f", (intakeMotor.get_actual_velocity()));
 }
 
 void motorStop() {
@@ -81,10 +82,17 @@ void drive(int driveL, int driveR) {
 		backRightMtr = 0; frontRightMtr = 0;
 	}
 
-	pros::lcd::print(1, "Drive motor speeds (BR, BL, FR, FL): %d %d %d %d", (backRightMtr.get_actual_velocity(),
-					 backLeftMtr.get_actual_velocity(),
+	pros::lcd::print(3, "BL : %d", (backLeftMtr.get_actual_velocity()));
+	pros::lcd::print(4, "FL : %d", (frontLeftMtr.get_actual_velocity()));
+	pros::lcd::print(5, "BR : %d", (backRightMtr.get_actual_velocity()));
+	pros::lcd::print(6, "FR : %d", (frontRightMtr.get_actual_velocity()));
+
+	//pros::lcd::print(5, "Drive motor speeds : %d", (bLS));
+	//pros::lcd::print(6, "Drive motor speeds : %d", (bLS));
+
+					 /*backLeftMtr.get_actual_velocity(),
 					 frontRightMtr.get_actual_velocity(),
-					 frontLeftMtr.get_actual_velocity()));
+					 frontLeftMtr.get_actual_velocity()));*/
 }
 
 void lift(){
@@ -92,7 +100,7 @@ void lift(){
 }
 
 void opcontrol() {
-	//pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
+	pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
 	int flyWheelToggle = 0;
 	int intakeToggle = 0;
 
