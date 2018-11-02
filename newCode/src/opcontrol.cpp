@@ -46,10 +46,10 @@ pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr
 int flySpeedToggle = 0;
 void flywheel(int toggle){
 	if(toggle == 1){
-		reaperMotor = 127;
+		flyWheelMotor = 127;
 	}
 	else if(toggle == 0){
-		reaperMotor = -127;
+		flyWheelMotor = 0;
 	}
 	pros::lcd::print(1, "Flywheel Speed: %f", (flyWheelMotor.get_actual_velocity()));
 	pros::c::delay(100);
