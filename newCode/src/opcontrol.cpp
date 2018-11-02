@@ -27,22 +27,32 @@ pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
 
 
+//reaper
+pros::Motor reaperMotor(5);
+
 //flywheel
 pros::Motor flyWheelMotor(6);
 
 //intake
 pros::Motor intakeMotor(7, pros::E_MOTOR_GEARSET_18, true);
 
-//lift (?)
-pros::Motor liftMotor(8);
+//arm (?)
+pros::Motor armMotor(8);
 
-
-//pros::Motor motors [7] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, liftMotor};
+pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
 // i honestly dont know why i have an array of motors - incase we need to iterate
 
+
+int flySpeedToggle = 0;
 void flywheel(int toggle){
 	if(toggle == 1){
-		flyWheelMotor = 127;
+		if (flySpeedToggle % 2 == 0){
+			flyWheelMotor = 64;
+		}
+		else{
+			flyWheelMotor = 127;
+		}
+		flySpeedToggle +=1;
 	}
 	else{
 		flyWheelMotor = 0;
@@ -61,9 +71,19 @@ void intake(int toggle){
 	pros::lcd::print(2, "Intake Motor Speed: %f", (intakeMotor.get_actual_velocity()));
 }
 
+void reaper(int toggle){
+	if(toggle == 1){
+		reaperMotor = 127;
+	}
+	else if(toggle == 0){
+		reaperMotor = -127;
+	}
+	pros::lcd::print(3, "Reaper Motor Speed: %f", (reaperMotor.get_actual_velocity()));
+}
+
 void motorStop() {
-	for (int i = 0; i < 7; i++) {
-		//motors[i] = 0;
+	for (int i = 0; i < 8; i++) {
+		motors[i] = 0;
 	}
 }
 
@@ -82,10 +102,10 @@ void drive(int driveL, int driveR) {
 		backRightMtr = 0; frontRightMtr = 0;
 	}
 
-	pros::lcd::print(3, "BL : %d", (backLeftMtr.get_actual_velocity()));
-	pros::lcd::print(4, "FL : %d", (frontLeftMtr.get_actual_velocity()));
-	pros::lcd::print(5, "BR : %d", (backRightMtr.get_actual_velocity()));
-	pros::lcd::print(6, "FR : %d", (frontRightMtr.get_actual_velocity()));
+	pros::lcd::print(4, "BL : %d", (backLeftMtr.get_actual_velocity()));
+	pros::lcd::print(5, "FL : %d", (frontLeftMtr.get_actual_velocity()));
+	pros::lcd::print(6, "BR : %d", (backRightMtr.get_actual_velocity()));
+	pros::lcd::print(7, "FR : %d", (frontRightMtr.get_actual_velocity()));
 
 	//pros::lcd::print(5, "Drive motor speeds : %d", (bLS));
 	//pros::lcd::print(6, "Drive motor speeds : %d", (bLS));
