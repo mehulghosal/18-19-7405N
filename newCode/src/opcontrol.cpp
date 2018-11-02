@@ -46,16 +46,10 @@ pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr
 int flySpeedToggle = 0;
 void flywheel(int toggle){
 	if(toggle == 1){
-		if (flySpeedToggle % 2 == 0){
-			flyWheelMotor = 64;
-		}
-		else{
-			flyWheelMotor = 127;
-		}
-		flySpeedToggle +=1;
+		reaperMotor = 127;
 	}
-	else{
-		flyWheelMotor = 0;
+	else if(toggle == 0){
+		reaperMotor = -127;
 	}
 	pros::lcd::print(1, "Flywheel Speed: %f", (flyWheelMotor.get_actual_velocity()));
 	pros::c::delay(100);
@@ -129,7 +123,7 @@ void opcontrol() {
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 
-		
+
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y); //controls left motors
 		int driveRight = master.get_analog(ANALOG_RIGHT_Y);  //controls right motors
 
@@ -149,7 +143,7 @@ void opcontrol() {
 			flyWheelToggle = 0;
 		}
 
-		
+
 		if (master.get_digital(DIGITAL_L1) == 1) {
 			motorStop();
 		}
@@ -162,7 +156,7 @@ void opcontrol() {
 		//backLeftMtr, frontLeftMtr = left;
 		//backLeftMtr = left;
 		//backRightMtr = right;
-		
+
 
 	}
 }
