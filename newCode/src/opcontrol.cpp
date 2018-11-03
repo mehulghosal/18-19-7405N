@@ -16,16 +16,14 @@
  */
 
 
-//declaring global vars, controler
+//controler
 pros::Controller master(pros::E_CONTROLLER_MASTER);
-
 
 //drive motors
 pros::Motor backLeftMtr(9);
 pros::Motor frontLeftMtr(10);
 pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
-
 
 //reaper
 pros::Motor reaperMotor(5);
@@ -39,11 +37,9 @@ pros::Motor intakeMotor(7, pros::E_MOTOR_GEARSET_18, true);
 //arm (?)
 pros::Motor armMotor(8);
 
-pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
 // i honestly dont know why i have an array of motors - incase we need to iterate
+pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
 
-
-int flySpeedToggle = 0;
 void flywheel(bool toggle){
 	if(toggle){
 		flyWheelMotor = 127;
@@ -51,9 +47,7 @@ void flywheel(bool toggle){
 	else {
 		flyWheelMotor = 0;
 	}
-	
 	pros::lcd::print(1, "Flywheel Speed: %f", (flyWheelMotor.get_actual_velocity()));
-	pros::c::delay(100);
 }
 
 void intake(bool toggle){
@@ -73,14 +67,11 @@ void reaper(bool toggle){
 	else if(toggle == 0){
 		reaperMotor = 0;
 	}
-
 	pros::lcd::print(3, "Reaper Motor Speed: %f", (reaperMotor.get_actual_velocity()));
 }
 
-void motorStop() {
-	for (int i = 0; i < 8; i++) {
-		motors[i] = 0;
-	}
+void lift(){
+	//we need to tune the motor so we know how long its supposed to be on
 }
 
 void drive(int driveL, int driveR) {
@@ -103,16 +94,12 @@ void drive(int driveL, int driveR) {
 	pros::lcd::print(6, "BR : %d", (backRightMtr.get_actual_velocity()));
 	pros::lcd::print(7, "FR : %d", (frontRightMtr.get_actual_velocity()));
 
-	//pros::lcd::print(5, "Drive motor speeds : %d", (bLS));
-	//pros::lcd::print(6, "Drive motor speeds : %d", (bLS));
-
-					 /*backLeftMtr.get_actual_velocity(),
-					 frontRightMtr.get_actual_velocity(),
-					 frontLeftMtr.get_actual_velocity()));*/
 }
 
-void lift(){
-	//we need to tune the motor so we know how long its supposed to be on
+void motorStop() {
+	for (int i = 0; i < 8; i++) {
+		motors[i] = 0;
+	}
 }
 
 void opcontrol() {
@@ -130,27 +117,20 @@ void opcontrol() {
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y); //controls left motors
 		int driveRight = master.get_analog(ANALOG_RIGHT_Y);  //controls right motors
 
-
-		if (master.get_digital(DIGITAL_Y) == 1)
-		{
+		//reaper toggling
+		if (master.get_digital(DIGITAL_Y) == 1){
 			reaperToggle = !reaperToggle;
 		}
 		//intake toggling
 		if(master.get_digital(DIGITAL_A) == 1){
 			intakeToggle = !intakeToggle;
-		
-		
 		}
-
 		//flywheel toggling
 		if(master.get_digital(DIGITAL_X) == 1){
 			flyWheelToggle = !flyWheelToggle;
-			
 		}
-		
-
-
-		if (master.get_digital(DIGITAL_L1) == 1) {
+		//stops all motors
+		if (master.get_digital(DIGITAL_B) == 1) {
 			motorStop();
 		}
 
@@ -158,14 +138,7 @@ void opcontrol() {
 		flywheel(flyWheelToggle);
 		drive(driveLeft, driveRight);
 		reaper(reaperToggle);
-		pros::Task::delay(50);
-		
-
-		//backRightMtr, frontRightMrt = right;
-		//backLeftMtr, frontLeftMtr = left;
-		//backLeftMtr = left;
-		//backRightMtr = right;
-
+		pros::Task::delay(10);
 
 	}
 }
