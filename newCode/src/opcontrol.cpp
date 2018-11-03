@@ -61,7 +61,7 @@ void intake(bool toggle){
 		intakeMotor = 127;
 	}
 	else{
-		intakeMotor = 0;
+		intakeMotor = -127;
 	}
 	pros::lcd::print(2, "Intake Motor Speed: %f", (intakeMotor.get_actual_velocity()));
 }
