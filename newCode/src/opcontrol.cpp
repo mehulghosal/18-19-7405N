@@ -44,18 +44,19 @@ pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr
 
 
 int flySpeedToggle = 0;
-void flywheel(int toggle){
-	if(toggle == 1){
+void flywheel(bool toggle){
+	if(toggle){
 		flyWheelMotor = 127;
 	}
-	else if(toggle == 0){
+	else {
 		flyWheelMotor = 0;
 	}
+	
 	pros::lcd::print(1, "Flywheel Speed: %f", (flyWheelMotor.get_actual_velocity()));
 	pros::c::delay(100);
 }
 
-void intake(int toggle){
+void intake(bool toggle){
 	if(toggle == 1){
 		intakeMotor = 127;
 	}
@@ -65,13 +66,14 @@ void intake(int toggle){
 	pros::lcd::print(2, "Intake Motor Speed: %f", (intakeMotor.get_actual_velocity()));
 }
 
-void reaper(int toggle){
+void reaper(bool toggle){
 	if(toggle == 1){
 		reaperMotor = 127;
 	}
 	else if(toggle == 0){
-		reaperMotor = -127;
+		reaperMotor = 0;
 	}
+
 	pros::lcd::print(3, "Reaper Motor Speed: %f", (reaperMotor.get_actual_velocity()));
 }
 
@@ -115,8 +117,9 @@ void lift(){
 
 void opcontrol() {
 	pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
-	int flyWheelToggle = 0;
-	int intakeToggle = 0;
+	bool flyWheelToggle = 0;
+	bool intakeToggle = 0;
+	bool reaperToggle = 0;
 
 	while (true) {
 		pros::lcd::print(0, "hello this is initialized %d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
@@ -127,21 +130,24 @@ void opcontrol() {
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y); //controls left motors
 		int driveRight = master.get_analog(ANALOG_RIGHT_Y);  //controls right motors
 
-		//intake toggling
-		if(master.get_digital(DIGITAL_Y) == 1){
-			intakeToggle = 1;
+
+		if (master.get_digital(DIGITAL_Y) == 1)
+		{
+			reaperToggle = !reaperToggle;
 		}
-		else if(master.get_digital(DIGITAL_A) == 1){
-			intakeToggle = 0;
+		//intake toggling
+		if(master.get_digital(DIGITAL_A) == 1){
+			intakeToggle = !intakeToggle;
+		
+		
 		}
 
 		//flywheel toggling
 		if(master.get_digital(DIGITAL_X) == 1){
-			flyWheelToggle = 1;
+			flyWheelToggle = !flyWheelToggle;
+			
 		}
-		else if(master.get_digital(DIGITAL_B) == 1){
-			flyWheelToggle = 0;
-		}
+		
 
 
 		if (master.get_digital(DIGITAL_L1) == 1) {
@@ -151,6 +157,9 @@ void opcontrol() {
 		intake(intakeToggle);
 		flywheel(flyWheelToggle);
 		drive(driveLeft, driveRight);
+		reaper(reaperToggle);
+		pros::Task::delay(50);
+		
 
 		//backRightMtr, frontRightMrt = right;
 		//backLeftMtr, frontLeftMtr = left;
