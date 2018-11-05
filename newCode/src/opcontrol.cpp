@@ -26,13 +26,13 @@ pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
 
 //reaper
-pros::Motor reaperMotor(5);
+pros::Motor reaperMotor(5, pros::E_MOTOR_GEARSET_18, true);
 
 //flywheel
 pros::Motor flyWheelMotor(6);
 
 //intake
-pros::Motor intakeMotor(7, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor intakeMotor(7);
 
 //arm (?)
 pros::Motor armMotor(8);
@@ -40,8 +40,8 @@ pros::Motor armMotor(8);
 // i honestly dont know why i have an array of motors - incase we need to iterate
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
 
-void flywheel(bool toggle){
-	if(toggle){
+void flywheel(int toggle){
+	if(toggle == 1){
 		flyWheelMotor = 127;
 	}
 	else {
@@ -50,17 +50,20 @@ void flywheel(bool toggle){
 	pros::lcd::print(1, "Flywheel Speed: %f", (flyWheelMotor.get_actual_velocity()));
 }
 
-void intake(bool toggle){
+void intake(int toggle){
 	if(toggle == 1){
 		intakeMotor = 127;
 	}
-	else{
+	if(toggle == -1){
 		intakeMotor = -127;
+	}
+	if(toggle == 0){
+		intakeMotor = 0;
 	}
 	pros::lcd::print(2, "Intake Motor Speed: %f", (intakeMotor.get_actual_velocity()));
 }
 
-void reaper(bool toggle){
+void reaper(int toggle){
 	if(toggle == 1){
 		reaperMotor = 127;
 	}
@@ -104,9 +107,9 @@ void motorStop() {
 
 void opcontrol() {
 	pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
-	bool flyWheelToggle = 0;
-	bool intakeToggle = 0;
-	bool reaperToggle = 0;
+	int flyWheelToggle = 0;
+	int intakeToggle = 0;
+	int reaperToggle = 0;
 
 	while (true) {
 		pros::lcd::print(0, "hello this is initialized %d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
@@ -118,19 +121,33 @@ void opcontrol() {
 		int driveRight = master.get_analog(ANALOG_RIGHT_Y);  //controls right motors
 
 		//reaper toggling
-		if (master.get_digital(DIGITAL_Y) == 1){
-			reaperToggle = !reaperToggle;
+		if (master.get_digital(DIGITAL_X) == 1){
+			reaperToggle = 1;
 		}
+		else if(master.get_digital(DIGITAL_B) == 1){
+			reaperToggle = 0;
+		}
+
 		//intake toggling
-		if(master.get_digital(DIGITAL_A) == 1){
-			intakeToggle = !intakeToggle;
+		if (master.get_digital(DIGITAL_LEFT) == 1){
+			intakeToggle = 1;
 		}
+		else if(master.get_digital(DIGITAL_RIGHT) == 1){
+			intakeToggle = -1;
+		}
+		else if (master.get_digital(DIGITAL_DOWN) == 1){
+			intakeToggle = 0;
+		}
+
 		//flywheel toggling
-		if(master.get_digital(DIGITAL_X) == 1){
-			flyWheelToggle = !flyWheelToggle;
+		if (master.get_digital(DIGITAL_Y) == 1){
+			flyWheelToggle = 1;
+		}
+		else if(master.get_digital(DIGITAL_A) == 1){
+			flyWheelToggle = 0;
 		}
 		//stops all motors
-		if (master.get_digital(DIGITAL_B) == 1) {
+		if (master.get_digital(DIGITAL_UP) == 1) {
 			motorStop();
 		}
 
