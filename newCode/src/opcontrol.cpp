@@ -112,6 +112,8 @@ void opcontrol() {
 	bool reaperToggle = false;
 	bool xPressed = false;
 	bool yPressed = false;
+	bool left = false;
+	bool right = false;
 
 	while (true) {
 		pros::lcd::print(0, "hello this is initialized %d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
@@ -136,7 +138,7 @@ void opcontrol() {
 		
 
 		//intake toggling
-		if (master.get_digital(DIGITAL_LEFT) == 1){
+		if (master.get_digital(DIGITAL_LEFT) == 1 && left == false){
 			if (intakeToggle = 1)
 			{
 				intakeToggle = 0;
@@ -145,9 +147,14 @@ void opcontrol() {
 			{
 				intakeToggle = 1;
 			}
+			left = true;
 			pros::Task::delay(20);
 		}
-		else if(master.get_digital(DIGITAL_RIGHT) == 1){
+		else if (master.get_digital(DIGITAL_LEFT) == 0)
+		{
+			left = false;
+		}
+		 if(master.get_digital(DIGITAL_RIGHT) == 1 && right == false){
 			if (intakeToggle = -1)
 			{
 				intakeToggle = 0;
@@ -156,8 +163,13 @@ void opcontrol() {
 			{
 				intakeToggle = -1;
 			}
+			right = true;
 			pros::Task::delay(20);
 		}
+		 else if (master.get_digital(DIGITAL_RIGHT) == 0)
+		 {
+			 right = false;
+		 }
 		
 
 		//flywheel toggling
