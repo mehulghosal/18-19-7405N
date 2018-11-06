@@ -40,37 +40,98 @@ pros::Motor armMotor(8);
 // i honestly dont know why i have an array of motors - incase we need to iterate
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
 
-void flywheel(int toggle){
-	if(toggle == 1){
-		flyWheelMotor = 127;
+/* all of the buttons, in the order theyre in the arrayu
+DIGITAL_L1		0
+DIGITAL_L2		1
+DIGITAL_R1		2
+DIGITAL_R2		3
+DIGITAL_UP		4
+DIGITAL_DOWN	5
+DIGITAL_LEFT	6
+DIGITAL_RIGHT	7
+DIGITAL_X		8
+DIGITAL_B		9
+DIGITAL_Y		10
+DIGITAL_A		11 */
+bool buttons [12] = {false, false, false, false, false, false, false, false, false, false, false, false};
+
+void buttonHandler(){
+	if (master.get_digital(DIGITAL_L1) == 1){
+		buttons[0] = true;
+	}
+	if (master.get_digital(DIGITAL_L2) == 1){
+		buttons[1] = true;
+	}
+	if (master.get_digital(DIGITAL_R1) == 1){
+		buttons[2] = true;	
+	}
+	if (master.get_digital(DIGITAL_R2) == 1){
+		buttons[3] = true;
+	}
+	if (master.get_digital(DIGITAL_UP) == 1){
+		buttons[4] = true;
+	}
+	if (master.get_digital(DIGITAL_DOWN) == 1){
+		buttons[5] = true;
+	}
+	if (master.get_digital(DIGITAL_LEFT) == 1){
+		buttons[6] = true;
+	}
+	if (master.get_digital(DIGITAL_RIGHT) == 1){
+		buttons[7] = true;
+	}
+	if (master.get_digital(DIGITAL_X) == 1){
+		buttons[8] = true;
+	}
+	if (master.get_digital(DIGITAL_B) == 1){
+		buttons[9] = true;
+	}	
+	if (master.get_digital(DIGITAL_Y) == 1){
+		buttons[10] = true;
+	}
+	if (master.get_digital(DIGITAL_A) == 1){
+		buttons[11] = true;
+	}
+}
+
+void flywheel(){
+	if(flyWheelMotor.get_actual_velocity() > 0){
+		flyWheelMotor = 0;
 	}
 	else {
-		flyWheelMotor = 0;
+		flyWheelMotor = 127;
 	}
 	pros::lcd::print(1, "Flywheel Speed: %f", (flyWheelMotor.get_actual_velocity()));
 }
 
-void intake(int toggle){
-	if(toggle == 1){
-		intakeMotor = 127;
-	}
-	if(toggle == -1){
-		intakeMotor = -127;
-	}
-	if(toggle == 0){
-		intakeMotor = 0;
-	}
-	pros::lcd::print(2, "Intake Motor Speed: %f", (intakeMotor.get_actual_velocity()));
-}
-
-void reaper(int toggle){
-	if(toggle == 1){
-		reaperMotor = 127;
-	}
-	else if(toggle == 0){
+void reaper(){
+	if(reaperMotor.get_actual_velocity() > 0){
 		reaperMotor = 0;
 	}
+	else {
+		reaperMotor = 127;
+	}
 	pros::lcd::print(3, "Reaper Motor Speed: %f", (reaperMotor.get_actual_velocity()));
+}
+
+void intake(int button){
+	if(button == 6){
+		if(intakeMotor.get_actual_velocity() > 0){
+			intakeMotor = 0;
+		}
+		else{
+			intakeMotor = 127;
+		}
+	}
+	else{
+		if(intakeMotor.get_actual_velocity() < 0){
+			intakeMotor = 0;
+		}
+		else{
+			intakeMotor = -127;
+		}
+	}
+	pros::lcd::print(2, "Intake Motor Speed: %f", (intakeMotor.get_actual_velocity()));
 }
 
 void lift(){
@@ -107,9 +168,9 @@ void motorStop() {
 
 void opcontrol() {
 	pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
-	int flyWheelToggle = 0;
-	int intakeToggle = 0;
-	int reaperToggle = 0;
+	// int flyWheelToggle = 0;
+	// int intakeToggle = 0;
+	// int reaperToggle = 0;
 
 	while (true) {
 		pros::lcd::print(0, "hello this is initialized %d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
@@ -119,42 +180,36 @@ void opcontrol() {
 
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y); //controls left motors
 		int driveRight = master.get_analog(ANALOG_RIGHT_Y);  //controls right motors
+		buttonHandler();
 
 		//reaper toggling
-		if (master.get_digital(DIGITAL_X) == 1){
-			reaperToggle = 1;
+		if (buttons[8]){
+			reaper();
 		}
-		else if(master.get_digital(DIGITAL_B) == 1){
-			reaperToggle = 0;
-		}
-
-		//intake toggling
-		if (master.get_digital(DIGITAL_LEFT) == 1){
-			intakeToggle = 1;
-		}
-		else if(master.get_digital(DIGITAL_RIGHT) == 1){
-			intakeToggle = -1;
-		}
-		else if (master.get_digital(DIGITAL_DOWN) == 1){
-			intakeToggle = 0;
-		}
-
 		//flywheel toggling
-		if (master.get_digital(DIGITAL_Y) == 1){
-			flyWheelToggle = 1;
+		if(buttons[10]){
+			flywheel();
 		}
-		else if(master.get_digital(DIGITAL_A) == 1){
-			flyWheelToggle = 0;
+
+		//intake will have to be be 0 for off, 1 for forward, -1 for back
+		//stop
+		//intake toggling
+		if(buttons[6]){
+			intake(6);
 		}
+		else if(buttons[7]){
+			intake(7);
+		}
+
 		//stops all motors
-		if (master.get_digital(DIGITAL_UP) == 1) {
+		if (buttons[4]) {
 			motorStop();
 		}
 
-		intake(intakeToggle);
-		flywheel(flyWheelToggle);
+		// intake(intakeToggle);
+		// flywheel(flyWheelToggle);
+		// reaper(reaperToggle);
 		drive(driveLeft, driveRight);
-		reaper(reaperToggle);
 		pros::Task::delay(10);
 
 	}
