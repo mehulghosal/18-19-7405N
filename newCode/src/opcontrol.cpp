@@ -130,7 +130,7 @@ void opcontrol() {
 			reaperToggle = !reaperToggle;
 			xPressed = true;
 			
-			pros::Task::delay(20);
+		 
 		}
 		else if(master.get_digital(DIGITAL_X) == 0) {
 			xPressed = false;
@@ -143,7 +143,7 @@ void opcontrol() {
 			{
 				intakeToggle = 0;
 			}
-			else if (intakeToggle = 0)
+			else if (intakeToggle == 0 || intakeToggle == -1)
 			{
 				intakeToggle = 1;
 			}
@@ -159,7 +159,7 @@ void opcontrol() {
 			{
 				intakeToggle = 0;
 			}
-			else if (intakeToggle = 0)
+			else if (intakeToggle == 0 || intakeToggle == 1)
 			{
 				intakeToggle = -1;
 			}
@@ -188,7 +188,7 @@ void opcontrol() {
 			motorStop();
 		}
 		pros::lcd::print(3, "Reaper Motor Speed: %f", (reaperMotor.get_actual_velocity()));
-		pros::lcd::print(2, "Intake Motor Speed: %f", (intakeMotor.get_actual_velocity()));
+		pros::lcd::print(2, "Intake Motor Speed: %d",(int)intakeToggle) ;
 		pros::lcd::print(1, "Flywheel Speed: %f", (flyWheelMotor.get_actual_velocity()));
 	
 		intake(intakeToggle);
