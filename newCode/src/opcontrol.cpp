@@ -47,7 +47,7 @@ void flywheel(bool toggle){
 	else {
 		flyWheelMotor = 0;
 	}
-	
+
 }
 
 void intake(int toggle){
@@ -60,7 +60,8 @@ void intake(int toggle){
 	if(toggle == 0){
 		intakeMotor = 0;
 	}
-	
+
+
 }
 
 void reaper(bool toggle){
@@ -98,7 +99,7 @@ void drive(int driveL, int driveR) {
 	pros::lcd::print(7, "FR : %d", (frontRightMtr.get_actual_velocity()));
 
 }
- 
+
 void motorStop() {
 	for (int i = 0; i < 8; i++) {
 		motors[i] = 0;
@@ -119,7 +120,7 @@ void opcontrol() {
 		pros::lcd::print(0, "hello this is initialized %d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-	
+
 
 
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y); //controls left motors
@@ -129,16 +130,16 @@ void opcontrol() {
 		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
 			reaperToggle = !reaperToggle;
 			xPressed = true;
-			
-		 
+
+
 		}
 		else if(master.get_digital(DIGITAL_X) == 0) {
 			xPressed = false;
 		}
-		
+
 
 		//intake toggling
-		if (master.get_digital(DIGITAL_LEFT) == 1 && left == false){
+		if (master.get_digital(DIGITAL_Y) == 1 && left == false){
 			if (intakeToggle = 1)
 			{
 				intakeToggle = 0;
@@ -150,11 +151,11 @@ void opcontrol() {
 			left = true;
 			pros::Task::delay(20);
 		}
-		else if (master.get_digital(DIGITAL_LEFT) == 0)
+		else if (master.get_digital(DIGITAL_Y) == 0)
 		{
 			left = false;
 		}
-		 if(master.get_digital(DIGITAL_RIGHT) == 1 && right == false){
+		 if(master.get_digital(DIGITAL_A) == 1 && right == false){
 			if (intakeToggle = -1)
 			{
 				intakeToggle = 0;
@@ -166,31 +167,31 @@ void opcontrol() {
 			right = true;
 			pros::Task::delay(20);
 		}
-		 else if (master.get_digital(DIGITAL_RIGHT) == 0)
+		 else if (master.get_digital(DIGITAL_A) == 0)
 		 {
 			 right = false;
 		 }
-		
+
 
 		//flywheel toggling
-		if (master.get_digital(DIGITAL_Y) == 1 && yPressed == false){
+		if (master.get_digital(DIGITAL_B) == 1 && yPressed == false){
 			flyWheelToggle = !flyWheelToggle;
 			yPressed = true;
 			pros::Task::delay(20);
 		}
-		else if (master.get_digital(DIGITAL_Y) == 0)
+		else if (master.get_digital(DIGITAL_B) == 0)
 		{
 			yPressed = false;
 		}
-	
+
 		//stops all motors
 		if (master.get_digital(DIGITAL_UP) == 1) {
 			motorStop();
 		}
 		pros::lcd::print(3, "Reaper Motor Speed: %f", (reaperMotor.get_actual_velocity()));
-		pros::lcd::print(2, "Intake Motor Speed: %d",(int)intakeToggle) ;
+pros::lcd::print(2, "Intake Toggle %d",(int)intakeToggle) ;
 		pros::lcd::print(1, "Flywheel Speed: %f", (flyWheelMotor.get_actual_velocity()));
-	
+
 		intake(intakeToggle);
 		flywheel(flyWheelToggle);
 		drive(driveLeft, driveRight);
