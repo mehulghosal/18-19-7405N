@@ -63,12 +63,15 @@ void intake(int toggle){
 	
 }
 
-void reaper(bool toggle){
+void reaper(int toggle){
 	if(toggle == 1){
 		reaperMotor = 127;
 	}
 	else if(toggle == 0){
 		reaperMotor = 0;
+	}
+	else {
+		reaperMotor = -127;
 	}
 
 }
@@ -109,11 +112,14 @@ void opcontrol() {
 	pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
 	bool flyWheelToggle = false;
 	int intakeToggle = 0;
-	bool reaperToggle = false;
+	int reaperToggle = 0;
 	bool xPressed = false;
 	bool yPressed = false;
 	bool left = false;
 	bool right = false;
+	bool bPressed = false;
+	bool lPressed = false;
+	bool rPressed = false;
 
 	while (true) {
 		pros::lcd::print(0, "hello this is initialized %d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
@@ -127,7 +133,14 @@ void opcontrol() {
 
 		//reaper toggling
 		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
-			reaperToggle = !reaperToggle;
+			if (reaperToggle == 1)
+			{
+				reaperToggle = 0;
+			}
+			else if (reaperToggle == 0 || reaperToggle == -1)
+			{
+				reaperToggle = 1;
+			}
 			xPressed = true;
 			
 		 
@@ -135,11 +148,28 @@ void opcontrol() {
 		else if(master.get_digital(DIGITAL_X) == 0) {
 			xPressed = false;
 		}
+		if (master.get_digital(DIGITAL_B) == 1 && bPressed == false) {
+			if (reaperToggle == -1)
+			{
+				reaperToggle = 0;
+			}
+			else if (reaperToggle == 0 || reaperToggle == 1)
+			{
+				reaperToggle = -1;
+			}
+			bPressed = true;
+
+
+		}
+		else if (master.get_digital(DIGITAL_B) == 0) {
+			bPressed = false;
+		}
 		
 
 		//intake toggling
-		if (master.get_digital(DIGITAL_LEFT) == 1 && left == false){
-			if (intakeToggle = 1)
+		if (master.get_digital(DIGITAL_LEFT) == 1 && lPressed == false ){
+			
+			if (intakeToggle == 1)
 			{
 				intakeToggle = 0;
 			}
@@ -147,15 +177,16 @@ void opcontrol() {
 			{
 				intakeToggle = 1;
 			}
-			left = true;
-			pros::Task::delay(20);
+			lPressed = true;
+		
 		}
 		else if (master.get_digital(DIGITAL_LEFT) == 0)
 		{
-			left = false;
+			lPressed = false;
 		}
-		 if(master.get_digital(DIGITAL_RIGHT) == 1 && right == false){
-			if (intakeToggle = -1)
+		if (master.get_digital(DIGITAL_RIGHT) == 1 && rPressed == false) {
+
+			if (intakeToggle == -1)
 			{
 				intakeToggle = 0;
 			}
@@ -163,13 +194,16 @@ void opcontrol() {
 			{
 				intakeToggle = -1;
 			}
-			right = true;
-			pros::Task::delay(20);
+			rPressed = true;
+
 		}
-		 else if (master.get_digital(DIGITAL_RIGHT) == 0)
-		 {
-			 right = false;
-		 }
+		else if (master.get_digital(DIGITAL_RIGHT) == 0)
+		{
+			rPressed = false;
+		}
+
+		
+		
 		
 
 		//flywheel toggling
