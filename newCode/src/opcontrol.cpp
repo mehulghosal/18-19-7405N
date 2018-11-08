@@ -20,10 +20,10 @@
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 //drive motors
-pros::Motor backLeftMtr(9);
-pros::Motor frontLeftMtr(10);
-pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor backLeftMtr(9, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor frontLeftMtr(10, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
 
 //reaper
 pros::Motor reaperMotor(5, pros::E_MOTOR_GEARSET_18, true);
@@ -60,7 +60,8 @@ DIGITAL_Y		10
 DIGITAL_A		11 */
 bool buttons [12] = {false, false, false, false, false, false, false, false, false, false, false, false};
 bool keyPresses[12] = {false, false, false, false, false, false, false, false, false, false, false, false};
-//controller_digital_e_t buttonTypes[12] = {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2, DIGITAL_UP, DIGITAL_DOWN, DIGITAL_LEFT, DIGITAL_RIGHT, DIGITAL_X, DIGITAL_B, DIGITAL_Y, DIGITAL_A}
+// controller_digital_e_t buttonTypes[12] = {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2, DIGITAL_UP, DIGITAL_DOWN, 
+// 						DIGITAL_LEFT, DIGITAL_RIGHT, DIGITAL_X, DIGITAL_B, DIGITAL_Y, DIGITAL_A}
 void buttonHandler(){
 	if((master.get_digital(DIGITAL_L1)) == 1 && keyPresses[0] == false){
 		buttons[0] = !buttons[0];
@@ -141,7 +142,7 @@ void buttonHandler(){
 		keyPresses[10] = false;
 	}
 	if((master.get_digital(DIGITAL_A)) == 1 && keyPresses[11] == false){
-		buttons[11] = !buttons[1];
+		buttons[11] = !buttons[11];
 		keyPresses[11] = true;
 	}
 	else if(master.get_digital(DIGITAL_A) == 0){
@@ -260,6 +261,9 @@ void opcontrol() {
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y); //controls left motors
 		int driveRight = master.get_analog(ANALOG_RIGHT_Y);  //controls right motors
 		buttonHandler();
+		pros::lcd::print(0, "%d %d %d %d", (buttons[0]),(buttons[1]),(buttons[2]),(buttons[3]));
+		pros::lcd::print(1, "%d %d %d %d", (buttons[4]),(buttons[5]),(buttons[6]),(buttons[7]));
+		pros::lcd::print(2, "%d %d %d %d", (buttons[8]),(buttons[9]),(buttons[10]),(buttons[11]));
 
 		//reaper toggling
 		if (buttons[8]){
@@ -288,24 +292,21 @@ void opcontrol() {
 			motorStop();
 		}
 
-		// intake(intakeToggle);
-		// flywheel(flyWheelToggle);
-		// reaper(reaperToggle);
 		drive(driveLeft, driveRight);
 		pros::Task::delay(10);
 
 	}
 }
 
+//blue on the top
 void auton1(){
 	pros::lcd::print(0, "INIT auton1");
+	//move forward to ball in front 
+
+	//turn on intake
+
+	//turn left
+
+	//reaper and flywheel shoot 
 }
 
-void leftTurn(){
-	//90 degree left turn: right side 100, left side -100
-	//we have to do PID so we know how long the motors should stay on
-}
-
-void rightTurn(){
-	//same as the other method ig
-}
