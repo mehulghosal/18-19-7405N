@@ -109,7 +109,7 @@ void motorStop() {
 }
 
 void opcontrol() {
-	pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
+	//pros::lcd::print(0, "INIT pumped up kicks is a fucking fire song (even if its about columbine)");
 	bool flyWheelToggle = false;
 	int intakeToggle = 0;
 	int reaperToggle = 0;
@@ -122,9 +122,9 @@ void opcontrol() {
 	bool rPressed = false;
 
 	while (true) {
-		pros::lcd::print(0, "hello this is initialized %d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
+		// pros::lcd::print(0, "hello this is initialized %d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
+		//                  (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
+		//                  (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 	
 
 
@@ -133,12 +133,10 @@ void opcontrol() {
 
 		//reaper toggling
 		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
-			if (reaperToggle == 1)
-			{
+			if (reaperToggle == 1){
 				reaperToggle = 0;
 			}
-			else if (reaperToggle == 0 || reaperToggle == -1)
-			{
+			else if (reaperToggle == 0 || reaperToggle == -1){
 				reaperToggle = 1;
 			}
 			xPressed = true;
@@ -149,12 +147,10 @@ void opcontrol() {
 			xPressed = false;
 		}
 		if (master.get_digital(DIGITAL_B) == 1 && bPressed == false) {
-			if (reaperToggle == -1)
-			{
+			if (reaperToggle == -1){
 				reaperToggle = 0;
 			}
-			else if (reaperToggle == 0 || reaperToggle == 1)
-			{
+			else if (reaperToggle == 0 || reaperToggle == 1){
 				reaperToggle = -1;
 			}
 			bPressed = true;
@@ -169,42 +165,32 @@ void opcontrol() {
 		//intake toggling
 		if (master.get_digital(DIGITAL_LEFT) == 1 && lPressed == false ){
 			
-			if (intakeToggle == 1)
-			{
+			if (intakeToggle == 1){
 				intakeToggle = 0;
 			}
-			else if (intakeToggle == 0 || intakeToggle == -1)
-			{
+			else if (intakeToggle == 0 || intakeToggle == -1){
 				intakeToggle = 1;
 			}
 			lPressed = true;
 		
 		}
-		else if (master.get_digital(DIGITAL_LEFT) == 0)
-		{
+		else if (master.get_digital(DIGITAL_LEFT) == 0){
 			lPressed = false;
 		}
 		if (master.get_digital(DIGITAL_RIGHT) == 1 && rPressed == false) {
 
-			if (intakeToggle == -1)
-			{
+			if (intakeToggle == -1){
 				intakeToggle = 0;
 			}
-			else if (intakeToggle == 0 || intakeToggle == 1)
-			{
+			else if (intakeToggle == 0 || intakeToggle == 1){
 				intakeToggle = -1;
 			}
 			rPressed = true;
 
 		}
-		else if (master.get_digital(DIGITAL_RIGHT) == 0)
-		{
+		else if (master.get_digital(DIGITAL_RIGHT) == 0){
 			rPressed = false;
 		}
-
-		
-		
-		
 
 		//flywheel toggling
 		if (master.get_digital(DIGITAL_Y) == 1 && yPressed == false){
@@ -212,8 +198,7 @@ void opcontrol() {
 			yPressed = true;
 			pros::Task::delay(20);
 		}
-		else if (master.get_digital(DIGITAL_Y) == 0)
-		{
+		else if (master.get_digital(DIGITAL_Y) == 0){
 			yPressed = false;
 		}
 	
@@ -234,14 +219,8 @@ void opcontrol() {
 	}
 }
 
-//blue on the top
-void auton1(){
-	pros::lcd::print(0, "INIT auton1");
-	//move forward to ball in front
 
-	//turn on intake
-
-	//turn left
-
-	//reaper and flywheel shoot
+void testfunct(){
+	pros::lcd::print(0, "test function");
+	pros::c::delay(2000);
 }
