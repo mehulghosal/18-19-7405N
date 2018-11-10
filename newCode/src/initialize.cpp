@@ -20,7 +20,8 @@ void initialize() {
 
 	pros::lcd::initialize();
 	pros::lcd::set_text(0, "Hello PROS User!");
-	//auton1();
+//	pros::Controller::setText(0,);
+	pros::c::delay(500);
 	//opcontrol();
 	//pros::lcd::register_btn1_cb(on_center_button);
 }
