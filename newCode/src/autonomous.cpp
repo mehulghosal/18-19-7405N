@@ -1,4 +1,5 @@
 #include "main.h"
+#include "opcontrol.cpp"
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -11,4 +12,30 @@
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+
+
+void autonomous(){
+	auton1();
+}
+
+//top blue
+void auton1(){
+	pros::lcd::print(0, "auton1 init");
+	moveTo(25, 0, 0);
+
+}
+
+//bottom blue
+void auton2(){
+
+}
+
+//top red
+void auton3(){
+
+}
+
+//bottom red
+void auton4(){
+
+}

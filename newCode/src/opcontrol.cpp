@@ -235,21 +235,21 @@ void opcontrol() {
 }
 
 //rc and lc are left and right coeffs 
-// void moveTo(double d, int RC, int LC){
-// 	double kpl = 1;
-// 	double kpr = 1;
-// 	if(RC +LC == 0){
-// 		//turning
-// 		kpr = 1;
-// 		kpl = 1;
-// 	}
-// 	while(abs(d - frontLeftMtr.get_position()) > 5){
-// 		frontRightMtr.move((abs(d - backRightMtr) * kpr) * RC);
-// 		frontLeftMtr.move((abs(d - backRightMtr) * kpl)*LC);
-// 		backLeftMtr.move((abs(d - backRightMtr) * kpl)*LC);
-// 		backRightMtr.move((abs(d - backRightMtr) * kpr)*RC);
-// 		pros::lcd::print(0, "overshoot: %f", d - frontLeftMtr.get_position());
+void moveTo(double d, int RC, int LC){
+	double kpl = 1;
+	double kpr = 1;
+	if(RC + LC == 0){
+		//turning
+		kpr = 1;
+		kpl = 1;
+	}
+	while(abs(d - frontLeftMtr.get_position()) > 5){
+		frontRightMtr.move((abs(d - frontRightMtr.get_position()) * kpr) * RC);
+		frontLeftMtr.move((abs(d - frontLeftMtr.get_position()) * kpl)*LC);
+		backLeftMtr.move((abs(d - backLeftMtr.get_position()) * kpl)*LC);
+		backRightMtr.move((abs(d - backRightMtr.get_position()) * kpr)*RC);
+		pros::lcd::print(0, "overshoot: %f", d - frontLeftMtr.get_position());
+	}  
 
-// 	}  
+}
 
-// }
