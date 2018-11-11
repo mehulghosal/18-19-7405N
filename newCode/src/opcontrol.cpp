@@ -232,7 +232,7 @@ void moveTo(double d, double RC, double LC){
 
 	int kpr = 1;
 	int kpl = 1;
-	if (left+right == 0){ //not turning
+	if (RC+LC == 0){ //not turning
 		kpr = 1;
 		kpl = 1;
 	}
