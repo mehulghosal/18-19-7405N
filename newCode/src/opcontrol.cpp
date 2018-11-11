@@ -224,3 +224,25 @@ void testfunct(){
 	pros::lcd::print(0, "test function");
 	pros::c::delay(2000);
 }
+
+//for autons 
+//placed in oppcontrol.cpp to access the motors
+//if params right and left arent 0, then ur turning
+void moveTo(double d, double RC, double LC){
+
+	int kpr = 1;
+	int kpl = 1;
+	if (left+right == 0){ //not turning
+		kpr = 1;
+		kpl = 1;
+	}
+	//going to be comparing dist to front left motor
+	while(abs(d - frontLeftMtr.get_position()) > 5){
+		frontRightMtr.move((abs(d - frontRightMtr.get_position()) * kpr) * RC);
+		frontLeftMtr.move((abs(d - frontLeftMtr.get_position()) * kpl) * LC);
+		backLeftMtr.move((abs(d - backLeftMtr.get_position()) * kpl) * LC);
+		backRightMtr.move((abs(d - backRightMtr.get_position()) * kpr) * RC);
+		pros::lcd::print(0, "overshoot: %f", d - frontLeftMtr.get_position());
+	}  
+
+}
