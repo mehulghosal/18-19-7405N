@@ -19,11 +19,11 @@ void moveTo(double d, double RC, double LC);
 //blue on the top
 void auton1(){
 	pros::lcd::print(0, "INIT auton1");
-	pros::c::delay(2000);
+	//pros::c::delay(2000);
 
-	testfunct();
+	//testfunct();
 	//move forward to ball in front
-	moveTo(50.0, 0, 0);//i have no idea what this magnitude should be
+	moveTo(400, 0, 0);//i have no idea what this magnitude should be
 
 	//turn on intake
 	intake(1);

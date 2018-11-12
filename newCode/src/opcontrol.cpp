@@ -237,11 +237,12 @@ void moveTo(double d, double RC, double LC){
 	}
 	//going to be comparing dist to front left motor
 	while(abs(d - frontLeftMtr.get_position()) > 5){
-		frontRightMtr.move((abs(d - frontRightMtr.get_position()) * kpr) * RC);
-		frontLeftMtr.move((abs(d - frontLeftMtr.get_position()) * kpl) * LC);
-		backLeftMtr.move((abs(d - backLeftMtr.get_position()) * kpl) * LC);
-		backRightMtr.move((abs(d - backRightMtr.get_position()) * kpr) * RC);
+		pros::lcd::print(1, "%f",  abs(d - frontLeftMtr.get_position()) > 5);
+		frontRightMtr.move((abs(d - frontRightMtr.get_position()) * kpr));
+		frontLeftMtr.move((abs(d - frontLeftMtr.get_position()) * kpl));
+		backLeftMtr.move((abs(d - backLeftMtr.get_position()) * kpl));
+		backRightMtr.move((abs(d - backRightMtr.get_position()) * kpr));
 		pros::lcd::print(0, "overshoot: %f", d - frontLeftMtr.get_position());
-	}  
+	}
 
 }
