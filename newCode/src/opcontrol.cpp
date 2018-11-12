@@ -15,7 +15,6 @@
  * task, not resume it from where it left off.
  */
 
-
 //controler
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 

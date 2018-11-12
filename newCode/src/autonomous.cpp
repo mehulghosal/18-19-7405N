@@ -1,6 +1,8 @@
 #include "main.h"
 
 void testfunct();
+void intake(int toggle);
+void moveTo(double d, double RC, double LC); 
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -21,10 +23,15 @@ void auton1(){
 
 	testfunct();
 	//move forward to ball in front
+	moveTo(50.0, 0, 0);//i have no idea what this magnitude should be
 
 	//turn on intake
+	intake(1);
+	pros::c::delay(1000);
+	intake(0);
 
-	//turn left
+	//turn right - how the heck
+	//moveTo();
 
 	//reaper and flywheel shoot
 }
