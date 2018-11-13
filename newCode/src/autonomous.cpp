@@ -4,7 +4,7 @@ void testfunct();
 void intake(int toggle);
 void reaper(int toggle);
 void flywheel(bool toggle);
-void moveTo(double d); 
+void moveTo(double d);
 void rightTurn(int mult);
 void leftTurn(int mult);
 
@@ -31,7 +31,7 @@ void auton1(){
 	intake(1);
 	pros::c::delay(3000);
 	intake(0);
-	
+
 	pros::c::delay(3000);
 	//turn right 135 degrees
 	rightTurn(9);
@@ -52,7 +52,7 @@ void auton2(){
 	intake(1);
 	pros::c::delay(3000);
 	intake(0);
-	
+
 	//turn right 135 degrees
 	leftTurn(9);
 	//reaper and flywheel shoot
@@ -61,6 +61,62 @@ void auton2(){
 	pros::c::delay(6000);
 }
 
+int autonstate = 1;
+std::string autonstateNames[] = {"top blue", "top red", "back blue", "back red"};
+
+void onCenterButton(){
+//	std::string inp = "RUNNING: " + autonstateNames[autonstate - 1];
+//	pros::lcd::set_text(0, inp);
+
+	if(autonstate == 1){
+		auton1();
+
+	}
+	else if(autonstate == 2){
+		auton2();
+	}
+	else if(autonstate == 3){
+
+	}
+	else if(autonstate == 4){
+
+	}
+
+
+}
+
+void onLeftButton(){
+	if(autonstate == 4){
+		autonstate = 1;
+	}
+	else{
+		autonstate++;
+	}
+
+	std::string inp = "Selected Auton: " + autonstateNames[autonstate - 1];
+	pros::lcd::set_text(0, inp);
+}
+
+void onRightButton(){
+	if(autonstate == 1){
+		autonstate = 4;
+	}
+	else{
+		autonstate--;
+	}
+
+	std::string inp = "Selected Auton: " + autonstateNames[autonstate - 1];
+	pros::lcd::set_text(0, inp);
+}
+
 void autonomous() {
+
+	pros::lcd::set_text(0, "Selected Auton: none");
+
+	pros::lcd::register_btn0_cb(onLeftButton);
+	pros::lcd::register_btn1_cb(onCenterButton);
+	pros::lcd::register_btn2_cb(onRightButton);
+
+
 	auton2();
 }
