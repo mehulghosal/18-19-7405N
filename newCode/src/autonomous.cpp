@@ -23,11 +23,9 @@ void leftTurn(int mult);
 //blue on the top
 void auton1(){
 	pros::lcd::print(0, "INIT auton1");
-	//pros::c::delay(2000);
 
-	//testfunct();
 	//move forward to ball in front
-	moveTo(2900);//this is pretty close - 2900 is perfect to intake the ball
+	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
 	//pros::c::delay(1000);
 	//turn on intake
 	intake(1);
@@ -44,6 +42,25 @@ void auton1(){
 
 }
 
+void auton2(){
+	pros::lcd::print(0, "INIT auton2");
+
+	//move forward to ball in front
+	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+	//pros::c::delay(1000);
+	//turn on intake
+	intake(1);
+	pros::c::delay(3000);
+	intake(0);
+	
+	//turn right 135 degrees
+	leftTurn(9);
+	//reaper and flywheel shoot
+	flywheel(true);
+	reaper(1);
+	pros::c::delay(6000);
+}
+
 void autonomous() {
-	auton1();
+	auton2();
 }

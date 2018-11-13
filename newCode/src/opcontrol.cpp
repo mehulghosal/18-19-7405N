@@ -78,8 +78,13 @@ void reaper(int toggle){
 
 }
 
-void lift(){
-	//we need to tune the motor so we know how long its supposed to be on
+void lift(bool toggle){
+	if(toggle == true){
+		armMotor.move_absolute(100, 100);
+	}
+	else{
+		armMotor.move_absolute(-100, 100);
+	}
 }
 
 void drive(int driveL, int driveR) {
@@ -228,9 +233,7 @@ void testfunct(){
 }
 
 //for autons 
-//placed in oppcontrol.cpp to access the motors
-//if params right and left arent 0, then ur turning
-//k tbh im not a fan of this
+//this for moving straight
 void moveTo(double d){
 	//not turning
 	frontLeftMtr.move_absolute(d, 200);
@@ -244,14 +247,14 @@ void leftTurn(int mult){
 	int turn = mult * 50;//turn the 10 to be for about 15 degrees
 	frontRightMtr.move_absolute(turn, 200);
 	backRightMtr.move_absolute(turn, 200);
-	frontLeftMtr.move_absolute(-turn, -200);
-	frontRightMtr.move_absolute(-turn, -200);
+	frontLeftMtr.move_absolute(turn, -200);
+	frontRightMtr.move_absolute(turn, -200);
 }
 
 void rightTurn(int mult){
 	int turn = mult * 50;
-	frontRightMtr.move_absolute(-turn, -200);
-	backRightMtr.move_absolute(-turn, -200);
+	frontRightMtr.move_absolute(turn, -200);
+	backRightMtr.move_absolute(turn, -200);
 	frontLeftMtr.move_absolute(turn, 200);
 	frontRightMtr.move_absolute(turn, 200);
 }
