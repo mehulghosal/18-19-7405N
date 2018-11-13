@@ -2,7 +2,11 @@
 
 void testfunct();
 void intake(int toggle);
-void moveTo(double d, double RC, double LC); 
+void reaper(int toggle);
+void flywheel(bool toggle);
+void moveTo(double d); 
+void rightTurn(int mult);
+void leftTurn(int mult);
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -23,17 +27,21 @@ void auton1(){
 
 	//testfunct();
 	//move forward to ball in front
-	moveTo(3000, 0, 0);//this is pretty close - 2900 is perfect to intake the ball, a bit more to try to flip the cap
+	moveTo(2900);//this is pretty close - 2900 is perfect to intake the ball
 	//pros::c::delay(1000);
 	//turn on intake
 	intake(1);
-	pros::c::delay(5000);
+	pros::c::delay(3000);
 	intake(0);
-
-	//turn right - how the heck
-	//moveTo();
-
+	
+	pros::c::delay(3000);
+	//turn right 135 degrees
+	rightTurn(9);
 	//reaper and flywheel shoot
+	flywheel(true);
+	reaper(1);
+	pros::c::delay(5000);
+
 }
 
 void autonomous() {
