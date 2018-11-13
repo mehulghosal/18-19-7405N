@@ -227,22 +227,40 @@ void testfunct(){
 //for autons 
 //placed in oppcontrol.cpp to access the motors
 //if params right and left arent 0, then ur turning
+//k tbh im not a fan of this
 void moveTo(double d, double RC, double LC){
 
-	int kpr = 1;
-	int kpl = 1;
-	if (RC+LC == 0){ //not turning
-		kpr = 1;
-		kpl = 1;
+	// int kpr = 1;
+	// int kpl = 1;
+	// if (RC+LC == 0){ //not turning
+	// 	kpr = 1;
+	// 	kpl = 1;
+	// }
+	// //going to be comparing dist to front left motor
+	// while(abs(d - frontLeftMtr.get_position()) > 5){
+	// 	pros::lcd::print(1, "%f",  abs(d - frontLeftMtr.get_position()) > 5);
+	// 	frontRightMtr.move((abs(d - frontRightMtr.get_position()) * kpr));
+	// 	frontLeftMtr.move((abs(d - frontLeftMtr.get_position()) * kpl));
+	// 	backLeftMtr.move((abs(d - backLeftMtr.get_position()) * kpl));
+	// 	backRightMtr.move((abs(d - backRightMtr.get_position()) * kpr));
+	// 	pros::lcd::print(0, "overshoot: %f", d - frontLeftMtr.get_position());
+	// }
+
+	//not turning
+	if(RC==LC){
+		frontLeftMtr.move_absolute(d, 200);
+		frontRightMtr.move_absolute(d, 200);
+		backLeftMtr.move_absolute(d, 200);
+		backRightMtr.move_absolute(d, 200);
 	}
-	//going to be comparing dist to front left motor
-	while(abs(d - frontLeftMtr.get_position()) > 5){
-		pros::lcd::print(1, "%f",  abs(d - frontLeftMtr.get_position()) > 5);
-		frontRightMtr.move((abs(d - frontRightMtr.get_position()) * kpr));
-		frontLeftMtr.move((abs(d - frontLeftMtr.get_position()) * kpl));
-		backLeftMtr.move((abs(d - backLeftMtr.get_position()) * kpl));
-		backRightMtr.move((abs(d - backRightMtr.get_position()) * kpr));
-		pros::lcd::print(0, "overshoot: %f", d - frontLeftMtr.get_position());
+	//left turn
+	else if(RC>LC){
+
 	}
+	//right turn
+	else{
+
+	}
+
 
 }

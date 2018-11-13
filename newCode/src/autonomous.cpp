@@ -23,11 +23,11 @@ void auton1(){
 
 	//testfunct();
 	//move forward to ball in front
-	moveTo(400, 0, 0);//i have no idea what this magnitude should be
-
+	moveTo(3000, 0, 0);//this is pretty close - 2900 is perfect to intake the ball, a bit more to try to flip the cap
+	//pros::c::delay(1000);
 	//turn on intake
 	intake(1);
-	pros::c::delay(1000);
+	pros::c::delay(5000);
 	intake(0);
 
 	//turn right - how the heck
