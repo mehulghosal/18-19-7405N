@@ -19,6 +19,37 @@ void on_center_button() {
 
 
 
+ int autonstate = 1;
+
+
+/*
+ void onLeftButton(){
+ 	if(autonstate == 4){
+ 		autonstate = 1;
+ 	}
+ 	else{
+ 		autonstate++;
+ 	}
+
+ 	std::string inp = "Selected Auton: " + autonstateNames[autonstate - 1];
+ 	pros::lcd::set_text(0, inp);
+ }
+
+ void onRightButton(){
+ 	if(autonstate == 1){
+ 		autonstate = 4;
+ 	}
+ 	else{
+ 		autonstate--;
+ 	}
+
+ 	std::string inp = "Selected Auton: " + autonstateNames[autonstate - 1];
+ 	pros::lcd::set_text(0, inp);
+}*/
+
+
+
+
 
 void initialize() {
 

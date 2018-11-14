@@ -87,8 +87,22 @@ void lift(bool toggle){
 	}
 }
 
+void chassisSet(int m1, int m2){
+	backLeftMtr = m1;
+	frontLeftMtr = m1;
+	backRightMtr = m2;
+	frontRightMtr = m2;
+}
+
 void drive(int driveL, int driveR) {
 
+	if(abs(driveL) >= 15 || abs(driveR) >= 15) {
+		chassisSet(std::min(std::max(driveL + driveR, -127),127), std::min(std::max(driveL - driveR, -127),127));
+	} else {
+		chassisSet(0,0);
+	}
+
+	/*
 	if(driveL > 15 || driveL < -15){
 		backLeftMtr = driveL; frontLeftMtr = driveL;
 	}
@@ -100,7 +114,7 @@ void drive(int driveL, int driveR) {
 	}
 	else{
 		backRightMtr = 0; frontRightMtr = 0;
-	}
+	}*/
 
 	pros::lcd::print(4, "BL : %d", (backLeftMtr.get_actual_velocity()));
 	pros::lcd::print(5, "FL : %d", (frontLeftMtr.get_actual_velocity()));
@@ -136,7 +150,7 @@ void opcontrol() {
 
 
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y); //controls left motors
-		int driveRight = master.get_analog(ANALOG_RIGHT_Y);  //controls right motors
+		int driveRight = master.get_analog(ANALOG_RIGHT_X);  //controls right motors
 
 		//reaper toggling
 		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
@@ -245,7 +259,7 @@ void testfunct(){
 
 //for autons
 //this for moving straight
-void moveTo(double d){
+void moveTo(double d){ // REWRITE THIS TO WAIT UNTIL ITS DONE THEN STOP THE MOTORS
 	//not turning
 	frontLeftMtr.move_absolute(d, 200);
 	frontRightMtr.move_absolute(d, 200);

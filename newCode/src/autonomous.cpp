@@ -21,13 +21,16 @@ void leftTurn(int mult);
  */
 
 //blue on the top
+
+void testAuton(){
+	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+}
+
 void auton1(){
 	pros::lcd::print(0, "INIT auton1");
-	pros::c::delay(2000);
-
-	flywheel(true);
 
 	//move forward to ball in front
+	flywheel(true); // flywheel first, flameo - josh
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
 	//pros::c::delay(1000);
 	//turn on intake
@@ -35,13 +38,17 @@ void auton1(){
 	pros::c::delay(3000);
 	intake(0);
 
+	pros::c::delay(3000);
 	//turn right 135 degrees
 	rightTurn(9);
 	//reaper and flywheel shoot
 	//delay for flywheel to accelerate
-	pros::c::delay(2000);
+	pros::c::delay(1000);
 	reaper(1);
-	pros::c::delay(2000);
+	pros::c::delay(1000);
+
+	//flameo hotmen
+	
 
 }
 
@@ -65,13 +72,17 @@ void auton2(){
 	pros::c::delay(1000);
 }
 
+std::string autonstateNames[] = {"top blue", "top red", "back blue", "back red"};
+
+
+
 void autonomous() {
 
-	//pros::lcd::set_text(0, "Selected Auton: none");
+	pros::lcd::set_text(0, "Selected Auton: none");
 
-	// pros::lcd::register_btn0_cb(onLeftButton);
-	// pros::lcd::register_btn1_cb(onCenterButton);
-	// pros::lcd::register_btn2_cb(onRightButton);
+//	pros::lcd::register_btn0_cb(onLeftButton);
+//	pros::lcd::register_btn1_cb(onCenterButton);
+//	pros::lcd::register_btn2_cb(onRightButton);
 
 
 	auton1();
