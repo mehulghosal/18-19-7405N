@@ -261,10 +261,16 @@ void testfunct(){
 //this for moving straight
 void moveTo(double d){ // REWRITE THIS TO WAIT UNTIL ITS DONE THEN STOP THE MOTORS
 	//not turning
+  backRightMtr.tare_position();
+
 	frontLeftMtr.move_absolute(d, 200);
 	frontRightMtr.move_absolute(d, 200);
 	backLeftMtr.move_absolute(d, 200);
 	backRightMtr.move_absolute(d, 200);
+
+	while((200 - backRightMtr.get_position()) < 5){ // NOT SURE IF CORRECT - TEST THIS
+		pros::c::delay(10);
+	}
 }
 
 //lets just make this in 15 degree intervals degrees bc who cares
