@@ -259,13 +259,13 @@ void leftTurn(int mult){
 	frontRightMtr.move_absolute(turn, 200);
 	backRightMtr.move_absolute(turn, 200);
 	frontLeftMtr.move_absolute(turn, -200);
-	frontRightMtr.move_absolute(turn, -200);
+	backLeftMtr.move_absolute(turn, -200);
 }
 
 void rightTurn(int mult){
 	int turn = mult * 50;
 	frontRightMtr.move_absolute(turn, -200);
 	backRightMtr.move_absolute(turn, -200);
+	backLeftMtr.move_absolute(turn, 200);
 	frontLeftMtr.move_absolute(turn, 200);
-	frontRightMtr.move_absolute(turn, 200);
 }

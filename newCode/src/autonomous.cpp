@@ -23,6 +23,9 @@ void leftTurn(int mult);
 //blue on the top
 void auton1(){
 	pros::lcd::print(0, "INIT auton1");
+	pros::c::delay(2000);
+
+	flywheel(true);
 
 	//move forward to ball in front
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
@@ -32,15 +35,13 @@ void auton1(){
 	pros::c::delay(3000);
 	intake(0);
 
-	pros::c::delay(3000);
 	//turn right 135 degrees
 	rightTurn(9);
 	//reaper and flywheel shoot
-	flywheel(true);
 	//delay for flywheel to accelerate
-	pros::c::delay(1000);
+	pros::c::delay(2000);
 	reaper(1);
-	pros::c::delay(1000);
+	pros::c::delay(2000);
 
 }
 
@@ -64,62 +65,14 @@ void auton2(){
 	pros::c::delay(1000);
 }
 
-int autonstate = 1;
-std::string autonstateNames[] = {"top blue", "top red", "back blue", "back red"};
-
-void onCenterButton(){
-//	std::string inp = "RUNNING: " + autonstateNames[autonstate - 1];
-//	pros::lcd::set_text(0, inp);
-
-	if(autonstate == 1){
-		auton1();
-
-	}
-	else if(autonstate == 2){
-		auton2();
-	}
-	else if(autonstate == 3){
-
-	}
-	else if(autonstate == 4){
-
-	}
-
-
-}
-
-void onLeftButton(){
-	if(autonstate == 4){
-		autonstate = 1;
-	}
-	else{
-		autonstate++;
-	}
-
-	std::string inp = "Selected Auton: " + autonstateNames[autonstate - 1];
-	pros::lcd::set_text(0, inp);
-}
-
-void onRightButton(){
-	if(autonstate == 1){
-		autonstate = 4;
-	}
-	else{
-		autonstate--;
-	}
-
-	std::string inp = "Selected Auton: " + autonstateNames[autonstate - 1];
-	pros::lcd::set_text(0, inp);
-}
-
 void autonomous() {
 
-	pros::lcd::set_text(0, "Selected Auton: none");
+	//pros::lcd::set_text(0, "Selected Auton: none");
 
-	pros::lcd::register_btn0_cb(onLeftButton);
-	pros::lcd::register_btn1_cb(onCenterButton);
-	pros::lcd::register_btn2_cb(onRightButton);
+	// pros::lcd::register_btn0_cb(onLeftButton);
+	// pros::lcd::register_btn1_cb(onCenterButton);
+	// pros::lcd::register_btn2_cb(onRightButton);
 
 
-	auton2();
+	auton1();
 }
