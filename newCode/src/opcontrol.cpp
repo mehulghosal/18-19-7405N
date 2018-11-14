@@ -208,6 +208,13 @@ void opcontrol() {
 		else if (master.get_digital(DIGITAL_Y) == 0){
 			yPressed = false;
 		}
+
+		if(master.get_digital(DIGITAL_L1)){
+			lift(true);
+		}
+		else if(master.get_digital(DIGITAL_R1)){
+			lift(false);
+		}
 	
 		//stops all motors
 		if (master.get_digital(DIGITAL_UP) == 1) {

@@ -37,8 +37,9 @@ void auton1(){
 	rightTurn(9);
 	//reaper and flywheel shoot
 	flywheel(true);
+	//delay for flywheel to accelerate
+	pros::c::delay(1000);
 	reaper(1);
-	pros::c::delay(5000);
 
 }
 
@@ -57,8 +58,8 @@ void auton2(){
 	leftTurn(9);
 	//reaper and flywheel shoot
 	flywheel(true);
+	pros::c::delay(1000);
 	reaper(1);
-	pros::c::delay(6000);
 }
 
 int autonstate = 1;

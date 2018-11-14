@@ -34,7 +34,7 @@ void initialize() {
 
 
 	*/
-	autonomous();
+	//autonomous();
 
 }
 
