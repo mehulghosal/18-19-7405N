@@ -268,7 +268,7 @@ void moveTo(double d){ // REWRITE THIS TO WAIT UNTIL ITS DONE THEN STOP THE MOTO
 	backLeftMtr.move_absolute(d, 200);
 	backRightMtr.move_absolute(d, 200);
 
-	while((200 - backRightMtr.get_position()) < 5){ // NOT SURE IF CORRECT - TEST THIS
+	while((200 - backRightMtr.get_position()) > 5){ // NOT SURE IF CORRECT - TEST THIS
 		pros::c::delay(10);
 	}
 }
