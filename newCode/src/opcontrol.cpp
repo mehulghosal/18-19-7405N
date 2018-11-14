@@ -67,13 +67,13 @@ void intake(int toggle){
 
 void reaper(int toggle){
 	if(toggle == 1){
-		reaperMotor = 127;
+		reaperMotor = 80;
 	}
 	else if(toggle == 0){
 		reaperMotor = 0;
 	}
 	else {
-		reaperMotor = -127;
+		reaperMotor = -80;
 	}
 
 }
@@ -222,13 +222,20 @@ void opcontrol() {
 		else if (master.get_digital(DIGITAL_Y) == 0){
 			yPressed = false;
 		}
-
+//		pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;
 		//lmao forgive me for this
 		if(master.get_digital(DIGITAL_R2) == 1){
-			armMotor.move_absolute(200, 100);
+				armMotor = 100;
 		}
 		else if(master.get_digital(DIGITAL_L2) == 1){
-			armMotor.move_absolute(0, 100);
+				armMotor = -100;
+		}
+		else if(armMotor.get_position() >= 400){
+			armMotor = -15;
+		}
+
+		else if(armMotor.get_position() < 400){
+			armMotor = 15;
 		}
 		/*
 enum class brakeMode {
