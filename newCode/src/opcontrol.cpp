@@ -78,7 +78,7 @@ void reaper(int toggle){
 
 }
 
-void lift(bool toggle){
+void arm(bool toggle){
 	if(toggle == true){
 		armMotor.move_absolute(100, 100);
 	}
@@ -225,14 +225,21 @@ void opcontrol() {
 
 		//lmao forgive me for this
 		if(master.get_digital(DIGITAL_R2) == 1){
-			armMotor = 127;
+			armMotor.move_absolute(200, 100);
 		}
 		else if(master.get_digital(DIGITAL_L2) == 1){
-			armMotor = -127;
+			armMotor.move_absolute(0, 100);
 		}
-		else if(master.get_digital(DIGITAL_R2) == 0){
-			armMotor = 0;
-		}
+		/*
+enum class brakeMode {
+  coast = 0, // Motor coasts when stopped, traditional behavior
+  brake = 1, // Motor brakes when stopped
+  hold = 2,  // Motor actively holds position when stopped
+  invalid = INT32_MAX
+};
+
+		*/
+
 
 		//stops all motors
 		if (master.get_digital(DIGITAL_UP) == 1) {
@@ -268,9 +275,9 @@ void moveTo(double d){ // REWRITE THIS TO WAIT UNTIL ITS DONE THEN STOP THE MOTO
 	backLeftMtr.move_absolute(d, 200);
 	backRightMtr.move_absolute(d, 200);
 
-	while((200 - backRightMtr.get_position()) > 5){ // NOT SURE IF CORRECT - TEST THIS
-		pros::c::delay(10);
-	}
+	// while((200 - backRightMtr.get_position()) > 5){ // NOT SURE IF CORRECT - TEST THIS
+	// 	pros::c::delay(10);
+	// }
 }
 
 //lets just make this in 15 degree intervals degrees bc who cares
