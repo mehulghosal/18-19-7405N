@@ -17,6 +17,7 @@
 
 void leftTurn();
 void rightTurn();
+void resetPos();
 
 //controler
 pros::Controller master(pros::E_CONTROLLER_MASTER);
@@ -242,7 +243,7 @@ void testfunct(){
 //for autons 
 //this for moving straight
 void moveTo(double d){
-	//not turning
+	resetPos();
 	frontLeftMtr.move_absolute(d, 200);
 	frontRightMtr.move_absolute(d, 200);
 	backLeftMtr.move_absolute(d, 200);
@@ -251,6 +252,7 @@ void moveTo(double d){
 
 //lets just make this in 15 degree intervals degrees bc who cares
 void leftTurn(int mult){
+	resetPos();
 	int turn = mult * 50;//turn the 10 to be for about 15 degrees
 	frontRightMtr.move_absolute(turn, 200);
 	backRightMtr.move_absolute(turn, 200);
@@ -259,9 +261,15 @@ void leftTurn(int mult){
 }
 
 void rightTurn(int mult){
+	resetPos();
 	int turn = mult * 50;
 	frontRightMtr.move_absolute(turn, -200);
 	backRightMtr.move_absolute(turn, -200);
 	frontLeftMtr.move_absolute(turn, 200);
 	frontRightMtr.move_absolute(turn, 200);
+}
+
+void resetPos(){
+	frontLeftMtr.tare_position(); frontRightMtr.tare_position();
+	backLeftMtr.tare_position(); backRightMtr.tare_position();
 }

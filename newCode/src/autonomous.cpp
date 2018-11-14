@@ -40,6 +40,7 @@ void auton1(){
 	//delay for flywheel to accelerate
 	pros::c::delay(1000);
 	reaper(1);
+	pros::c::delay(1000);
 
 }
 
@@ -60,6 +61,7 @@ void auton2(){
 	flywheel(true);
 	pros::c::delay(1000);
 	reaper(1);
+	pros::c::delay(1000);
 }
 
 int autonstate = 1;
