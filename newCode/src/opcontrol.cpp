@@ -17,7 +17,6 @@
 
 void leftTurn();
 void rightTurn();
-void resetPos();
 
 //controler
 pros::Controller master(pros::E_CONTROLLER_MASTER);
@@ -50,7 +49,7 @@ void flywheel(bool toggle){
 	else {
 		flyWheelMotor = 0;
 	}
-	
+
 }
 
 void intake(int toggle){
@@ -63,7 +62,7 @@ void intake(int toggle){
 	if(toggle == 0){
 		intakeMotor = 0;
 	}
-	
+
 }
 
 void reaper(int toggle){
@@ -109,7 +108,7 @@ void drive(int driveL, int driveR) {
 	pros::lcd::print(7, "FR : %d", (frontRightMtr.get_actual_velocity()));
 
 }
- 
+
 void motorStop() {
 	for (int i = 0; i < 8; i++) {
 		motors[i] = 0;
@@ -133,7 +132,7 @@ void opcontrol() {
 		// pros::lcd::print(0, "hello this is initialized %d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		//                  (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		//                  (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-	
+
 
 
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y); //controls left motors
@@ -148,8 +147,8 @@ void opcontrol() {
 				reaperToggle = 1;
 			}
 			xPressed = true;
-			
-		 
+
+
 		}
 		else if(master.get_digital(DIGITAL_X) == 0) {
 			xPressed = false;
@@ -168,11 +167,11 @@ void opcontrol() {
 		else if (master.get_digital(DIGITAL_B) == 0) {
 			bPressed = false;
 		}
-		
+
 
 		//intake toggling
 		if (master.get_digital(DIGITAL_LEFT) == 1 && lPressed == false ){
-			
+
 			if (intakeToggle == 1){
 				intakeToggle = 0;
 			}
@@ -180,7 +179,7 @@ void opcontrol() {
 				intakeToggle = 1;
 			}
 			lPressed = true;
-		
+
 		}
 		else if (master.get_digital(DIGITAL_LEFT) == 0){
 			lPressed = false;
@@ -210,13 +209,17 @@ void opcontrol() {
 			yPressed = false;
 		}
 
-		if(master.get_digital(DIGITAL_L1)){
-			lift(true);
+		//lmao forgive me for this
+		if(master.get_digital(DIGITAL_R2) == 1){
+			armMotor = 127;
 		}
-		else if(master.get_digital(DIGITAL_R1)){
-			lift(false);
+		else if(master.get_digital(DIGITAL_L2) == 1){
+			armMotor = -127;
 		}
-	
+		else if(master.get_digital(DIGITAL_R2) == 0){
+			armMotor = 0;
+		}
+
 		//stops all motors
 		if (master.get_digital(DIGITAL_UP) == 1) {
 			motorStop();
@@ -224,7 +227,7 @@ void opcontrol() {
 		pros::lcd::print(3, "Reaper Motor Speed: %f", (reaperMotor.get_actual_velocity()));
 		pros::lcd::print(2, "Intake Motor Speed: %d",(int)intakeToggle) ;
 		pros::lcd::print(1, "Flywheel Speed: %f", (flyWheelMotor.get_actual_velocity()));
-	
+
 		intake(intakeToggle);
 		flywheel(flyWheelToggle);
 		drive(driveLeft, driveRight);
@@ -240,10 +243,10 @@ void testfunct(){
 	pros::c::delay(2000);
 }
 
-//for autons 
+//for autons
 //this for moving straight
 void moveTo(double d){
-	resetPos();
+	//not turning
 	frontLeftMtr.move_absolute(d, 200);
 	frontRightMtr.move_absolute(d, 200);
 	backLeftMtr.move_absolute(d, 200);
@@ -252,7 +255,6 @@ void moveTo(double d){
 
 //lets just make this in 15 degree intervals degrees bc who cares
 void leftTurn(int mult){
-	resetPos();
 	int turn = mult * 50;//turn the 10 to be for about 15 degrees
 	frontRightMtr.move_absolute(turn, 200);
 	backRightMtr.move_absolute(turn, 200);
@@ -261,15 +263,9 @@ void leftTurn(int mult){
 }
 
 void rightTurn(int mult){
-	resetPos();
 	int turn = mult * 50;
 	frontRightMtr.move_absolute(turn, -200);
 	backRightMtr.move_absolute(turn, -200);
 	frontLeftMtr.move_absolute(turn, 200);
 	frontRightMtr.move_absolute(turn, 200);
-}
-
-void resetPos(){
-	frontLeftMtr.tare_position(); frontRightMtr.tare_position();
-	backLeftMtr.tare_position(); backRightMtr.tare_position();
 }
