@@ -79,7 +79,7 @@ void arm(bool toggle){
 
 //AUTON CONTROLS//
 void moveTo(double d){
-  backRightMtr.tare_position();
+	resetMtrs()''
 	frontLeftMtr.move_absolute(d, 200);
 	frontRightMtr.move_absolute(d, 200);
 	backLeftMtr.move_absolute(d, 200);
@@ -89,6 +89,7 @@ void doubleShot(){
 	moveTo(1200);
 }
 void leftTurn(int mult){ // 15 DEGREE INTERVALS
+	resetMtrs();
 	int turn = mult * 50;//turn the 10 to be for about 15 degrees
 	frontRightMtr.move_absolute(turn, 200);
 	backRightMtr.move_absolute(turn, 200);
@@ -96,11 +97,16 @@ void leftTurn(int mult){ // 15 DEGREE INTERVALS
 	backLeftMtr.move_absolute(turn, -200);
 }
 void rightTurn(int mult){
+	resetMtrs();
 	int turn = mult * 50;
 	frontRightMtr.move_absolute(-turn, -200);
 	backRightMtr.move_absolute(-turn, -200);
 	backLeftMtr.move_absolute(turn, 200);
 	frontLeftMtr.move_absolute(turn, 200);
+}
+void resetMtrs(){
+	backRightMtr.tare_position();backLeftMtr.tare_position();
+	frontRightMtr.tare_position();frontLefttMtr.tare_position();
 }
 //MISC CONTROLS//
 void motorStop() {
