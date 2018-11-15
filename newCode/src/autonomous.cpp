@@ -55,19 +55,21 @@ void auton4(){
 }
 void testAuton(){
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+	rightTurn(1);
 }
 
 void autonomous() {
-	if(getAutonState() == 1){
-		auton1();
-	}
-	else if(getAutonState() == 2){
-		auton2();
-	}
-	else if(getAutonState() == 3){
-		auton3();
-	}
-	else if(getAutonState() == 4){
-		auton4();
-	}
+	// if(getAutonState() == 1){
+	// 	auton1();
+	// }
+	// else if(getAutonState() == 2){
+	// 	auton2();
+	// }
+	// else if(getAutonState() == 3){
+	// 	auton3();
+	// }
+	// else if(getAutonState() == 4){
+	// 	auton4();
+	// }
+	testAuton();
 }

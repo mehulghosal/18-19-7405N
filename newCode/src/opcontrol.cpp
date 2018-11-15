@@ -84,9 +84,6 @@ void moveTo(double d){
 	frontRightMtr.move_absolute(d, 200);
 	backLeftMtr.move_absolute(d, 200);
 	backRightMtr.move_absolute(d, 200);
-	while((200 - backRightMtr.get_position()) > 5){ // NEEDS TESTING
-		pros::c::delay(10);
-	}
 }
 void doubleShot(){
 	moveTo(1200);
@@ -100,8 +97,8 @@ void leftTurn(int mult){ // 15 DEGREE INTERVALS
 }
 void rightTurn(int mult){
 	int turn = mult * 50;
-	frontRightMtr.move_absolute(turn, -200);
-	backRightMtr.move_absolute(turn, -200);
+	frontRightMtr.move_absolute(-turn, -200);
+	backRightMtr.move_absolute(-turn, -200);
 	backLeftMtr.move_absolute(turn, 200);
 	frontLeftMtr.move_absolute(turn, 200);
 }
