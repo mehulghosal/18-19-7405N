@@ -34,12 +34,12 @@ void onCenterButton( ){
 
 
 void initialize() {
-	// pros::lcd::initialize();
-	// pros::lcd::register_btn0_cb(onLeftButton);
-	// pros::lcd::register_btn1_cb(onCenterButton);
-	// pros::lcd::register_btn2_cb(onRightButton);
+	pros::lcd::initialize();
+	pros::lcd::register_btn0_cb(onLeftButton);
+	pros::lcd::register_btn1_cb(onCenterButton);
+	pros::lcd::register_btn2_cb(onRightButton);
 
-	// pros::lcd::set_text(0, "AUTON SELECTOR: Selected Auton: none");
+	pros::lcd::set_text(0, "AUTON SELECTOR: Selected Auton: none");
 }
 
 void disabled() {} //

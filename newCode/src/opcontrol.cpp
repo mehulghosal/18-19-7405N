@@ -79,7 +79,7 @@ void arm(bool toggle){
 
 //AUTON CONTROLS//
 void moveTo(double d){
-	resetMtrs()''
+  backRightMtr.tare_position();
 	frontLeftMtr.move_absolute(d, 200);
 	frontRightMtr.move_absolute(d, 200);
 	backLeftMtr.move_absolute(d, 200);
@@ -89,24 +89,19 @@ void doubleShot(){
 	moveTo(1200);
 }
 void leftTurn(int mult){ // 15 DEGREE INTERVALS
-	resetMtrs();
-	int turn = mult * 50;//turn the 10 to be for about 15 degrees
-	frontRightMtr.move_absolute(turn, 200);
-	backRightMtr.move_absolute(turn, 200);
-	frontLeftMtr.move_absolute(turn, -200);
-	backLeftMtr.move_absolute(turn, -200);
+	int turn = mult * 138;//turn the 10 to be for about 15 degrees
+	frontRightMtr.move_absolute(turn, 100);
+	backRightMtr.move_absolute(turn, 100);
+	frontLeftMtr.move_absolute(turn, -100);
+	backLeftMtr.move_absolute(turn, -100);
 }
 void rightTurn(int mult){
-	resetMtrs();
-	int turn = mult * 50;
-	frontRightMtr.move_absolute(-turn, -200);
-	backRightMtr.move_absolute(-turn, -200);
-	backLeftMtr.move_absolute(turn, 200);
-	frontLeftMtr.move_absolute(turn, 200);
-}
-void resetMtrs(){
-	backRightMtr.tare_position();backLeftMtr.tare_position();
-	frontRightMtr.tare_position();frontLefttMtr.tare_position();
+	int turn = mult * 138;
+	frontRightMtr.move_absolute(-turn, -100);
+	backRightMtr.move_absolute(-turn, -100);
+	backLeftMtr.move_absolute(turn, 100);
+	frontLeftMtr.move_absolute(turn, 100);
+	pros::lcd::print(1,"turn: %d", turn);
 }
 //MISC CONTROLS//
 void motorStop() {
@@ -118,128 +113,128 @@ void testfunct(){
 	pros::lcd::print(1, "test rightturn");
 	moveTo(1000);
 	pros::c::delay(1000);
-	rightTurn(1);
+	rightTurn(6);
 	pros::c::delay(1000);
 }
 
 void opcontrol() {
 
 	//fuck this all jeez
-	testfunct();
+	//testfunct();
 
-	// bool flyWheelToggle = false;
-	// int intakeToggle = 0;
-	// int reaperToggle = 0;
-	// bool xPressed = false;
-	// bool yPressed = false;
-	// bool left = false;
-	// bool right = false;
-	// bool bPressed = false;
-	// bool lPressed = false;
-	// bool rPressed = false;
+	bool flyWheelToggle = false;
+	int intakeToggle = 0;
+	int reaperToggle = 0;
+	bool xPressed = false;
+	bool yPressed = false;
+	bool left = false;
+	bool right = false;
+	bool bPressed = false;
+	bool lPressed = false;
+	bool rPressed = false;
 
-	// while (true) {
+	while (true) {
 
-	// 	int driveLeft = master.get_analog(ANALOG_LEFT_Y);
-	// 	int driveRight = master.get_analog(ANALOG_RIGHT_X);
+		int driveLeft = master.get_analog(ANALOG_LEFT_Y);
+		int driveRight = master.get_analog(ANALOG_RIGHT_X);
 
-	// 	if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
-	// 		if (reaperToggle == 1){
-	// 			reaperToggle = 0;
-	// 		}
-	// 		else if (reaperToggle == 0 || reaperToggle == -1){
-	// 			reaperToggle = 1;
-	// 		}
-	// 		xPressed = true;
-
-
-	// 	}
-	// 	else if(master.get_digital(DIGITAL_X) == 0) {
-	// 		xPressed = false;
-	// 	}
-
-	// 	if (master.get_digital(DIGITAL_B) == 1 && bPressed == false) {
-	// 		if (reaperToggle == -1){
-	// 			reaperToggle = 0;
-	// 		}
-	// 		else if (reaperToggle == 0 || reaperToggle == 1){
-	// 			reaperToggle = -1;
-	// 		}
-	// 		bPressed = true;
+		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
+			if (reaperToggle == 1){
+				reaperToggle = 0;
+			}
+			else if (reaperToggle == 0 || reaperToggle == -1){
+				reaperToggle = 1;
+			}
+			xPressed = true;
 
 
-	// 	}
-	// 	else if (master.get_digital(DIGITAL_B) == 0) {
-	// 		bPressed = false;
-	// 	}
+		}
+		else if(master.get_digital(DIGITAL_X) == 0) {
+			xPressed = false;
+		}
 
-	// 	//intake toggling
-	// 	if (master.get_digital(DIGITAL_LEFT) == 1 && lPressed == false ){
+		if (master.get_digital(DIGITAL_B) == 1 && bPressed == false) {
+			if (reaperToggle == -1){
+				reaperToggle = 0;
+			}
+			else if (reaperToggle == 0 || reaperToggle == 1){
+				reaperToggle = -1;
+			}
+			bPressed = true;
 
-	// 		if (intakeToggle == 1){
-	// 			intakeToggle = 0;
-	// 		}
-	// 		else if (intakeToggle == 0 || intakeToggle == -1){
-	// 			intakeToggle = 1;
-	// 		}
-	// 		lPressed = true;
 
-	// 	}
-	// 	else if (master.get_digital(DIGITAL_LEFT) == 0){
-	// 		lPressed = false;
-	// 	}
+		}
+		else if (master.get_digital(DIGITAL_B) == 0) {
+			bPressed = false;
+		}
 
-	// 	if (master.get_digital(DIGITAL_RIGHT) == 1 && rPressed == false) {
+		//intake toggling
+		if (master.get_digital(DIGITAL_LEFT) == 1 && lPressed == false ){
 
-	// 		if (intakeToggle == -1){
-	// 			intakeToggle = 0;
-	// 		}
-	// 		else if (intakeToggle == 0 || intakeToggle == 1){
-	// 			intakeToggle = -1;
-	// 		}
-	// 		rPressed = true;
+			if (intakeToggle == 1){
+				intakeToggle = 0;
+			}
+			else if (intakeToggle == 0 || intakeToggle == -1){
+				intakeToggle = 1;
+			}
+			lPressed = true;
 
-	// 	}
-	// 	else if (master.get_digital(DIGITAL_RIGHT) == 0){
-	// 		rPressed = false;
-	// 	}
+		}
+		else if (master.get_digital(DIGITAL_LEFT) == 0){
+			lPressed = false;
+		}
 
-	// 	//flywheel toggling
-	// 	if (master.get_digital(DIGITAL_Y) == 1 && yPressed == false){
-	// 		flyWheelToggle = !flyWheelToggle;
-	// 		yPressed = true;
-	// 		pros::Task::delay(20);
-	// 	}
-	// 	else if (master.get_digital(DIGITAL_Y) == 0){
-	// 		yPressed = false;
-	// 	}
+		if (master.get_digital(DIGITAL_RIGHT) == 1 && rPressed == false) {
 
-	// 	// pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;
-	// 	if(master.get_digital(DIGITAL_R2) == 1){
-	// 			armMotor = 100;
-	// 	}
-	// 	else if(master.get_digital(DIGITAL_L2) == 1){
-	// 			armMotor = -100;
-	// 	}
-	// 	else if(armMotor.get_position() >= 400){
-	// 		armMotor = -15;
-	// 	}
+			if (intakeToggle == -1){
+				intakeToggle = 0;
+			}
+			else if (intakeToggle == 0 || intakeToggle == 1){
+				intakeToggle = -1;
+			}
+			rPressed = true;
 
-	// 	else if(armMotor.get_position() < 400){
-	// 		armMotor = 15;
-	// 	}
+		}
+		else if (master.get_digital(DIGITAL_RIGHT) == 0){
+			rPressed = false;
+		}
 
-	// 	if (master.get_digital(DIGITAL_UP) == 1) {
-	// 		motorStop();
-	// 	}
-	// 	pros::lcd::print(1, "Reaper: %f Intake: %d", (reaperMotor.get_actual_velocity()),(int)intakeToggle);
-	// 	pros::lcd::print(2, "Flywheel: %f", (flyWheelMotor.get_actual_velocity()));
+		//flywheel toggling
+		if (master.get_digital(DIGITAL_Y) == 1 && yPressed == false){
+			flyWheelToggle = !flyWheelToggle;
+			yPressed = true;
+			pros::Task::delay(20);
+		}
+		else if (master.get_digital(DIGITAL_Y) == 0){
+			yPressed = false;
+		}
 
-	// 	intake(intakeToggle);
-	// 	flywheel(flyWheelToggle);
-	// 	drive(driveLeft, driveRight);
-	// 	reaper(reaperToggle);
-	// 	pros::Task::delay(20);
+		// pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;
+		if(master.get_digital(DIGITAL_R2) == 1){
+				armMotor = 100;
+		}
+		else if(master.get_digital(DIGITAL_L2) == 1){
+				armMotor = -100;
+		}
+		else if(armMotor.get_position() >= 400){
+			armMotor = -15;
+		}
 
-	// }
+		else if(armMotor.get_position() < 400){
+			armMotor = 15;
+		}
+
+		if (master.get_digital(DIGITAL_UP) == 1) {
+			motorStop();
+		}
+		pros::lcd::print(1, "Reaper: %f Intake: %d", (reaperMotor.get_actual_velocity()),(int)intakeToggle);
+		pros::lcd::print(2, "Flywheel: %f", (flyWheelMotor.get_actual_velocity()));
+
+		intake(intakeToggle);
+		flywheel(flyWheelToggle);
+		drive(driveLeft, driveRight);
+		reaper(reaperToggle);
+		pros::Task::delay(20);
+
+	}
 }
