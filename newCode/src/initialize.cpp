@@ -1,14 +1,6 @@
 #include "main.h"
 
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
+
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -17,12 +9,10 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 
-
-
  int autonstate = 1;
+ std::string autonstateNames[] = {"top blue", "top red", "back blue", "back red"};
 
 
-/*
  void onLeftButton(){
  	if(autonstate == 4){
  		autonstate = 1;
@@ -34,7 +24,6 @@ void on_center_button() {
  	std::string inp = "Selected Auton: " + autonstateNames[autonstate - 1];
  	pros::lcd::set_text(0, inp);
  }
-
  void onRightButton(){
  	if(autonstate == 1){
  		autonstate = 4;
@@ -42,30 +31,25 @@ void on_center_button() {
  	else{
  		autonstate--;
  	}
+}
 
+int getAutonState(){
+	return autonstate;
+}
+
+void onCenterButton( ){
  	std::string inp = "Selected Auton: " + autonstateNames[autonstate - 1];
  	pros::lcd::set_text(0, inp);
-}*/
-
-
-
-
+}
 
 void initialize() {
 
 	pros::lcd::initialize();
-	//pros::lcd::set_text(0, "Hello PROS User!");
+	pros::lcd::register_btn0_cb(onLeftButton);
+	pros::lcd::register_btn1_cb(onCenterButton);
+	pros::lcd::register_btn2_cb(onRightButton);
 
-	//remove this soon
-
-	/*
-
-
-
-
-
-	*/
-	//autonomous();
+	pros::lcd::set_text(0, "Selected Auton: none");
 
 }
 

@@ -7,7 +7,7 @@ void flywheel(bool toggle);
 void moveTo(double d);
 void rightTurn(int mult);
 void leftTurn(int mult);
-
+int getAutonState();
 /**
  * Runs the user autonomous code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -48,7 +48,7 @@ void auton1(){
 	pros::c::delay(1000);
 
 	//flameo hotmen
-	
+
 
 }
 
@@ -72,18 +72,27 @@ void auton2(){
 	pros::c::delay(1000);
 }
 
-std::string autonstateNames[] = {"top blue", "top red", "back blue", "back red"};
 
+void auton3(){
+
+}
+
+void auton4(){
+
+}
 
 
 void autonomous() {
-
-	pros::lcd::set_text(0, "Selected Auton: none");
-
-//	pros::lcd::register_btn0_cb(onLeftButton);
-//	pros::lcd::register_btn1_cb(onCenterButton);
-//	pros::lcd::register_btn2_cb(onRightButton);
-
-
-	auton1();
+	if(getAutonState() == 1){
+		auton1();
+	}
+	else if(getAutonState() == 2){
+		auton2();
+	}
+	else if(getAutonState() == 3){
+		auton3();
+	}
+	else if(getAutonState() == 4){
+		auton4();
+	}
 }
