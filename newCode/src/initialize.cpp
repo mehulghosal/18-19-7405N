@@ -40,7 +40,6 @@ void initialize() {
 	// pros::lcd::register_btn2_cb(onRightButton);
 
 	// pros::lcd::set_text(0, "AUTON SELECTOR: Selected Auton: none");
-	autonomous();
 }
 
 void disabled() {} //

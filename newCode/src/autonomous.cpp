@@ -71,5 +71,4 @@ void autonomous() {
 	// else if(getAutonState() == 4){
 	// 	auton4();
 	// }
-	testAuton();
 }
