@@ -21,7 +21,7 @@
  		autonstate++;
  	}
 
- 	std::string inp = "Selected Auton: " + autonstateNames[autonstate - 1];
+ 	std::string inp = "AUTON SELECTOR: Selected Auton: " + autonstateNames[autonstate - 1];
  	pros::lcd::set_text(0, inp);
  }
  void onRightButton(){
@@ -38,8 +38,9 @@ int getAutonState(){
 }
 
 void onCenterButton( ){
- 	std::string inp = "Selected Auton: " + autonstateNames[autonstate - 1];
+ 	std::string inp = "AUTON SELECTOR: Selected Auton: " + autonstateNames[autonstate - 1];
  	pros::lcd::set_text(0, inp);
+//  autonomous();
 }
 
 void initialize() {
@@ -49,8 +50,7 @@ void initialize() {
 	pros::lcd::register_btn1_cb(onCenterButton);
 	pros::lcd::register_btn2_cb(onRightButton);
 
-	pros::lcd::set_text(0, "Selected Auton: none");
-
+	pros::lcd::set_text(0, "AUTON SELECTOR: Selected Auton: none");
 }
 
 /**

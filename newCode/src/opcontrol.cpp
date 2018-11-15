@@ -116,10 +116,8 @@ void drive(int driveL, int driveR) {
 		backRightMtr = 0; frontRightMtr = 0;
 	}*/
 
-	pros::lcd::print(4, "BL : %d", (backLeftMtr.get_actual_velocity()));
-	pros::lcd::print(5, "FL : %d", (frontLeftMtr.get_actual_velocity()));
-	pros::lcd::print(6, "BR : %d", (backRightMtr.get_actual_velocity()));
-	pros::lcd::print(7, "FR : %d", (frontRightMtr.get_actual_velocity()));
+	pros::lcd::print(3, "BL: %d FL: %d", (backLeftMtr.get_actual_velocity()),(frontLeftMtr.get_actual_velocity()));
+	pros::lcd::print(4, "BR: %d FR: %d", (backRightMtr.get_actual_velocity()),(frontRightMtr.get_actual_velocity()));
 
 }
 
@@ -252,9 +250,8 @@ enum class brakeMode {
 		if (master.get_digital(DIGITAL_UP) == 1) {
 			motorStop();
 		}
-		pros::lcd::print(3, "Reaper Motor Speed: %f", (reaperMotor.get_actual_velocity()));
-		pros::lcd::print(2, "Intake Motor Speed: %d",(int)intakeToggle) ;
-		pros::lcd::print(1, "Flywheel Speed: %f", (flyWheelMotor.get_actual_velocity()));
+		pros::lcd::print(1, "Reaper: %f Intake: %d", (reaperMotor.get_actual_velocity()),(int)intakeToggle);
+		pros::lcd::print(2, "Flywheel: %f", (flyWheelMotor.get_actual_velocity()));
 
 		intake(intakeToggle);
 		flywheel(flyWheelToggle);
@@ -267,7 +264,7 @@ enum class brakeMode {
 
 
 void testfunct(){
-	pros::lcd::print(0, "test function");
+//	pros::lcd::print(0, "test function");
 	pros::c::delay(2000);
 }
 
