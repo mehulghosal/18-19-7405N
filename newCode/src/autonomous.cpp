@@ -28,7 +28,7 @@ void testAuton(){
 
 void auton1(){
 	pros::lcd::print(0, "INIT auton1");
-	/*
+
 	//move forward to ball in front
 	flywheel(true); // flywheel first, flameo - josh
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
@@ -48,13 +48,13 @@ void auton1(){
 	pros::c::delay(1000);
 
 	//flameo hotmen
-	*/
+	
 
 }
 
 void auton2(){
 	pros::lcd::print(0, "INIT auton2");
-	/*
+
 	//move forward to ball in front
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
 	//pros::c::delay(1000);
@@ -69,7 +69,7 @@ void auton2(){
 	flywheel(true);
 	pros::c::delay(1000);
 	reaper(1);
-	pros::c::delay(1000);*/
+	pros::c::delay(1000);
 }
 
 
