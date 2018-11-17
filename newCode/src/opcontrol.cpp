@@ -1,6 +1,7 @@
 #include "main.h"
 
 //void leftTurn();
+void resetPositions();
 //void rightTurn();
 
 //CONTROLLER
@@ -78,24 +79,29 @@ void arm(bool toggle){
 }
 
 //AUTON CONTROLS//
-void moveTo(double d){
-  backRightMtr.tare_position();
-	frontLeftMtr.move_absolute(d, 200);
-	frontRightMtr.move_absolute(d, 200);
-	backLeftMtr.move_absolute(d, 200);
-	backRightMtr.move_absolute(d, 200);
+void moveTo(double d){    
+	resetPositions();
+	frontLeftMtr.move_absolute(d, 150);
+	frontRightMtr.move_absolute(d, 142);
+	backLeftMtr.move_absolute(d, 150);
+	backRightMtr.move_absolute(d, 142);
 }
-void doubleShot(){
-	moveTo(1200);
+void resetPositions(){
+	backRightMtr.tare_position();
+    backLeftMtr.tare_position();
+    frontLeftMtr.tare_position();
+    frontRightMtr.tare_position();
 }
 void leftTurn(int mult){ // 15 DEGREE INTERVALS
+	resetPositions();
 	int turn = mult * 138;//turn the 10 to be for about 15 degrees
 	frontRightMtr.move_absolute(turn, 100);
 	backRightMtr.move_absolute(turn, 100);
-	frontLeftMtr.move_absolute(turn, -100);
-	backLeftMtr.move_absolute(turn, -100);
+	frontLeftMtr.move_absolute(-turn, -100);
+	backLeftMtr.move_absolute(-turn, -100);
 }
 void rightTurn(int mult){
+	resetPositions();
 	int turn = mult * 138;
 	frontRightMtr.move_absolute(-turn, -100);
 	backRightMtr.move_absolute(-turn, -100);
@@ -110,11 +116,18 @@ void motorStop() {
 	}
 }
 void testfunct(){
+	pros::c::delay(10000);
+	//flywheel(true);
 	pros::lcd::print(1, "test rightturn");
-	moveTo(1000);
+	intake(1);
+	moveTo(3000);
 	pros::c::delay(1000);
-	rightTurn(6);
+	leftTurn(9);
 	pros::c::delay(1000);
+	reaper(1);
+	pros::c::delay(2000);
+	rightTurn(9);
+	moveTo(-3000);
 }
 
 void opcontrol() {
