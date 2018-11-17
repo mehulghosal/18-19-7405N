@@ -27,7 +27,7 @@ void auton1(){
 	//turn right 135 degrees
 	moveTo(-3000);
 	pros::c::delay(1000);
-	righTurn(7);
+	rightTurn(7);
 	pros::c::delay(500);
 	moveTo(-100);	
 
