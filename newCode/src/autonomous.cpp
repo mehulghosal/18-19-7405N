@@ -18,18 +18,30 @@ void auton1(){
 	//pros::c::delay(1000);
 	//turn on intake
 	intake(1);
+
 	pros::c::delay(3000);
 	intake(0);
 
-	pros::c::delay(1000);
+	pros::c::delay(500);
 
 	//turn right 135 degrees
-	rightTurn(9);
+	moveTo(-3000);
+	pros::c::delay(1000);
+	righTurn(7);
+	pros::c::delay(500);
+	moveTo(-100);	
+
 	//reaper and flywheel shoot
 	//delay for flywheel to accelerate
 	pros::c::delay(1000);
 	reaper(1);
+	pros::c::delay(2200);
+	reaper(0);
+	moveTo(2000);
 	pros::c::delay(2000);
+	reaper(1);
+	pros::c::delay(2000);
+	reaper(0);
 }
 void auton2(){
 	pros::lcd::print(0, "INIT auton2");
@@ -40,7 +52,7 @@ void auton2(){
 	//turn on intake
 	intake(1);
 
-	pros::c::delay(2000);
+	pros::c::delay(3000);
 	intake(0);
 
 	pros::c::delay(500);
@@ -48,34 +60,88 @@ void auton2(){
 	//turn right 135 degrees
 	moveTo(-3000);
 	pros::c::delay(1000);
-	leftTurn(6);
+	leftTurn(7);
+	pros::c::delay(500);
+	moveTo(-100);
 
 	//reaper and flywheel shoot
 	//delay for flywheel to accelerate
 	pros::c::delay(1000);
 	reaper(1);
-	pros::c::delay(1500);
+	pros::c::delay(2200);
 	reaper(0);
 	moveTo(2000);
 	pros::c::delay(2000);
 	reaper(1);
 	pros::c::delay(2000);
+	reaper(0);
 }
 void auton3(){
 	pros::lcd::print(0, "INIT auton3");
-	flywheel(true);
-	moveTo(3000);
-
+	//move forward to ball in front
+	flywheel(true); // flywheel first, flameo - josh
+	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+	//pros::c::delay(1000);
+	//turn on intake
 	intake(1);
+
 	pros::c::delay(3000);
 	intake(0);
 
-	//moveTo();
-	leftTurn(6);
+	pros::c::delay(500);
+
+	//turn right 135 degrees
+	moveTo(-3000);
+	pros::c::delay(1000);
+	rightTurn(7);
+	pros::c::delay(500);
+	moveTo(2600);
+
+	//reaper and flywheel shoot
+	//delay for flywheel to accelerate
+	pros::c::delay(1000);
+	reaper(1);
+	pros::c::delay(2200);
+	reaper(0);
+	moveTo(2000);
+	pros::c::delay(2000);
+	reaper(1);
+	pros::c::delay(2000);
+	reaper(0);
 
 }
 void auton4(){
 	pros::lcd::print(0, "INIT auton4");
+	//move forward to ball in front
+	flywheel(true); // flywheel first, flameo - josh
+	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+	//pros::c::delay(1000);
+	//turn on intake
+	intake(1);
+
+	pros::c::delay(3000);
+	intake(0);
+
+	pros::c::delay(500);
+
+	//turn right 135 degrees
+	moveTo(-3000);
+	pros::c::delay(1000);
+	leftTurn(7);
+	pros::c::delay(500);
+	moveTo(2600);
+
+	//reaper and flywheel shoot
+	//delay for flywheel to accelerate
+	pros::c::delay(1000);
+	reaper(1);
+	pros::c::delay(2200);
+	reaper(0);
+	moveTo(2000);
+	pros::c::delay(2000);
+	reaper(1);
+	pros::c::delay(2000);
+	reaper(0);
 }
 void testAuton(){
 	pros::lcd::print(1, "test");
