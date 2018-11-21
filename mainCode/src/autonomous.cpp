@@ -9,46 +9,14 @@ void moveTo(double d);
 void rightTurn(int mult);
 void leftTurn(int mult);
 int getAutonState();
+
 //AUTONS//
 void auton1(){
-	/*pros::lcd::print(0, "INIT auton1");
-	//move forward to ball in front
-	flywheel(true); // flywheel first, flameo - josh
-	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-	//pros::c::delay(1000);
-	//turn on intake
-	intake(1);
-
-	pros::c::delay(3000);
-	intake(0);
-
-	pros::c::delay(500);
-
-	//turn right 135 degrees
-	moveTo(-3000);
-	pros::c::delay(1000);
-	rightTurn(7);
-	pros::c::delay(500);
-	moveTo(-100);
-
-	//reaper and flywheel shoot
-	//delay for flywheel to accelerate
-	pros::c::delay(1000);
-	reaper(1);
-	pros::c::delay(2200);
-	reaper(0);
-	moveTo(2000);
-	pros::c::delay(2000);
-	reaper(1);
-	pros::c::delay(2000);
-	reaper(0);*/
-	//Bad code^^
 	pros::lcd::print(0, "INIT auton1");
-	//move forward to ball in front
+
 	flywheel(true); // flywheel first, flameo - josh
-	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-	//pros::c::delay(1000);
-	//turn on intake
+	moveTo(3000);
+	
 	intake(1);
 
 	pros::c::delay(3000);
@@ -56,14 +24,11 @@ void auton1(){
 
 	pros::c::delay(500);
 
-	//turn right 135 degrees
 	moveTo(-3200);
 	pros::c::delay(1000);
-	rightTurn(4.55);
-	pros::c::delay(500);
+	rightTurn(6);
+	pros::c::delay(700);
 
-	//reaper and flywheel shoot
-	//delay for flywheel to accelerate
 	pros::c::delay(1000);
 	reaper(1);
 	pros::c::delay(1500);
@@ -71,17 +36,13 @@ void auton1(){
 	moveTo(3000);
 	pros::c::delay(1800);
 	reaper(1);
-	pros::c::delay(2000);
 	pros::c::delay(3000);
-	reaper(0);
 }
 void auton2(){
 	pros::lcd::print(0, "INIT auton2");
-	//move forward to ball in front
 	flywheel(true); // flywheel first, flameo - josh
-	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-	//pros::c::delay(1000);
-	//turn on intake
+	moveTo(3000);
+	
 	intake(1);
 
 	pros::c::delay(3000);
@@ -89,14 +50,11 @@ void auton2(){
 
 	pros::c::delay(500);
 
-	//turn right 135 degrees
 	moveTo(-3200);
 	pros::c::delay(1000);
-	leftTurn(4.55);
-	pros::c::delay(500);
+	leftTurn(6);
+	pros::c::delay(700);
 
-	//reaper and flywheel shoot
-	//delay for flywheel to accelerate
 	pros::c::delay(1000);
 	reaper(1);
 	pros::c::delay(1500);
@@ -104,9 +62,7 @@ void auton2(){
 	moveTo(3000);
 	pros::c::delay(1800);
 	reaper(1);
-	pros::c::delay(2000);
 	pros::c::delay(3000);
-	reaper(0);
 }
 void auton3(){
 	pros::lcd::print(0, "INIT auton3");
@@ -176,19 +132,10 @@ void auton4(){
 	reaper(0);
 }
 void testAuton(){
-	pros::lcd::print(1, "test");
-	intake(1);
-	moveTo(3000);
-	pros::c::delay(2000);
-	leftTurn(6);
-	pros::c::delay(1000);
-	reaper(1);
-	pros::c::delay(3000);
-	rightTurn(6);
-	moveTo(-3000);
+	//TESTING AUTON CODE//
 }
 
-void driverSkills(){
+void skills(){
 	flywheel(true);
 	moveTo(3000);
 	pros::c::delay(2000);
@@ -232,7 +179,7 @@ void autonomous() {
 		auton4();
 	}
 	else if(getAutonState() == 5){
-		driverSkills();
+		skills();
 	}
 	//testAuton();
 }

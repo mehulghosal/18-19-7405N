@@ -86,15 +86,9 @@ void moveTo(double d){
 	backLeftMtr.move_absolute(d, 150);
 	backRightMtr.move_absolute(d, 142);
 }
-void resetPositions(){
-	backRightMtr.tare_position();
-    backLeftMtr.tare_position();
-    frontLeftMtr.tare_position();
-    frontRightMtr.tare_position();
-}
 void leftTurn(int mult){ // 15 DEGREE INTERVALS
 	resetPositions();
-	int turn = mult * 138;//turn the 10 to be for about 15 degrees
+	int turn = mult * 125;
 	frontRightMtr.move_absolute(turn, 100);
 	backRightMtr.move_absolute(turn, 100);
 	frontLeftMtr.move_absolute(-turn, -100);
@@ -102,13 +96,20 @@ void leftTurn(int mult){ // 15 DEGREE INTERVALS
 }
 void rightTurn(int mult){
 	resetPositions();
-	int turn = mult * 138;
+	int turn = mult * 125;
 	frontRightMtr.move_absolute(-turn, -100);
 	backRightMtr.move_absolute(-turn, -100);
 	backLeftMtr.move_absolute(turn, 100);
 	frontLeftMtr.move_absolute(turn, 100);
 	pros::lcd::print(1,"turn: %d", turn);
 }
+void resetPositions(){
+	backRightMtr.tare_position();
+	backLeftMtr.tare_position();
+	frontLeftMtr.tare_position();
+	frontRightMtr.tare_position();
+}
+
 //MISC CONTROLS//
 void motorStop() {
 	for (int i = 0; i < 8; i++) {
@@ -116,37 +117,7 @@ void motorStop() {
 	}
 }
 void testfunct(){
-	pros::lcd::print(0, "INIT auton1");
-	//move forward to ball in front
-	flywheel(true); // flywheel first, flameo - josh
-	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-	//pros::c::delay(1000);
-	//turn on intake
-	intake(1);
-
-	pros::c::delay(3000);
-	
-
-	pros::c::delay(500);
-
-	//turn right 135 degrees
-	moveTo(-3200);
-	pros::c::delay(1000);
-	rightTurn(4.55);
-	pros::c::delay(500);
-
-	//reaper and flywheel shoot
-	//delay for flywheel to accelerate
-	pros::c::delay(1000);
-	reaper(1);
-	pros::c::delay(1500);
-	reaper(0);
-	moveTo(3000);
-	pros::c::delay(1800);
-	reaper(1);
-	pros::c::delay(2000);
-	pros::c::delay(3000);
-	reaper(0);
+	//FOR TESTING CODE//
 }
 
 void opcontrol() {
