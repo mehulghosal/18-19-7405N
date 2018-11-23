@@ -1,31 +1,52 @@
 #include "main.h"
 
-/**
- * Runs the operator control code. This function will be started in its own task
- * with the default priority and stack size whenever the robot is enabled via
- * the Field Management System or the VEX Competition Switch in the operator
- * control mode.
- *
- * If no competition control is connected, this function will run immediately
- * following initialize().
- *
- * If the robot is disabled or communications is lost, the
- * operator control task will be stopped. Re-enabling the robot will restart the
- * task, not resume it from where it left off.
- */
+pros::Controller master(pros::E_CONTROLLER_MASTER);
+
+//MOTOR INITS//
+pros::Motor backLeftMtr(9);
+pros::Motor frontLeftMtr(10);
+pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
+
+int left = 127;
+int right = -127;
+
+
+void chassisSet(int m1, int m2){
+	backLeftMtr = m1;
+	frontLeftMtr = m1;
+	backRightMtr = m2;
+	frontRightMtr = m2;
+}
+
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-		int left = master.get_analog(ANALOG_LEFT_Y);
-		int right = master.get_analog(ANALOG_RIGHT_Y);
 
-		left_mtr = left;
-		right_mtr = right;
+		if (master.get_digital(DIGITAL_UP) == 1 && upPressed == false){
+			left = std::min(left + 1, 127);
+			upPressed = true;
+			pros::Task::delay(20);
+		}
+		else if (master.get_digital(DIGITAL_UP) == 0){
+			upPressed = false;
+		}
+
+		if (master.get_digital(DIGITAL_DOWN) == 1 && downPressed == false){
+			left = std::min(left - 1, 127);
+			downPressed = true;
+			pros::Task::delay(20);
+		}
+		else if (master.get_digital(DIGITAL_DOWN) == 0){
+			downPressed = false;
+		}
+
+
+
+		chassisSet(left,right);
 		pros::delay(20);
+
 	}
 }

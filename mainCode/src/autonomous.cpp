@@ -16,7 +16,7 @@ void auton1(){
 
 	flywheel(true); // flywheel first, flameo - josh
 	moveTo(3000);
-	
+
 	intake(1);
 
 	pros::c::delay(3000);
@@ -42,7 +42,7 @@ void auton2(){
 	pros::lcd::print(0, "INIT auton2");
 	flywheel(true); // flywheel first, flameo - josh
 	moveTo(3000);
-	
+
 	intake(1);
 
 	pros::c::delay(3000);
@@ -133,6 +133,8 @@ void auton4(){
 }
 void testAuton(){
 	//TESTING AUTON CODE//
+	otherMoveTo(3000);
+	intake(1);
 }
 
 void skills(){

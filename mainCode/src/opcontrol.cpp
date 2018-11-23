@@ -79,6 +79,22 @@ void arm(bool toggle){
 }
 
 //AUTON CONTROLS//
+
+void otherMoveTo(double d){
+	resetPositions();
+	int speedCoef = 1;
+	if(d<0){speedCoef = -1;}
+	frontLeftMtr.move_absolute(d, speedCoef*150);
+	frontRightMtr.move_absolute(d, speedCoef*150);
+	backLeftMtr.move_absolute(d, speedCoef*150);
+	backRightMtr.move_absolute(d, speedCoef*150);
+
+	while(backLeftMtr.get_position() <= d){
+		pros::c::delay(20);
+	}
+	pros::lcd::print(1,"move: %d", d);
+}
+
 void moveTo(double d){
 	resetPositions();
 	int speedCoef = 1;
