@@ -79,24 +79,28 @@ void arm(bool toggle){
 }
 
 //AUTON CONTROLS//
-void moveTo(double d){    
+void moveTo(double d){
 	resetPositions();
-	frontLeftMtr.move_absolute(d, 150);
-	frontRightMtr.move_absolute(d, 142);
-	backLeftMtr.move_absolute(d, 150);
-	backRightMtr.move_absolute(d, 142);
+	int speedCoef = 1;
+	if(d<0){speedCoef = -1;}
+	frontLeftMtr.move_absolute(d, speedCoef*150);
+	frontRightMtr.move_absolute(d, speedCoef*150);
+	backLeftMtr.move_absolute(d, speedCoef*150);
+	backRightMtr.move_absolute(d, speedCoef*150);
+	pros::lcd::print(1,"move: %d", d);
 }
 void leftTurn(int mult){ // 15 DEGREE INTERVALS
 	resetPositions();
-	int turn = mult * 125;
+	int turn = mult * 130;
 	frontRightMtr.move_absolute(turn, 100);
 	backRightMtr.move_absolute(turn, 100);
 	frontLeftMtr.move_absolute(-turn, -100);
 	backLeftMtr.move_absolute(-turn, -100);
+	pros::lcd::print(1,"turn: %d", turn);
 }
 void rightTurn(int mult){
 	resetPositions();
-	int turn = mult * 125;
+	int turn = mult * 130;
 	frontRightMtr.move_absolute(-turn, -100);
 	backRightMtr.move_absolute(-turn, -100);
 	backLeftMtr.move_absolute(turn, 100);

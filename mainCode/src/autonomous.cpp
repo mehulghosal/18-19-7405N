@@ -21,11 +21,10 @@ void auton1(){
 
 	pros::c::delay(3000);
 
-
 	pros::c::delay(500);
 
-	moveTo(-3200);
-	pros::c::delay(1000);
+	moveTo(-3000);
+	pros::c::delay(1500);
 	rightTurn(6);
 	pros::c::delay(700);
 
@@ -33,7 +32,7 @@ void auton1(){
 	reaper(1);
 	pros::c::delay(1500);
 	reaper(0);
-	moveTo(3000);
+	moveTo(2000);
 	pros::c::delay(1800);
 	reaper(1);
 	pros::c::delay(3000);
