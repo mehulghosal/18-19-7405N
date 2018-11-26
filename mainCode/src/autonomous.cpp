@@ -9,6 +9,8 @@ void moveTo(double d);
 void rightTurn(int mult);
 void leftTurn(int mult);
 int getAutonState();
+void otherMoveTo(double d);
+void arm(bool toggle);
 
 //AUTONS//
 void auton1(){
@@ -37,6 +39,8 @@ void auton1(){
 	pros::c::delay(1800);
 	reaper(1);
 	pros::c::delay(3000);
+
+
 }
 void auton2(){
 	pros::lcd::print(0, "INIT auton2");
@@ -168,20 +172,20 @@ void skills(){
 }
 
 void autonomous() {
-	if(getAutonState() == 1){
-		auton1();
-	}
-	else if(getAutonState() == 2){
-		auton2();
-	}
-	else if(getAutonState() == 3){
-		auton3();
-	}
-	else if(getAutonState() == 4){
-		auton4();
-	}
-	else if(getAutonState() == 5){
-		skills();
-	}
-	//testAuton();
+	// if(getAutonState() == 1){
+	// 	auton1();
+	// }
+	// else if(getAutonState() == 2){
+	// 	auton2();
+	// }
+	// else if(getAutonState() == 3){
+	// 	auton3();
+	// }
+	// else if(getAutonState() == 4){
+	// 	auton4();
+	// }
+	// else if(getAutonState() == 5){
+	// 	skills();
+	// }
+	testAuton();
 }
