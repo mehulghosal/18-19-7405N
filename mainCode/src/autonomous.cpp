@@ -42,7 +42,7 @@ void auton1(){
 	//arm(true);
 	leftTurn(3);
 	pros::c::delay(500);
-	moveTo(500);
+	moveTo(750);
 
 }
 void auton2(){
@@ -66,12 +66,12 @@ void auton2(){
 	reaper(1);
 	pros::c::delay(1500);
 	reaper(0);
-	moveTo(2000);
+	moveTo(1950);
 	pros::c::delay(1800);
 	reaper(1);
 	pros::c::delay(3000);
-	leftTurn(1);
-	moveTo(500);
+	//arm(true);
+	moveTo(750);
 }
 void auton3(){
 	pros::lcd::print(0, "INIT auton3");

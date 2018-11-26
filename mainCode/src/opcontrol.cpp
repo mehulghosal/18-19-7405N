@@ -109,7 +109,7 @@ void moveTo(double d){
 }
 void leftTurn(int mult){ // 15 DEGREE INTERVALS
 	resetPositions();
-	int turn = mult * 124;
+	int turn = mult * 123;
 	frontRightMtr.move_absolute(turn, 100);
 	backRightMtr.move_absolute(turn, 100);
 	frontLeftMtr.move_absolute(-turn, -100);
@@ -118,7 +118,7 @@ void leftTurn(int mult){ // 15 DEGREE INTERVALS
 }
 void rightTurn(int mult){
 	resetPositions();
-	int turn = mult * 124;
+	int turn = mult * 123;
 	frontRightMtr.move_absolute(-turn, -100);
 	backRightMtr.move_absolute(-turn, -100);
 	backLeftMtr.move_absolute(turn, 100);
