@@ -72,9 +72,11 @@ void intake(int toggle){
 void arm(bool toggle){
 	if(toggle == true){
 		armMotor.move_absolute(100, 100);
+		armMotor = 15;
 	}
 	else{
 		armMotor.move_absolute(-100, 100);
+		armMotor = -15;
 	}
 }
 

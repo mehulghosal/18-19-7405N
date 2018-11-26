@@ -35,11 +35,14 @@ void auton1(){
 	reaper(1);
 	pros::c::delay(1500);
 	reaper(0);
-	moveTo(2000);
+	moveTo(1950);
 	pros::c::delay(1800);
 	reaper(1);
 	pros::c::delay(3000);
-
+	//arm(true);
+	leftTurn(3);
+	pros::c::delay(500);
+	moveTo(500);
 
 }
 void auton2(){
@@ -67,6 +70,8 @@ void auton2(){
 	pros::c::delay(1800);
 	reaper(1);
 	pros::c::delay(3000);
+	leftTurn(1);
+	moveTo(500);
 }
 void auton3(){
 	pros::lcd::print(0, "INIT auton3");
@@ -172,20 +177,19 @@ void skills(){
 }
 
 void autonomous() {
-	// if(getAutonState() == 1){
-	// 	auton1();
-	// }
-	// else if(getAutonState() == 2){
-	// 	auton2();
-	// }
-	// else if(getAutonState() == 3){
-	// 	auton3();
-	// }
-	// else if(getAutonState() == 4){
-	// 	auton4();
-	// }
-	// else if(getAutonState() == 5){
-	// 	skills();
-	// }
-	testAuton();
+	 if(getAutonState() == 1){
+	 	auton1();
+	 }
+	 else if(getAutonState() == 2){
+	 	auton2();
+	 }
+	 else if(getAutonState() == 3){
+	 	auton3();
+	 }
+	 else if(getAutonState() == 4){
+	 	auton4();
+	 }
+	 else if(getAutonState() == 5){
+	 	skills();
+	 }
 }
