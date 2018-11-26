@@ -39,10 +39,17 @@ void auton1(){
 	pros::c::delay(1800);
 	reaper(1);
 	pros::c::delay(3000);
-	//arm(true);
 	leftTurn(3);
 	pros::c::delay(500);
 	moveTo(750);
+
+	//park
+	rightTurn(3);
+	//the last number is the variable - change that to line up with the park
+	moveTo(-750-1950-150-1500);
+	leftTurn(6);
+	//tune this to go up the ramp
+	moveTo(2000);
 
 }
 void auton2(){
@@ -70,8 +77,16 @@ void auton2(){
 	pros::c::delay(1800);
 	reaper(1);
 	pros::c::delay(3000);
-	//arm(true);
+	rightTurn(3);
 	moveTo(750);
+
+	//park
+	leftTurn(3);
+	//the last number is the variable - change that to line up with the park
+	moveTo(-750-1950-150-1500);
+	rightTurn(6);
+	//tune this to go up the ramp
+	moveTo(2000);
 }
 void auton3(){
 	pros::lcd::print(0, "INIT auton3");
