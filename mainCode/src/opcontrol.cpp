@@ -49,13 +49,13 @@ void flywheel(bool toggle){
 }
 void reaper(int toggle){
 	if(toggle == 1){
-		reaperMotor = 80;
+		reaperMotor = 127;
 	}
 	else if(toggle == 0){
 		reaperMotor = 0;
 	}
 	else {
-		reaperMotor = -80;
+		reaperMotor = -127;
 	}
 }
 void intake(int toggle){
@@ -82,21 +82,6 @@ void arm(bool toggle){
 
 //AUTON CONTROLS//
 
-void otherMoveTo(double d){
-	resetPositions();
-	int speedCoef = 1;
-	if(d<0){speedCoef = -1;}
-	frontLeftMtr.move_absolute(d, speedCoef*150);
-	frontRightMtr.move_absolute(d, speedCoef*150);
-	backLeftMtr.move_absolute(d, speedCoef*150);
-	backRightMtr.move_absolute(d, speedCoef*150);
-
-	while(backLeftMtr.get_position() <= d){
-		pros::c::delay(20);
-	}
-	pros::lcd::print(1,"move: %d", d);
-}
-
 void moveTo(double d){
 	resetPositions();
 	int speedCoef = 1;
@@ -105,11 +90,26 @@ void moveTo(double d){
 	frontRightMtr.move_absolute(d, speedCoef*150);
 	backLeftMtr.move_absolute(d, speedCoef*150);
 	backRightMtr.move_absolute(d, speedCoef*150);
+
+	while(std::abs(backLeftMtr.get_position() - d)>15){
+		pros::c::delay(20);
+	}
 	pros::lcd::print(1,"move: %d", d);
 }
+
+// void moveTo(double d){
+// 	resetPositions();
+// 	int speedCoef = 1;
+// 	if(d<0){speedCoef = -1;}
+// 	frontLeftMtr.move_absolute(d, speedCoef*150);
+// 	frontRightMtr.move_absolute(d, speedCoef*150);
+// 	backLeftMtr.move_absolute(d, speedCoef*150);
+// 	backRightMtr.move_absolute(d, speedCoef*150);
+// 	pros::lcd::print(1,"move: %d", d);
+// }
 void leftTurn(int mult){ // 15 DEGREE INTERVALS
 	resetPositions();
-	int turn = mult * 123;
+	int turn = mult * 128;
 	frontRightMtr.move_absolute(turn, 100);
 	backRightMtr.move_absolute(turn, 100);
 	frontLeftMtr.move_absolute(-turn, -100);
@@ -118,7 +118,7 @@ void leftTurn(int mult){ // 15 DEGREE INTERVALS
 }
 void rightTurn(int mult){
 	resetPositions();
-	int turn = mult * 123;
+	int turn = mult * 128;
 	frontRightMtr.move_absolute(-turn, -100);
 	backRightMtr.move_absolute(-turn, -100);
 	backLeftMtr.move_absolute(turn, 100);

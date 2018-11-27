@@ -21,35 +21,40 @@ void auton1(){
 
 	intake(1);
 
-	pros::c::delay(3000);
+	pros::c::delay(1500);
 
-	pros::c::delay(500);
+	// pros::c::delay(500);
 
 	moveTo(-2950);
-	pros::c::delay(1500);
 	rightTurn(6);
 	pros::c::delay(700);
 	moveTo(150);
 
-	pros::c::delay(1000);
 	reaper(1);
 	pros::c::delay(1500);
 	reaper(0);
 	moveTo(1950);
-	pros::c::delay(1800);
+	// pros::c::delay(1800);
 	reaper(1);
 	pros::c::delay(3000);
+	moveTo(300);
 	leftTurn(3);
-	pros::c::delay(500);
+	pros::c::delay(800);
 	moveTo(750);
+	// pros::c::delay(800);
 
 	//park
+	moveTo(-750);
+	// pros::c::delay(500);
 	rightTurn(3);
+	pros::c::delay(500);
 	//the last number is the variable - change that to line up with the park
-	moveTo(-750-1950-150-1500);
+	moveTo(-1950-150-1500);
+	// pros::c::delay(2000);
 	leftTurn(6);
+	// pros::c::delay(600);
 	//tune this to go up the ramp
-	moveTo(2000);
+	moveTo(5000);
 
 }
 void auton2(){
@@ -79,11 +84,13 @@ void auton2(){
 	pros::c::delay(3000);
 	rightTurn(3);
 	moveTo(750);
+	pros::c::delay(500);
 
 	//park
+	moveTo(-750);
 	leftTurn(3);
 	//the last number is the variable - change that to line up with the park
-	moveTo(-750-1950-150-1500);
+	moveTo(-1950-150-1500);
 	rightTurn(6);
 	//tune this to go up the ramp
 	moveTo(2000);
@@ -102,11 +109,7 @@ void auton3(){
 
 	pros::c::delay(500);
 
-	//turn right 135 degrees
-	moveTo(-3200);
-	pros::c::delay(1000);
-	rightTurn(9.1);
-	pros::c::delay(500);
+	
 
 	//reaper and flywheel shoot
 	//delay for flywheel to accelerate
