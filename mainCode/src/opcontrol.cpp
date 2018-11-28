@@ -170,7 +170,7 @@ void opcontrol() {
 			else if (limit.get_value() == 1 && reaperToggle == 0){
 				reaperToggle = 1;
 			}
-			if (reaperToggle == 0 || reaperToggle == -1){
+			else if (reaperToggle == 0 || reaperToggle == -1){
 				reaperToggle = 1;
 			}
 			else if(reaperToggle == 1){
