@@ -147,7 +147,7 @@ void opcontrol() {
 	//testfunct();
 	pros::ADIDigitalIn limit ('A');
 
-	bool flyWheelToggle = true;
+	bool flyWheelToggle = false;
 	int intakeToggle = 0;
 	int reaperToggle = 0;
 	bool xPressed = false;
@@ -168,7 +168,7 @@ void opcontrol() {
 				reaperToggle = 0;
 			}
 			else if (limit.get_value() == 1 && reaperToggle == 0){
-				reaperToggle = 0;
+				reaperToggle = 1;
 			}
 			else if (reaperToggle == 0 || reaperToggle == -1){
 				reaperToggle = 1;
@@ -186,8 +186,9 @@ void opcontrol() {
 				reaperToggle = 0;
 			}
 			xPressed = false;
-
 		}
+
+
 
 		if (master.get_digital(DIGITAL_B) == 1 && bPressed == false) {
 			if (reaperToggle == -1){
