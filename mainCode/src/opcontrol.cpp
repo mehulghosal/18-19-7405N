@@ -147,7 +147,7 @@ void opcontrol() {
 	//fuck this all jeez
 	//testfunct();
 
-	bool flyWheelToggle = false;
+	bool flyWheelToggle = true;
 	int intakeToggle = 0;
 	int reaperToggle = 0;
 	bool xPressed = false;
