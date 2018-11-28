@@ -163,15 +163,19 @@ void opcontrol() {
 		int driveRight = master.get_analog(ANALOG_RIGHT_X);
 
 		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
-			if (reaperToggle == 1){
+			if(limit.get_value() == 1 && reaperToggle == 1){
 				reaperToggle = 0;
 			}
-			else if (reaperToggle == 0 || reaperToggle == -1){
+			else if (limit.get_value() == 1 && reaperToggle == 0){
 				reaperToggle = 1;
 			}
+			if (reaperToggle == 0 || reaperToggle == -1){
+				reaperToggle = 1;
+			}
+			else if(reaperToggle == 1){
+				reaperToggle = 0;
+			}
 			xPressed = true;
-
-
 		}
 		else if(master.get_digital(DIGITAL_X) == 0) {
 			xPressed = false;
