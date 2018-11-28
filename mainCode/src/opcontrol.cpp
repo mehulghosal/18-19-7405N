@@ -2,7 +2,6 @@
 
 //void leftTurn();
 void resetPositions();
-void rightTurn();
 
 //CONTROLLER
 pros::Controller master(pros::E_CONTROLLER_MASTER);
@@ -92,7 +91,7 @@ void moveTo(double d){
 	backRightMtr.move_absolute(d, speedCoef*150);
 
 	while(std::abs(backLeftMtr.get_position() - d)>15){
-		pros::c::delay(20);
+		pros::c::delay(10);
 	}
 	pros::lcd::print(1,"move: %d", d);
 }
@@ -107,18 +106,18 @@ void moveTo(double d){
 // 	backRightMtr.move_absolute(d, speedCoef*150);
 // 	pros::lcd::print(1,"move: %d", d);
 // }
-void leftTurn(int mult){ // 15 DEGREE INTERVALS
+void leftTurn(double mult){ // 15 DEGREE INTERVALS
 	resetPositions();
-	int turn = mult * 128;
+	int turn = (int)(mult * 128);
 	frontRightMtr.move_absolute(turn, 100);
 	backRightMtr.move_absolute(turn, 100);
 	frontLeftMtr.move_absolute(-turn, -100);
 	backLeftMtr.move_absolute(-turn, -100);
 	pros::lcd::print(1,"turn: %d", turn);
 }
-void rightTurn(int mult){
+void rightTurn(double mult){
 	resetPositions();
-	int turn = mult * 128;
+	int turn = (int)(mult * 128);
 	frontRightMtr.move_absolute(-turn, -100);
 	backRightMtr.move_absolute(-turn, -100);
 	backLeftMtr.move_absolute(turn, 100);

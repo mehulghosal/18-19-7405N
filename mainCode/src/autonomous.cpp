@@ -6,8 +6,8 @@ void intake(int toggle);
 void reaper(int toggle);
 void flywheel(bool toggle);
 void moveTo(double d);
-void rightTurn(int mult);
-void leftTurn(int mult);
+void rightTurn(double mult);
+void leftTurn(double mult);
 int getAutonState();
 void otherMoveTo(double d);
 void arm(bool toggle);
@@ -31,30 +31,30 @@ void auton1(){
 	moveTo(150);
 
 	reaper(1);
-	pros::c::delay(1500);
+	pros::c::delay(1000);
 	reaper(0);
-	moveTo(1950);
+	moveTo(1850);
 	// pros::c::delay(1800);
 	reaper(1);
-	pros::c::delay(3000);
-	moveTo(300);
-	leftTurn(3);
 	pros::c::delay(800);
-	moveTo(750);
+	moveTo(200);
+	leftTurn(3);
+	pros::c::delay(500);
+	moveTo(600);
 	// pros::c::delay(800);
 
 	//park
-	moveTo(-750);
+	moveTo(-600);
 	// pros::c::delay(500);
 	rightTurn(3);
 	pros::c::delay(500);
 	//the last number is the variable - change that to line up with the park
-	moveTo(-1950-150-1500);
-	// pros::c::delay(2000);
+	moveTo(-4050);
+	//pros::c::delay(500);
 	leftTurn(6);
-	// pros::c::delay(600);
+	pros::c::delay(500);
 	//tune this to go up the ramp
-	moveTo(5000);
+	moveTo(3000);
 
 }
 void auton2(){
@@ -64,36 +64,37 @@ void auton2(){
 
 	intake(1);
 
-	pros::c::delay(3000);
+	pros::c::delay(1500);
 
-	pros::c::delay(500);
+	// pros::c::delay(500);
 
 	moveTo(-2950);
-	pros::c::delay(1500);
 	leftTurn(6);
 	pros::c::delay(700);
 	moveTo(150);
 
+	reaper(1);
 	pros::c::delay(1000);
-	reaper(1);
-	pros::c::delay(1500);
 	reaper(0);
-	moveTo(1950);
-	pros::c::delay(1800);
+	moveTo(1850);
+	// pros::c::delay(1800);
 	reaper(1);
-	pros::c::delay(3000);
-	rightTurn(3);
-	moveTo(750);
-	pros::c::delay(500);
+	pros::c::delay(800);
+	moveTo(200);
+	moveTo(600);
+	// pros::c::delay(800);
 
 	//park
-	moveTo(-750);
-	leftTurn(3);
+	moveTo(-600);
+	// pros::c::delay(500);
+	pros::c::delay(500);
 	//the last number is the variable - change that to line up with the park
-	moveTo(-1950-150-1500);
+	moveTo(-4050);
+	//pros::c::delay(500);
 	rightTurn(6);
+	pros::c::delay(500);
 	//tune this to go up the ramp
-	moveTo(2000);
+	moveTo(3000);
 }
 void auton3(){
 	pros::lcd::print(0, "INIT auton3");
