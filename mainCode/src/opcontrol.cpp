@@ -168,7 +168,7 @@ void opcontrol() {
 				reaperToggle = 0;
 			}
 			else if (limit.get_value() == 1 && reaperToggle == 0){
-				reaperToggle = 1;
+				reaperToggle = 0;
 			}
 			else if (reaperToggle == 0 || reaperToggle == -1){
 				reaperToggle = 1;
@@ -179,7 +179,14 @@ void opcontrol() {
 			xPressed = true;
 		}
 		else if(master.get_digital(DIGITAL_X) == 0) {
+			if(limit.get_value() == 1 && reaperToggle == 1){
+				reaperToggle = 0;
+			}
+			else if (limit.get_value() == 1 && reaperToggle == 0){
+				reaperToggle = 0;
+			}
 			xPressed = false;
+
 		}
 
 		if (master.get_digital(DIGITAL_B) == 1 && bPressed == false) {
