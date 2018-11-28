@@ -145,6 +145,7 @@ void opcontrol() {
 
 	//fuck this all jeez
 	//testfunct();
+	pros::ADIDigitalIn limit ('A');
 
 	bool flyWheelToggle = true;
 	int intakeToggle = 0;
