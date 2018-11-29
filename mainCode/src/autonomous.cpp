@@ -26,7 +26,7 @@ void auton1(){
 
 	moveTo(-2950);
 	rightTurn(6);
-	pros::c::delay(700);
+	//pros::c::delay(700);
 	moveTo(150);
 
 	reaper(1);
@@ -38,7 +38,7 @@ void auton1(){
 	pros::c::delay(800);
 	moveTo(200);
 	leftTurn(3);
-	pros::c::delay(500);
+	//pros::c::delay(500);
 	moveTo(600);
 	// pros::c::delay(800);
 
@@ -46,12 +46,12 @@ void auton1(){
 	moveTo(-600);
 	// pros::c::delay(500);
 	rightTurn(3);
-	pros::c::delay(500);
+	//pros::c::delay(500);
 	//the last number is the variable - change that to line up with the park
 	moveTo(-4050);
 	//pros::c::delay(500);
 	leftTurn(6);
-	pros::c::delay(500);
+	//pros::c::delay(500);
 	//tune this to go up the ramp
 	moveTo(3000);
 
@@ -69,7 +69,7 @@ void auton2(){
 
 	moveTo(-2950);
 	leftTurn(6);
-	pros::c::delay(700);
+	//pros::c::delay(700);
 	moveTo(150);
 
 	reaper(1);
@@ -91,7 +91,7 @@ void auton2(){
 	moveTo(-4050);
 	//pros::c::delay(500);
 	rightTurn(6);
-	pros::c::delay(500);
+	//pros::c::delay(500);
 	//tune this to go up the ramp
 	moveTo(3000);
 }
@@ -160,7 +160,7 @@ void auton4(){
 }
 void testAuton(){
 	//TESTING AUTON CODE//
-	otherMoveTo(3000);
+	//otherMoveTo(3000);
 	intake(1);
 }
 
