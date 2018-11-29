@@ -119,6 +119,27 @@ void leftTurn(double mult){ // 15 DEGREE INTERVALS
 		pros::c::delay(10);
 	}
 }
+
+void Turn(float degrees, String direction)
+{
+	resetPositions();
+	int encoderTurn = (int)(degrees * 8.5333)
+	int negativeTurn = -encoderTurn;
+	if(direction == "left")
+	{
+		frontRightMtr.moveabsolute(encoderTurn, 100);
+		backRightMtr.moveabsolute(encoderTurn, 100);
+		frontLeftMtr.moveabsolute(negativeTurn, -100);
+		backLeftMtr.moveabsolute(negativeTurn, -100);
+	}else if(direction == "right")
+	{
+		frontLeftMtr.moveabsolute(encoderTurn, 100);
+		backLeftMtr.moveabsolute(encoderTurn, 100);
+		frontRightMtr.moveabsolute(negativeTurn, -100);
+		backRightMtr.moveabsolute(negativeTurn, -100);
+	}
+}
+
 void rightTurn(double mult){
 	resetPositions();
 	int turn = (int)(mult * 128);
