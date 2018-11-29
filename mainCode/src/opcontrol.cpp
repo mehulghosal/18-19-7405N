@@ -98,13 +98,13 @@ void moveTo1(double d){
 
 void moveTo(double d){
 	resetPositions();
-	double diff = d - frontLeftMtr.get_position();
+	double diff = (d - frontLeftMtr.get_position());
 	//coeff
-	int q = .9;
+	double q = .9;
 	//while bot not at target
-	while(diff > 10){
+	while(std::abs(diff) > -5){
 		pros::lcd::print(1, "diff: %d", diff);
-		diff = d - frontLeftMtr.get_position();
+		diff = (d - frontLeftMtr.get_position());
 		chassisSet(diff * q, diff * q);
 	}
 	chassisSet(0, 0);
@@ -114,7 +114,7 @@ void moveTo(double d){
 void turn(double degrees, int direction)
 {
 	resetPositions();
-	double q = 9.000;
+	double q = 1;
 	int encoderTurn = (int)(degrees * q);
 	int negativeTurn = -encoderTurn;
 	if(direction == 1){
