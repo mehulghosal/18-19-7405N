@@ -24,6 +24,34 @@ void chassisSet(int m1, int m2){
 	backRightMtr = m2;
 	frontRightMtr = m2;
 }
+
+void leftTurn(double mult){ //  DEGREE INTERVALS
+	resetPositions();
+	int turn = (int)(mult * 8.53333);
+	frontRightMtr.move_absolute(turn, 100);
+	backRightMtr.move_absolute(turn, 100);
+	frontLeftMtr.move_absolute(-turn, -100);
+	backLeftMtr.move_absolute(-turn, -100);
+	pros::lcd::print(1,"turn: %d", turn);
+
+	while(std::abs(frontRightMtr.get_position() - turn)>15){
+		pros::c::delay(10);
+	}
+}
+void rightTurn(double mult){
+	resetPositions();
+	int turn = (int)(mult * 8.53333); // 128 before
+	frontRightMtr.move_absolute(-turn, -100);
+	backRightMtr.move_absolute(-turn, -100);
+	backLeftMtr.move_absolute(turn, 100);
+	frontLeftMtr.move_absolute(turn, 100);
+	pros::lcd::print(1,"turn: %d", turn);
+
+	while(std::abs(backLeftMtr.get_position() - turn)>15){
+		pros::c::delay(10);
+	}
+}
+
 void drive(int driveL, int driveR) {
 
 	if(abs(driveL) >= 15 || abs(driveR) >= 15) {

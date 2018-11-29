@@ -9,51 +9,36 @@ void moveTo(double d);
 void turn(double d, int i); //1 FOR LEFT; 0 FOR RIGHT
 int getAutonState();
 void arm(bool toggle);
-
 //AUTONS//
 void auton1(){
-	pros::lcd::print(0, "INIT auton1");
+	pros::lcd::print(0,"INIT Auton4");
+	//move forward to ball in front
 	flywheel(true); // flywheel first, flameo - josh
+	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+	//pros::c::delay(1000);
+	//turn on intake
 	intake(1);
-	moveTo(2650);
-	pros::c::delay(800);
-	moveTo(-2625);
-	pros::c::delay(2000);
 
-	turn(90, 0);
-	pros::c::delay(2000);
+//	pros::c::delay(3000);
 
-	//first shot
-	reaper(1);
-	pros::c::delay(1500);
-	reaper(0);
 
-	//second shot
-	moveTo(1200);
-	reaper(1);
-	pros::c::delay(1500);
+//	pros::c::delay(500);
 
-	//bottom flag
-	moveTo(600);
-	turn(30, 1);
-	pros::c::delay(2000);
-
-	//come back
-	turn(30, 0);
-	pros::c::delay(2000);
-	moveTo(-1800);
-
-	
+	//turn right 135 degrees
+	moveTo(-3000);
+	rightTurn(87);
 }
+
+
 void auton2(){
 	pros::lcd::print(0, "INIT auton2");
 	flywheel(true); // flywheel first, flameo - josh
-	
+
 }
 void auton3(){
 	pros::lcd::print(0, "INIT auton3");
 	flywheel(true); // flywheel first, flameo - josh
-	
+
 
 }
 void auton4(){
