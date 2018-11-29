@@ -81,7 +81,7 @@ void arm(bool toggle){
 
 //AUTON CONTROLS//
 
-void moveTo(double d){
+void moveTo1(double d){
 	resetPositions();
 	int speedCoef = 1;
 	if(d<0){speedCoef = -1;}
@@ -96,63 +96,41 @@ void moveTo(double d){
 	}
 }
 
-// void moveTo(double d){
-// 	resetPositions();
-// 	int speedCoef = 1;
-// 	if(d<0){speedCoef = -1;}
-// 	frontLeftMtr.move_absolute(d, speedCoef*150);
-// 	frontRightMtr.move_absolute(d, speedCoef*150);
-// 	backLeftMtr.move_absolute(d, speedCoef*150);
-// 	backRightMtr.move_absolute(d, speedCoef*150);
-// 	pros::lcd::print(1,"move: %d", d);
-// }
-void leftTurn(double mult){ // 15 DEGREE INTERVALS
+void moveTo(double d){
 	resetPositions();
-	int turn = (int)(mult * 128);
-	frontRightMtr.move_absolute(turn, 100);
-	backRightMtr.move_absolute(turn, 100);
-	frontLeftMtr.move_absolute(-turn, -100);
-	backLeftMtr.move_absolute(-turn, -100);
-	pros::lcd::print(1,"turn: %d", turn);
-
-	while(std::abs(frontRightMtr.get_position() - turn)>15){
-		pros::c::delay(10);
+	double diff = d - frontLeftMtr.get_position();
+	//coeff
+	int q = .9;
+	//while bot not at target
+	while(diff > 10){
+		pros::lcd::print(1, "diff: %d", diff);
+		diff = d - frontLeftMtr.get_position();
+		chassisSet(diff * q, diff * q);
 	}
+	chassisSet(0, 0);
 }
 
-void Turn(float degrees, String direction)
+//direction: 1 for left, 0 for right
+void turn(double degrees, int direction)
 {
 	resetPositions();
-	int encoderTurn = (int)(degrees * 8.5333)
+	double q = 9.000;
+	int encoderTurn = (int)(degrees * q);
 	int negativeTurn = -encoderTurn;
-	if(direction == "left")
-	{
-		frontRightMtr.moveabsolute(encoderTurn, 100);
-		backRightMtr.moveabsolute(encoderTurn, 100);
-		frontLeftMtr.moveabsolute(negativeTurn, -100);
-		backLeftMtr.moveabsolute(negativeTurn, -100);
-	}else if(direction == "right")
-	{
-		frontLeftMtr.moveabsolute(encoderTurn, 100);
-		backLeftMtr.moveabsolute(encoderTurn, 100);
-		frontRightMtr.moveabsolute(negativeTurn, -100);
-		backRightMtr.moveabsolute(negativeTurn, -100);
+	if(direction == 1){
+		frontRightMtr.move_absolute(encoderTurn, 100);
+		backRightMtr.move_absolute(encoderTurn, 100);
+		frontLeftMtr.move_absolute(negativeTurn, -100);
+		backLeftMtr.move_absolute(negativeTurn, -100);
+	}
+	else{
+		frontLeftMtr.move_absolute(encoderTurn, 100);
+		backLeftMtr.move_absolute(encoderTurn, 100);
+		frontRightMtr.move_absolute(negativeTurn, -100);
+		backRightMtr.move_absolute(negativeTurn, -100);
 	}
 }
 
-void rightTurn(double mult){
-	resetPositions();
-	int turn = (int)(mult * 128);
-	frontRightMtr.move_absolute(-turn, -100);
-	backRightMtr.move_absolute(-turn, -100);
-	backLeftMtr.move_absolute(turn, 100);
-	frontLeftMtr.move_absolute(turn, 100);
-	pros::lcd::print(1,"turn: %d", turn);
-
-	while(std::abs(backLeftMtr.get_position() - turn)>15){
-		pros::c::delay(10);
-	}
-}
 void resetPositions(){
 	backRightMtr.tare_position();
 	backLeftMtr.tare_position();
