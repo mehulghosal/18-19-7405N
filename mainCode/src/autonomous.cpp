@@ -18,8 +18,8 @@ void auton1(){
 	moveTo(2650);
 	pros::c::delay(800);
 	moveTo(-2625);
-	pros::c::delay(800);
-	
+	pros::c::delay(2000);
+
 	turn(90, 0);
 	pros::c::delay(2000);
 
@@ -36,10 +36,11 @@ void auton1(){
 	//bottom flag
 	moveTo(600);
 	turn(30, 1);
-	pros::c::delay(1500);
+	pros::c::delay(2000);
 
 	//come back
 	turn(30, 0);
+	pros::c::delay(2000);
 	moveTo(-1800);
 
 	
