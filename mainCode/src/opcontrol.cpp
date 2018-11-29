@@ -89,11 +89,11 @@ void moveTo(double d){
 	frontRightMtr.move_absolute(d, speedCoef*150);
 	backLeftMtr.move_absolute(d, speedCoef*150);
 	backRightMtr.move_absolute(d, speedCoef*150);
+	pros::lcd::print(1,"move: %d", d);
 
 	while(std::abs(backLeftMtr.get_position() - d)>15){
 		pros::c::delay(10);
 	}
-	pros::lcd::print(1,"move: %d", d);
 }
 
 // void moveTo(double d){
@@ -114,6 +114,10 @@ void leftTurn(double mult){ // 15 DEGREE INTERVALS
 	frontLeftMtr.move_absolute(-turn, -100);
 	backLeftMtr.move_absolute(-turn, -100);
 	pros::lcd::print(1,"turn: %d", turn);
+
+	while(std::abs(frontRightMtr.get_position() - turn)>15){
+		pros::c::delay(10);
+	}
 }
 void rightTurn(double mult){
 	resetPositions();
@@ -123,6 +127,10 @@ void rightTurn(double mult){
 	backLeftMtr.move_absolute(turn, 100);
 	frontLeftMtr.move_absolute(turn, 100);
 	pros::lcd::print(1,"turn: %d", turn);
+
+	while(std::abs(backLeftMtr.get_position() - turn)>15){
+		pros::c::delay(10);
+	}
 }
 void resetPositions(){
 	backRightMtr.tare_position();

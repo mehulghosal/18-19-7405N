@@ -9,7 +9,6 @@ void moveTo(double d);
 void rightTurn(double mult);
 void leftTurn(double mult);
 int getAutonState();
-void otherMoveTo(double d);
 void arm(bool toggle);
 
 //AUTONS//
@@ -110,7 +109,7 @@ void auton3(){
 
 	pros::c::delay(500);
 
-	
+
 
 	//reaper and flywheel shoot
 	//delay for flywheel to accelerate
