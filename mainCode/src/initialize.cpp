@@ -27,9 +27,9 @@
  	}
 }
 void onCenterButton( ){
- 	std::string inp = "AUTON SELECTOR: Selected Auton: " + autonstateNames[autonstate - 1];
+ 	std::string inp = "RUNNING AUTON: " + autonstateNames[autonstate - 1];
  	pros::lcd::set_text(0, inp);
-//  autonomous();
+  pros::c::delay(3000);
 }
 
 
