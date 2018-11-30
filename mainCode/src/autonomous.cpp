@@ -14,34 +14,30 @@ void moveReaper(int dist, bool delay);
 void arm(bool toggle);
 //AUTONS//
 void auton1(){
-	pros::lcd::print(0,"INIT Auton4");
+	pros::lcd::print(0,"INIT Auton1");
 	//move forward to ball in front
 	flywheel(true); // flywheel first, flameo - josh
-	pros::c::delay(1000);
+	intake(1);
+	pros::c::delay(1500);
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
 	//pros::c::delay(1000);
-	//turn on intake
-	intake(1);
 
 //	pros::c::delay(3000);
 
 
 //	pros::c::delay(500);
 
-	//turn right 135 degrees
 	moveTo(-3000);
-	turn(100, 0);
-//	moveTo(-500);
+	rightTurn(96);
 	moveReaper(2000, true);
+	pros::c::delay(1000);
 	moveTo(1700);
 	reaper(1);
 	pros::c::delay(3000);
 	reaper(0);
-	leftTurn(30);
-	moveTo(700);
-	moveTo(-700);
-	rightTurn(30);
 
+	leftTurn(30);
+	moveTo(1000);
 }
 
 
@@ -63,8 +59,7 @@ void auton4(){
 	moveTo(3000);
 	intake(1);
 	pros::c::delay(2000);
-	moveTo(-2850);
-	turn(82, 0);
+	turn(83, 0);
 
 	reaper(1);
 	pros::c::delay(700);
