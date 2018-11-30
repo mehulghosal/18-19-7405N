@@ -85,6 +85,16 @@ void reaper(int toggle){
 		reaperMotor = -127;
 	}
 }
+
+void moveReaper(int dist, bool delay){
+	reaperMotor.move_relative(dist, 150);
+
+	if(delay){
+		while(std::abs(reaperMotor.get_position() - dist)>15){
+			pros::c::delay(10);
+		}
+	}
+}
 void intake(int toggle){
 	if(toggle == 1){
 		intakeMotor = 127;
