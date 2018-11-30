@@ -22,22 +22,27 @@ void auton1(){
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
 	//pros::c::delay(1000);
 
-//	pros::c::delay(3000);
+	pros::c::delay(500);
 
 
 //	pros::c::delay(500);
 
-	moveTo(-3000);
-	rightTurn(96);
-	moveReaper(2000, true);
+	moveTo(-2850);
+	rightTurn(101);
+	//moveReaper(2000, true);
+	reaper(1);
 	pros::c::delay(1000);
+	reaper(0);
+	//pros::c::delay(1000);
 	moveTo(1700);
 	reaper(1);
 	pros::c::delay(3000);
 	reaper(0);
-
-	leftTurn(30);
+	rightTurn(14);
 	moveTo(1000);
+
+	/*leftTurn(30);
+	moveTo(1000);*/
 }
 
 
