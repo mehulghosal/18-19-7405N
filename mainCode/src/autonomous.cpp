@@ -39,10 +39,16 @@ void auton1(){
 	pros::c::delay(3000);
 	reaper(0);
 	rightTurn(14);
-	moveTo(1000);
+	moveTo(1200);
 
-	/*leftTurn(30);
-	moveTo(1000);*/
+
+	//park
+	moveTo(-1200);
+	leftTurn(14);
+	moveTo(-1700 - 600);
+	leftTurn(90);
+	moveTo(2500);
+
 }
 
 

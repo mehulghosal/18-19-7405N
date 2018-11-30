@@ -134,16 +134,23 @@ void moveTo(double d){
 	}
 }
 
+//pid - work with this l8r
+//todo: do the thing josh was talkign about with tracking velocties
+//if velo < some value: turn off all motors, but also make sure time is greater than 100
+//also incorporate chasiset for turning
 void moveTo1(double d){
 	resetPositions();
 	double diff = (d - frontLeftMtr.get_position());
 	//coeff
-	double q = .9;
-	//while bot not at target
-	while(std::abs(diff) > -5){
+	double q = .1;
+
+	int time = pros::millis();
+
+	while(diff > 5 && (frontLeftMtr.get_actual_velocity() > 20  || pros::millis() - time > 100)){
 		pros::lcd::print(1, "diff: %d", diff);
 		diff = (d - frontLeftMtr.get_position());
 		chassisSet(diff * q, diff * q);
+
 	}
 	chassisSet(0, 0);
 }
