@@ -7,6 +7,8 @@ void reaper(int toggle);
 void flywheel(bool toggle);
 void moveTo(double d);
 void turn(double d, int i); //1 FOR LEFT; 0 FOR RIGHT
+void rightTurn(double d);
+void leftTurn(double d);
 int getAutonState();
 void arm(bool toggle);
 //AUTONS//
@@ -45,6 +47,20 @@ void auton4(){
 	pros::lcd::print(0,"INIT auton4");
 	flywheel(true); // flywheel first, flameo - josh
 
+	moveTo(3000);
+	intake(1);
+	pros::c::delay(2000);
+	moveTo(-2850);
+	rightTurn(82);
+	reaper(1);
+	pros::c::delay(700);
+	// reaper(0);
+	// moveTo(1000);
+	// reaper(1);
+	// //rightTurn(90);
+	// pros::c::delay(100);
+	// leftTurn(90);
+
 }
 
 void test(){
@@ -54,18 +70,18 @@ void test(){
 }
 
 void autonomous() {
-	// if(getAutonState() == 1){
-	// 	auton1();
-	// }
-	// else if(getAutonState() == 2){
-	// 	auton2();
-	// }
-	// else if(getAutonState() == 3){
-	// 	auton3();
-	// }
-	// else if(getAutonState() == 4){
-	// 	auton4();
-	// }
-	auton1();
+	if(getAutonState() == 1){
+		auton1();
+	}
+	else if(getAutonState() == 2){
+		auton2();
+	}
+	else if(getAutonState() == 3){
+		auton4();
+	}
+	else if(getAutonState() == 4){
+		auton3();
+	}
+	//auton1();
 	//test();
 }

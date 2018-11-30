@@ -27,7 +27,7 @@ void chassisSet(int m1, int m2){
 
 void leftTurn(double mult){ //  DEGREE INTERVALS
 	resetPositions();
-	int turn = (int)(mult * 8.53333);
+	int turn = (int)(mult * 8.52);
 	frontRightMtr.move_absolute(turn, 100);
 	backRightMtr.move_absolute(turn, 100);
 	frontLeftMtr.move_absolute(-turn, -100);
@@ -35,12 +35,12 @@ void leftTurn(double mult){ //  DEGREE INTERVALS
 	pros::lcd::print(1,"turn: %d", turn);
 
 	while(std::abs(frontRightMtr.get_position() - turn)>15){
-		pros::c::delay(10);
+		pros::c::delay(20);
 	}
 }
 void rightTurn(double mult){
 	resetPositions();
-	int turn = (int)(mult * 8.53333); // 128 before
+	int turn = (int)(mult * 8.54); // 128 before
 	frontRightMtr.move_absolute(-turn, -100);
 	backRightMtr.move_absolute(-turn, -100);
 	backLeftMtr.move_absolute(turn, 100);
@@ -48,7 +48,7 @@ void rightTurn(double mult){
 	pros::lcd::print(1,"turn: %d", turn);
 
 	while(std::abs(backLeftMtr.get_position() - turn)>15){
-		pros::c::delay(10);
+		pros::c::delay(20);
 	}
 }
 
@@ -109,7 +109,7 @@ void arm(bool toggle){
 
 //AUTON CONTROLS//
 
-void moveTo1(double d){
+void moveTo(double d){
 	resetPositions();
 	int speedCoef = 1;
 	if(d<0){speedCoef = -1;}
@@ -124,7 +124,7 @@ void moveTo1(double d){
 	}
 }
 
-void moveTo(double d){
+void moveTo1(double d){
 	resetPositions();
 	double diff = (d - frontLeftMtr.get_position());
 	//coeff
