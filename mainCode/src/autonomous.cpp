@@ -1,6 +1,7 @@
 #include "main.h"
 
 //OPCONTROL//
+pros::ADIDigitalIn limit ('A');
 void testfunct();
 void intake(int toggle);
 void reaper(int toggle);
@@ -95,8 +96,11 @@ void auton3(){
 	while(limit.get_value() != 1);
 	reaper(0);
 	pros::c::delay(200);
+	moveTo(-200);
 	slowleftTurn(90); // needs to be tuned
-	moveTo(2000); // needs to be tuned
+	moveTo(-1000);
+	pros::c::delay(200);
+	moveTo(3500); // needs to be tuned	
 
 
 }
