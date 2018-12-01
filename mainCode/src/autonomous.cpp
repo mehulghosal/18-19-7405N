@@ -39,11 +39,11 @@ void auton1(){
 
 
 	//park
-	moveTo(-1200);
+	/*moveTo(-1200);
 	leftTurn(14);
 	moveTo(-1700 - 600);
 	leftTurn(90);
-	moveTo(2500);
+	moveTo(2500);*/
 
 }
 
@@ -56,27 +56,30 @@ void auton2(){
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
 	//pros::c::delay(1000);
 	pros::c::delay(500);
-	moveTo(-2850);
-	leftTurn(101);
+	moveTo(-2730);
+	leftTurn(89);
 	//moveReaper(2000, true);
 	reaper(1);
 	pros::c::delay(1000);
 	reaper(0);
+	
 	//pros::c::delay(1000);
-	moveTo(1700);
+	moveTo(1800);
 	reaper(1);
-	pros::c::delay(3000);
+	pros::c::delay(2000);
 	reaper(0);
-	leftTurn(14);
-	moveTo(1200);
+	pros::c::delay(50);
+	leftTurn(8);
+	//leftTurn(14);
+	moveTo(1400);
 
 
 	//park
-	moveTo(-1200);
+	/*moveTo(-1200);
 	rightTurn(14);
 	moveTo(-1700 - 600);
 	rightTurn(90);
-	moveTo(2500);
+	moveTo(2500);*/
 
 }
 void auton3(){
