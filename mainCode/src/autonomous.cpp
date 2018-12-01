@@ -14,6 +14,7 @@ void slowleftTurn(double d);
 int getAutonState();
 void moveReaper(int dist, bool delay);
 void arm(bool toggle);
+void slowrightTurn(double d);
 //AUTONS//
 void auton1(){
 	pros::lcd::print(0,"INIT Auton1");
@@ -107,6 +108,18 @@ void auton4(){
 	pros::lcd::print(0,"INIT auton4");
 	//backvlue
 	flywheel(true); // flywheel first, flameo - josh
+	intake(1);
+	pros::c::delay(1500);
+	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+	pros::c::delay(1500);
+	reaper(1);
+	while(limit.get_value() != 1);
+	reaper(0);
+	pros::c::delay(200);
+	moveTo(-230);
+	slowrightTurn(90); // needs to be tuned
+	pros::c::delay(200);
+	moveTo(3040);
 
 	/*moveTo(3000);
 	intake(1);

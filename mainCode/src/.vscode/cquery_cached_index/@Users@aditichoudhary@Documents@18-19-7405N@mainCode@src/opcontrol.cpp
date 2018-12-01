@@ -64,6 +64,19 @@ void rightTurn(double mult){
 		pros::c::delay(20);
 	}
 }
+void slowrightTurn(double mult){
+	resetPositions();
+	int turn = (int)(mult * 8.54); // 128 before
+	frontRightMtr.move_absolute(-turn, -40);
+	backRightMtr.move_absolute(-turn, -40);
+	backLeftMtr.move_absolute(turn, 40);
+	frontLeftMtr.move_absolute(turn, 40);
+	pros::lcd::print(1,"turn: %d", turn);
+
+	while(std::abs(backLeftMtr.get_position() - turn)>15){
+		pros::c::delay(20);
+	}
+}
 
 void drive(int driveL, int driveR) {
 
