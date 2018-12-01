@@ -96,11 +96,10 @@ void auton3(){
 	while(limit.get_value() != 1);
 	reaper(0);
 	pros::c::delay(200);
-	moveTo(-200);
+	moveTo(-230);
 	slowleftTurn(90); // needs to be tuned
-	moveTo(-1000);
 	pros::c::delay(200);
-	moveTo(3500); // needs to be tuned	
+	moveTo(3040); // needs to be tuned
 
 
 }

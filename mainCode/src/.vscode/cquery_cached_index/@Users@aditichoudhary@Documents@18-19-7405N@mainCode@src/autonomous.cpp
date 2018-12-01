@@ -1,6 +1,7 @@
 #include "main.h"
 
 //OPCONTROL//
+pros::ADIDigitalIn limit ('A');
 void testfunct();
 void intake(int toggle);
 void reaper(int toggle);
@@ -90,9 +91,15 @@ void auton3(){
 	intake(1);
 	pros::c::delay(1500);
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-	pros::c::delay(1000);
+	pros::c::delay(1500);
+	reaper(1);
+	while(limit.get_value() != 1);
+	reaper(0);
+	pros::c::delay(200);
+	moveTo(-230);
 	slowleftTurn(90); // needs to be tuned
-	moveTo(2000); // needs to be tuned
+	pros::c::delay(200);
+	moveTo(3040); // needs to be tuned
 
 
 }
