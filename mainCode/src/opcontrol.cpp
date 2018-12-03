@@ -1,8 +1,8 @@
 #include "main.h"
-
+#include "fps.cpp" // remove this if code no work
 //void leftTurn();
 void resetPositions();
-
+void updatePosition();
 //CONTROLLER
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
@@ -235,113 +235,23 @@ void opcontrol() {
 	bool bPressed = false;
 	bool lPressed = false;
 	bool rPressed = false;
+	int prevTravelDist = 0;
 
 	while (true) {
 
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y);
 		int driveRight = master.get_analog(ANALOG_RIGHT_X);
 
-		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
-			if(limit.get_value() == 1 && reaperToggle == 1){
-				reaperToggle = 0;
-			}
-			else if (limit.get_value() == 1 && reaperToggle == 0){
-				reaperToggle = 1;
-			}
-			else if (reaperToggle == 0 || reaperToggle == -1){
-				reaperToggle = 1;
-			}
-			else if(reaperToggle == 1){
-				reaperToggle = 0;
-			}
-			xPressed = true;
-		}
-		else if(master.get_digital(DIGITAL_X) == 0) {
-			if(limit.get_value() == 1 && reaperToggle == 1){
-				reaperToggle = 0;
-			}
-			else if (limit.get_value() == 1 && reaperToggle == 0){
-				reaperToggle = 0;
-			}
-			xPressed = false;
-		}
+		handleControls(); // this function handles all the controls cause i never want to look at them again
+
+		int angleOfBot = 0;
+
+		updatePosition((frontLeftMtr.get_position() - prevTravelDist), angleOfBot);
+		
+		prevTravelDist = frontLeftMtr.get_position()
 
 
 
-		if (master.get_digital(DIGITAL_B) == 1 && bPressed == false) {
-			if (reaperToggle == -1){
-				reaperToggle = 0;
-			}
-			else if (reaperToggle == 0 || reaperToggle == 1){
-				reaperToggle = -1;
-			}
-			bPressed = true;
-
-
-		}
-		else if (master.get_digital(DIGITAL_B) == 0) {
-			bPressed = false;
-		}
-
-		//intake toggling
-		if (master.get_digital(DIGITAL_LEFT) == 1 && lPressed == false ){
-
-			if (intakeToggle == 1){
-				intakeToggle = 0;
-			}
-			else if (intakeToggle == 0 || intakeToggle == -1){
-				intakeToggle = 1;
-			}
-			lPressed = true;
-
-		}
-		else if (master.get_digital(DIGITAL_LEFT) == 0){
-			lPressed = false;
-		}
-
-		if (master.get_digital(DIGITAL_RIGHT) == 1 && rPressed == false) {
-
-			if (intakeToggle == -1){
-				intakeToggle = 0;
-			}
-			else if (intakeToggle == 0 || intakeToggle == 1){
-				intakeToggle = -1;
-			}
-			rPressed = true;
-
-		}
-		else if (master.get_digital(DIGITAL_RIGHT) == 0){
-			rPressed = false;
-		}
-
-		//flywheel toggling
-		if (master.get_digital(DIGITAL_Y) == 1 && yPressed == false){
-			flyWheelToggle = !flyWheelToggle;
-			yPressed = true;
-			pros::Task::delay(20);
-		}
-		else if (master.get_digital(DIGITAL_Y) == 0){
-			yPressed = false;
-		}
-
-		// pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;
-		if(master.get_digital(DIGITAL_R2) == 1){
-				armMotor = 100;
-		}
-		else if(master.get_digital(DIGITAL_L2) == 1){
-				armMotor = -100;
-		}
-		else if(armMotor.get_position() >= 400){
-			armMotor = -15;
-		}
-
-		else if(armMotor.get_position() < 400){
-			armMotor = 15;
-		}
-
-		if (master.get_digital(DIGITAL_UP) == 1) {
-			motorStop();
-		}
 		pros::lcd::print(1, "Reaper: %f Intake: %d", (reaperMotor.get_actual_velocity()),(int)intakeToggle);
 		pros::lcd::print(2, "Flywheel: %f", (flyWheelMotor.get_actual_velocity()));
 
@@ -351,5 +261,109 @@ void opcontrol() {
 		reaper(reaperToggle);
 		pros::Task::delay(20);
 
+	}
+}
+
+void handleControls(){
+	if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
+		if(limit.get_value() == 1 && reaperToggle == 1){
+			reaperToggle = 0;
+		}
+		else if (limit.get_value() == 1 && reaperToggle == 0){
+			reaperToggle = 1;
+		}
+		else if (reaperToggle == 0 || reaperToggle == -1){
+			reaperToggle = 1;
+		}
+		else if(reaperToggle == 1){
+			reaperToggle = 0;
+		}
+		xPressed = true;
+	}
+	else if(master.get_digital(DIGITAL_X) == 0) {
+		if(limit.get_value() == 1 && reaperToggle == 1){
+			reaperToggle = 0;
+		}
+		else if (limit.get_value() == 1 && reaperToggle == 0){
+			reaperToggle = 0;
+		}
+		xPressed = false;
+	}
+
+
+
+	if (master.get_digital(DIGITAL_B) == 1 && bPressed == false) {
+		if (reaperToggle == -1){
+			reaperToggle = 0;
+		}
+		else if (reaperToggle == 0 || reaperToggle == 1){
+			reaperToggle = -1;
+		}
+		bPressed = true;
+
+
+	}
+	else if (master.get_digital(DIGITAL_B) == 0) {
+		bPressed = false;
+	}
+
+	//intake toggling
+	if (master.get_digital(DIGITAL_LEFT) == 1 && lPressed == false ){
+
+		if (intakeToggle == 1){
+			intakeToggle = 0;
+		}
+		else if (intakeToggle == 0 || intakeToggle == -1){
+			intakeToggle = 1;
+		}
+		lPressed = true;
+
+	}
+	else if (master.get_digital(DIGITAL_LEFT) == 0){
+		lPressed = false;
+	}
+
+	if (master.get_digital(DIGITAL_RIGHT) == 1 && rPressed == false) {
+
+		if (intakeToggle == -1){
+			intakeToggle = 0;
+		}
+		else if (intakeToggle == 0 || intakeToggle == 1){
+			intakeToggle = -1;
+		}
+		rPressed = true;
+
+	}
+	else if (master.get_digital(DIGITAL_RIGHT) == 0){
+		rPressed = false;
+	}
+
+	//flywheel toggling
+	if (master.get_digital(DIGITAL_Y) == 1 && yPressed == false){
+		flyWheelToggle = !flyWheelToggle;
+		yPressed = true;
+		pros::Task::delay(20);
+	}
+	else if (master.get_digital(DIGITAL_Y) == 0){
+		yPressed = false;
+	}
+
+	// pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;
+	if(master.get_digital(DIGITAL_R2) == 1){
+			armMotor = 100;
+	}
+	else if(master.get_digital(DIGITAL_L2) == 1){
+			armMotor = -100;
+	}
+	else if(armMotor.get_position() >= 400){
+		armMotor = -15;
+	}
+
+	else if(armMotor.get_position() < 400){
+		armMotor = 15;
+	}
+
+	if (master.get_digital(DIGITAL_UP) == 1) {
+		motorStop();
 	}
 }
