@@ -15,6 +15,7 @@ pros::Motor intakeMotor(7);
 pros::Motor armMotor(8);
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
 
+
 //OPCONTROL DRIVE//
 void chassisSet(int m1, int m2){
 	backLeftMtr = m1;
@@ -192,16 +193,17 @@ void opcontrol() {
 	bool bPressed = false;
 	bool lPressed = false;
 	bool rPressed = false;
+	pros::ADIDigitalIn limit ('A');
+	pros::ADIAnalogIn gyroscope ('B');
 
+	gyroscope.calibrate();
 	while (true) {
 
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y);
 		int driveRight = master.get_analog(ANALOG_RIGHT_X);
 		int angleOfBot = 0;
-
 		updatePosition((frontLeftMtr.get_position() - prevTravelDist), angleOfBot);
 
-		pros::ADIDigitalIn limit ('A');
 
 
 
@@ -315,6 +317,7 @@ void opcontrol() {
 
 		pros::lcd::print(1, "Reaper: %f Intake: %d", (reaperMotor.get_actual_velocity()),(int)intakeToggle);
 		pros::lcd::print(2, "Flywheel: %f", (flyWheelMotor.get_actual_velocity()));
+		pros::lcd::print(3, "GYRO: %d", (gyroscope.get_value()));
 
 		pros::Task::delay(20);
 
