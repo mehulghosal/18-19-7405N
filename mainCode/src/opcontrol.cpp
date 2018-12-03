@@ -1,6 +1,7 @@
 #include "main.h"
 #include "fps.cpp" // remove this if code no work
-//void leftTurn();
+
+void handleControls();
 void resetPositions();
 void updatePosition();
 //CONTROLLER
@@ -178,8 +179,7 @@ void opcontrol() {
 
 	//fuck this all jeez
 	//testfunct();
-	pros::ADIDigitalIn limit ('A');
-
+	int prevTravelDist = 0;
 	bool flyWheelToggle = false;
 	int intakeToggle = 0;
 	int reaperToggle = 0;
@@ -190,30 +190,21 @@ void opcontrol() {
 	bool bPressed = false;
 	bool lPressed = false;
 	bool rPressed = false;
-	int prevTravelDist = 0;
 
 	while (true) {
 
+		handleControls(); // this function handles all the controls cause i never want to look at them again - i feel
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y);
 		int driveRight = master.get_analog(ANALOG_RIGHT_X);
-
-		handleControls(); // this function handles all the controls cause i never want to look at them again - i feel
-
 		int angleOfBot = 0;
 
 		updatePosition((frontLeftMtr.get_position() - prevTravelDist), angleOfBot);
 		
 		prevTravelDist = frontLeftMtr.get_position()
 
-
-
 		pros::lcd::print(1, "Reaper: %f Intake: %d", (reaperMotor.get_actual_velocity()),(int)intakeToggle);
 		pros::lcd::print(2, "Flywheel: %f", (flyWheelMotor.get_actual_velocity()));
 
-		intake(intakeToggle);
-		flywheel(flyWheelToggle);
-		drive(driveLeft, driveRight);
-		reaper(reaperToggle);
 		pros::Task::delay(20);
 
 	}
@@ -221,6 +212,12 @@ void opcontrol() {
 
 //god this makes me barf but ig its warranted
 void handleControls(){
+
+	pros::ADIDigitalIn limit ('A');
+
+	
+
+
 	if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
 		if(limit.get_value() == 1 && reaperToggle == 1){
 			reaperToggle = 0;
@@ -322,4 +319,8 @@ void handleControls(){
 	if (master.get_digital(DIGITAL_UP) == 1) {
 		motorStop();
 	}
+	intake(intakeToggle);
+	flywheel(flyWheelToggle);
+	drive(driveLeft, driveRight);
+	reaper(reaperToggle);
 }
