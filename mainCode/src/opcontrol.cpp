@@ -25,52 +25,27 @@ void chassisSet(int m1, int m2){
 	frontRightMtr = m2;
 }
 
-void leftTurn(double mult){ //  DEGREE INTERVALS
+void leftTurn(double mult, int speed){ //  DEGREE INTERVALS
 	resetPositions();
 	int turn = (int)(mult * 8.52);
-	frontRightMtr.move_absolute(turn, 100);
-	backRightMtr.move_absolute(turn, 100);
-	frontLeftMtr.move_absolute(-turn, -100);
-	backLeftMtr.move_absolute(-turn, -100);
+	frontRightMtr.move_absolute(turn, speed);
+	backRightMtr.move_absolute(turn, speed);
+	frontLeftMtr.move_absolute(-turn, -speed);
+	backLeftMtr.move_absolute(-turn, -speed);
 	pros::lcd::print(1,"turn: %d", turn);
 
 	while(std::abs(frontRightMtr.get_position() - turn)>15){
 		pros::c::delay(20);
 	}
 }
-void slowleftTurn(double mult){ //  DEGREE INTERVALS
-	resetPositions();
-	int turn = (int)(mult * 8.52);
-	frontRightMtr.move_absolute(turn, 40);
-	backRightMtr.move_absolute(turn, 40);
-	frontLeftMtr.move_absolute(-turn, -40);
-	backLeftMtr.move_absolute(-turn, -40);
-	pros::lcd::print(1,"turn: %d", turn);
 
-	while(std::abs(frontRightMtr.get_position() - turn)>15){
-		pros::c::delay(20);
-	}
-}
-void rightTurn(double mult){
+void rightTurn(double mult, int speed){
 	resetPositions();
 	int turn = (int)(mult * 8.54); // 128 before
-	frontRightMtr.move_absolute(-turn, -100);
-	backRightMtr.move_absolute(-turn, -100);
-	backLeftMtr.move_absolute(turn, 100);
-	frontLeftMtr.move_absolute(turn, 100);
-	pros::lcd::print(1,"turn: %d", turn);
-
-	while(std::abs(backLeftMtr.get_position() - turn)>15){
-		pros::c::delay(20);
-	}
-}
-void slowrightTurn(double mult){
-	resetPositions();
-	int turn = (int)(mult * 8.54); // 128 before
-	frontRightMtr.move_absolute(-turn, -40);
-	backRightMtr.move_absolute(-turn, -40);
-	backLeftMtr.move_absolute(turn, 40);
-	frontLeftMtr.move_absolute(turn, 40);
+	frontRightMtr.move_absolute(-turn, -speed);
+	backRightMtr.move_absolute(-turn, -speed);
+	backLeftMtr.move_absolute(turn, speed);
+	frontLeftMtr.move_absolute(turn, speed);
 	pros::lcd::print(1,"turn: %d", turn);
 
 	while(std::abs(backLeftMtr.get_position() - turn)>15){
@@ -181,26 +156,6 @@ void moveTo1(double d){
 	chassisSet(0, 0);
 }
 
-//direction: 1 for left, 0 for right
-void turn(double degrees, int direction)
-{
-	resetPositions();
-	double q = 1;
-	int encoderTurn = (int)(degrees * q);
-	int negativeTurn = -encoderTurn;
-	if(direction == 1){
-		frontRightMtr.move_absolute(encoderTurn, 100);
-		backRightMtr.move_absolute(encoderTurn, 100);
-		frontLeftMtr.move_absolute(negativeTurn, -100);
-		backLeftMtr.move_absolute(negativeTurn, -100);
-	}
-	else{
-		frontLeftMtr.move_absolute(encoderTurn, 100);
-		backLeftMtr.move_absolute(encoderTurn, 100);
-		frontRightMtr.move_absolute(negativeTurn, -100);
-		backRightMtr.move_absolute(negativeTurn, -100);
-	}
-}
 
 void resetPositions(){
 	backRightMtr.tare_position();
@@ -242,7 +197,7 @@ void opcontrol() {
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y);
 		int driveRight = master.get_analog(ANALOG_RIGHT_X);
 
-		handleControls(); // this function handles all the controls cause i never want to look at them again
+		handleControls(); // this function handles all the controls cause i never want to look at them again - i feel
 
 		int angleOfBot = 0;
 
@@ -264,6 +219,7 @@ void opcontrol() {
 	}
 }
 
+//god this makes me barf but ig its warranted
 void handleControls(){
 	if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
 		if(limit.get_value() == 1 && reaperToggle == 1){
