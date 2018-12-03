@@ -194,9 +194,9 @@ void opcontrol() {
 	bool lPressed = false;
 	bool rPressed = false;
 	pros::ADIDigitalIn limit ('A');
-	pros::ADIAnalogIn gyroscope ('B');
+//	pros::ADIAnalogIn gyroscope ('B');
 
-	gyroscope.calibrate();
+//	gyroscope.calibrate();
 	while (true) {
 
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y);
@@ -317,7 +317,7 @@ void opcontrol() {
 
 		pros::lcd::print(1, "Reaper: %f Intake: %d", (reaperMotor.get_actual_velocity()),(int)intakeToggle);
 		pros::lcd::print(2, "Flywheel: %f", (flyWheelMotor.get_actual_velocity()));
-		pros::lcd::print(3, "GYRO: %d", (gyroscope.get_value()));
+	//	pros::lcd::print(3, "GYRO: %d", (gyroscope.get_value()));
 
 		pros::Task::delay(20);
 
