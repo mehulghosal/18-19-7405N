@@ -114,11 +114,11 @@ void intake(int toggle){
 void arm(bool toggle){
 	if(toggle == true){
 		armMotor.move_absolute(100, 100);
-		armMotor = 15;
+		armMotor = 0;
 	}
 	else{
 		armMotor.move_absolute(-100, 100);
-		armMotor = -15;
+		armMotor = -0;
 	}
 }
 
@@ -292,18 +292,20 @@ void opcontrol() {
 		}
 
 		// pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;
-		if(master.get_digital(DIGITAL_R2) == 1){
+		if(master.get_digital(DIGITAL_R1) == 1){
 				armMotor = 100;
 		}
-		else if(master.get_digital(DIGITAL_L2) == 1){
+		else if(master.get_digital(DIGITAL_L1) == 1){
 				armMotor = -100;
 		}
 		else if(armMotor.get_position() >= 400){
-			armMotor = -15;
+			armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+			armMotor = 0;
 		}
 
 		else if(armMotor.get_position() < 400){
-			armMotor = 15;
+			armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+			armMotor = 0;
 		}
 
 		if (master.get_digital(DIGITAL_UP) == 1) {
