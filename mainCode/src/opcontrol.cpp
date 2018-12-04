@@ -1,4 +1,5 @@
 #include "main.h"
+#include "fps.cpp"
 
 void resetPositions();
 //CONTROLLER
@@ -24,12 +25,10 @@ void chassisSet(int m1, int m2){
 	frontRightMtr = m2;
 }
 
-void updatePosition(int posChange, int gyroAngle){
-
-}
+// void updatePosition(int posChange, int gyroAngle);
 
 
-void leftTurn(double mult, int speed){ //  DEGREE INTERVALS
+void leftTurn(double mult, int speed = 100){ //  DEGREE INTERVALS
 	resetPositions();
 	int turn = (int)(mult * 8.52);
 	frontRightMtr.move_absolute(turn, speed);
@@ -43,7 +42,7 @@ void leftTurn(double mult, int speed){ //  DEGREE INTERVALS
 	}
 }
 
-void rightTurn(double mult, int speed){
+void rightTurn(double mult, int speed = 100){
 	resetPositions();
 	int turn = (int)(mult * 8.54); // 128 before
 	frontRightMtr.move_absolute(-turn, -speed);
@@ -143,18 +142,16 @@ void moveTo(double d){
 //todo: do the thing josh was talkign about with tracking velocties
 //if velo < some value: turn off all motors, but also make sure time is greater than 100
 //also incorporate chasiset for turning
-void moveTo1(double d){
+void moveTo1(double d, int RT = 1, int LT = 1){
 	resetPositions();
 	double diff = (d - frontLeftMtr.get_position());
 	//coeff
 	double q = .1;
 
-	int time = pros::millis();
-
-	while(diff > 5 && (frontLeftMtr.get_actual_velocity() > 20  || pros::millis() - time > 100)){
+	while(diff > 5){
 		pros::lcd::print(1, "diff: %d", diff);
 		diff = (d - frontLeftMtr.get_position());
-		chassisSet(diff * q, diff * q);
+		chassisSet(diff * q * LT, diff * q * RT);
 
 	}
 	chassisSet(0, 0);
@@ -176,12 +173,17 @@ void motorStop() {
 }
 void testfunct(){
 	//FOR TESTING CODE//
+	pros::c::delay(3000);
+	moveTo1(3000);
+	moveTo1(2000, -1, 1);
+	moveTo1(2000, 1, -1);
+	moveTo1(-3000);
 }
 
 void opcontrol() {
 
 	//fuck this all jeez
-	//testfunct();
+//	testfunct();
 	int prevTravelDist = 0;
 	bool flyWheelToggle = false;
 	int intakeToggle = 0;

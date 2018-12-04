@@ -8,8 +8,8 @@ void reaper(int toggle);
 void flywheel(bool toggle);
 void moveTo(double d);
 void turn(double d, int i); //1 FOR LEFT; 0 FOR RIGHT
-void rightTurn(double d, int speeed);
-void leftTurn(double d, int speed);
+void rightTurn(double d, int speed = 100);
+void leftTurn(double d, int speed = 100);
 int getAutonState();
 void moveReaper(int dist, bool delay);
 void arm(bool toggle);
@@ -27,7 +27,7 @@ void auton1(){
 
 	pros::c::delay(500);
 	moveTo(-2850);
-	rightTurn(101, 100);
+	rightTurn(101);
 	//moveReaper(2000, true);
 	reaper(1);
 	pros::c::delay(1000);
@@ -37,7 +37,7 @@ void auton1(){
 	reaper(1);
 	pros::c::delay(3000);
 	reaper(0);
-	rightTurn(14, 100);
+	rightTurn(14);
 	moveTo(1200);
 
 
@@ -60,7 +60,7 @@ void auton2(){
 	//pros::c::delay(1000);
 	pros::c::delay(500);
 	moveTo(-2730);
-	leftTurn(89, 100);
+	leftTurn(89);
 	//moveReaper(2000, true);
 	reaper(1);
 	pros::c::delay(1000);
@@ -72,7 +72,7 @@ void auton2(){
 	pros::c::delay(2000);
 	reaper(0);
 	pros::c::delay(50);
-	leftTurn(8, 100);
+	leftTurn(8);
 	//leftTurn(14);
 	moveTo(1400);
 
