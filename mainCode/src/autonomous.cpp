@@ -116,10 +116,12 @@ void auton4(){
 	while(limit.get_value() != 1);
 	reaper(0);
 	pros::c::delay(200);
-	moveTo(-230);
-	rightTurn(90, 40); // needs to be tuned
+	moveTo(-250);
+//	slowrightTurn(97); // needs to be tuned
 	pros::c::delay(200);
-	moveTo(3040);
+	intake(-1);
+	moveTo(3150);
+
 
 	/*moveTo(3000);
 	intake(1);
