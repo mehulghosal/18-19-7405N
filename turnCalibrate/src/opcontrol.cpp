@@ -8,6 +8,8 @@ pros::Motor frontLeftMtr(10);
 pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
 
+pros::Motor armMotor(8);
+
 int left = 127;
 int right = -127;
 
@@ -43,9 +45,8 @@ void opcontrol() {
 			downPressed = false;
 		}
 
-
-
-		chassisSet(left,right);
+		armMotor = left;
+		
 		pros::delay(20);
 
 	}

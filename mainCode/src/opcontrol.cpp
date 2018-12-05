@@ -15,9 +15,17 @@ pros::Motor flyWheelMotor(6);
 pros::Motor intakeMotor(7);
 pros::Motor armMotor(8);
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
-
-
+pros::Vision vision_sensor(3);
 //OPCONTROL DRIVE//
+
+// VISION SENSOR STUFF//
+
+pros::vision_signature_s_t red_flag  = {1, 6425, 9505, 7965, -203, 819, 308, 3, 0};
+pros::vision_signature_s_t blue_flag = {3, -3811, -2397, -3104, 9039, 14199, 11619, 3, 0};
+pros::vision_signature_s_t green_marker = {2, -2879, -2225, -2552, -4611, -3237, -3924, 3, 0};
+
+
+
 void chassisSet(int m1, int m2){
 	backLeftMtr = m1;
 	frontLeftMtr = m1;
@@ -203,8 +211,6 @@ void opcontrol() {
 
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y);
 		int driveRight = master.get_analog(ANALOG_RIGHT_X);
-		int angleOfBot = 0;
-		updatePosition((frontLeftMtr.get_position() - prevTravelDist), angleOfBot);
 
 
 
