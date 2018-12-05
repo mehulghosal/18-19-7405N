@@ -19,12 +19,36 @@ pros::Vision vision_sensor(3);
 //OPCONTROL DRIVE//
 
 // VISION SENSOR STUFF//
+//https://www.vexforum.com/index.php/attachment/5be56e847b3f6_1.png
 
-pros::vision_signature_s_t red_flag  = {1, 6425, 9505, 7965, -203, 819, 308, 3, 0};
-pros::vision_signature_s_t blue_flag = {3, -3811, -2397, -3104, 9039, 14199, 11619, 3, 0};
-pros::vision_signature_s_t green_marker = {2, -2879, -2225, -2552, -4611, -3237, -3924, 3, 0};
+pros::vision_signature_s_t red_flag = {1,{255,255,255},8755,9319,9036,1269,1943,1606,3,0};
+/*
+typedef struct __attribute__((__packed__)) vision_signature {
+  uint8_t id;
+  uint8_t _pad[3];
+  float range;
+  int32_t u_min;
+  int32_t u_max;
+  int32_t u_mean;
+  int32_t v_min;
+  int32_t v_max;
+  int32_t v_mean;
+  uint32_t rgb;
+  uint32_t type;
+} vision_signature_s_t;
+*/
 
-
+/*
+id	The signature id.
+uMin	The signature minimum value on the u axis.
+uMax	The signature maximum value on the u axis.
+uMean	The signature mean value on the u axis.
+vMin	The signature minimum value on the v axis.
+vMax	The signature maximum value on the v axis.
+vMean	The signature mean value on the v axis.
+range	The signature range scale factor.
+type	The signature type, normal or color code.
+*/
 
 void chassisSet(int m1, int m2){
 	backLeftMtr = m1;
