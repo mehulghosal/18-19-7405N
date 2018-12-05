@@ -137,6 +137,28 @@ void auton4(){
 
 }
 
+void autonskills()
+{
+		pros::lcd::print(0, "INIT autonskills");
+	flywheel(true); // flywheel first, flameo - josh
+	intake(1);
+	pros::c::delay(1500);
+	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+	pros::c::delay(1500);
+	reaper(1);
+	while(limit.get_value() != 1);
+	reaper(0);
+	moveTo(-2730);
+//	slowrightTurn(90);
+	moveTo(3000);
+	reaper(1);
+	while(limit.get_value() != 1);
+	reaper(0);
+	moveTo(1800);
+	reaper(1);
+
+}
+
 void test(){
 	moveTo(2600);
 	//right turn by 90 degrees
@@ -155,6 +177,9 @@ void autonomous() {
 	}
 	else if(getAutonState() == 4){
 		auton3();
+	}
+	else if(getAutonState() == 5){
+			autonskills();
 	}
 	//auton1();
 	//test();
