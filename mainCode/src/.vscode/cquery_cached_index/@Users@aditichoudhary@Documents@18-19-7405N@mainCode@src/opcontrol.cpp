@@ -9,7 +9,7 @@ pros::Controller master(pros::E_CONTROLLER_MASTER);
 pros::Motor backLeftMtr(9);
 pros::Motor frontLeftMtr(10);
 pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor backRightMtr(4, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor reaperMotor(5, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor flyWheelMotor(6);
 pros::Motor intakeMotor(7);
@@ -159,6 +159,20 @@ void moveTo(double d){
 	resetPositions();
 	int speedCoef = 1;
 	if(d<0){speedCoef = -1;}
+	frontLeftMtr.move_absolute(d, speedCoef*150);
+	frontRightMtr.move_absolute(d, speedCoef*150);
+	backLeftMtr.move_absolute(d, speedCoef*150);
+	backRightMtr.move_absolute(d, speedCoef*150);
+	pros::lcd::print(1,"move: %d", d);
+
+	while(std::abs(backLeftMtr.get_position() - d)>15){
+		pros::c::delay(10);
+	}
+}
+void moveTo(double d, int speedCoef){
+	resetPositions();
+
+	if(d<0){speedCoef = -speedCoef;}
 	frontLeftMtr.move_absolute(d, speedCoef*150);
 	frontRightMtr.move_absolute(d, speedCoef*150);
 	backLeftMtr.move_absolute(d, speedCoef*150);
