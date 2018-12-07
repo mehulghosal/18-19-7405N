@@ -157,18 +157,65 @@ void arm(bool toggle){
 
 void moveTo(double d){
 	resetPositions();
-	int speedCoef = 1;
-	if(d<0){speedCoef = -1;}
-	frontLeftMtr.move_absolute(d, speedCoef*150);
-	frontRightMtr.move_absolute(d, speedCoef*150);
-	backLeftMtr.move_absolute(d, speedCoef*150);
-	backRightMtr.move_absolute(d, speedCoef*150);
-	pros::lcd::print(1,"move: %d", d);
+	int speed = 0;
+	double slowdown = (4 * d) / 5;
+	if(d > 0)
+	{
+while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d)
+{
+	double le = frontLeftMtr.get_position();
+	double re = frontRightMtr.get_position();
+	double diff = le - re;
+	double adjust = 90 + (2 * diff);
+	chassisSet(90, adjust );
+	pros::lcd::print(1, "Entered firstLoop");
+	pros::lcd::print(2, "fLeft encoder: %f", le);
+	pros::lcd::print(3, "fright encoder: %f", re);
+	pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+	pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+		pros::lcd::print(6, "slowdown %f", slowdown);
+			pros::c::delay(50);
 
-	while(std::abs(backLeftMtr.get_position() - d)>15){
-		pros::c::delay(10);
-	}
 }
+}
+if ( d < 0)
+{
+	while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d)
+	{
+		double le = frontLeftMtr.get_position();
+		double re = frontRightMtr.get_position();
+		double diff = le - re;
+		double adjust = -90 + (2 * diff);
+		chassisSet(-90, adjust );
+		pros::lcd::print(1, "Entered firstLoop");
+		pros::lcd::print(2, "fLeft encoder: %f", le);
+		pros::lcd::print(3, "fright encoder: %f", re);
+		pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+		pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+			pros::lcd::print(6, "slowdown %f", slowdown);
+				pros::c::delay(50);
+
+	}
+}/*while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d)
+{
+	double le = frontLeftMtr.get_position();
+	double re = frontRightMtr.get_position();
+	double diff = le - re;
+	double adjust = 30 + (2 * diff);
+	chassisSet(30, adjust );
+	pros::lcd::print(1, "Entered second Loop");
+	pros::lcd::print(2, "Left encoder: %f", le);
+	pros::lcd::print(3, "right encoder: %f", re);
+	pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+	pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+		pros::lcd::print(6, "slowdown %f", slowdown);
+		pros::c::delay(50);
+*/
+
+	chassisSet(0, 0 );
+	pros::c::delay(1000);
+	}
+
 void moveTo(double d, int speedCoef){
 	resetPositions();
 

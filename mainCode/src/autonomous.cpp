@@ -156,6 +156,8 @@ intake(1);
 void autonskills()
 {
 	pros::lcd::print(0, "INIT autonskills");
+
+
 flywheel(true); // flywheel first, flameo - josh
 intake(1);
 pros::c::delay(1500);
@@ -172,7 +174,7 @@ moveTo(1000, 20);
 pros::c::delay(1500);
 moveTo(-1100);
 moveTo(-2730);
-rightTurn(109, 40);
+rightTurn(105, 40);
 moveTo(2700);
 // shoots first ball
 reaper(1);
