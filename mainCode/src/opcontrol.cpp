@@ -15,7 +15,7 @@ pros::Motor flyWheelMotor(6);
 pros::Motor intakeMotor(7);
 pros::Motor armMotor(8);
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
-pros::Vision vision_sensor(3);
+
 //OPCONTROL DRIVE//
 
 // VISION SENSOR STUFF//
@@ -281,8 +281,9 @@ if ( d < 0)
 				pros::c::delay(50);
 
 	}
-	chassisSet(0,0);
+
 }
+chassisSet(0,0);
 }
 
 //pid - work with this l8r
