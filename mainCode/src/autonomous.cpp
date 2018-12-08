@@ -158,10 +158,11 @@ void autonskills()
 	pros::lcd::print(0, "INIT autonskills");
 
 
+
 flywheel(true); // flywheel first, flameo - josh
 intake(1);
 pros::c::delay(1500);
-moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+moveTo(2750);//this is pretty close - 2900 is perfect to intake the ball
 pros::c::delay(1500);
 // intakes second ball
 reaper(1);
@@ -170,12 +171,13 @@ reaper(0);
 intake(-1);
 pros::c::delay(1000);
 // moves to flip first cap
-moveTo(1000, 20);
+moveTo(300, 20);
 pros::c::delay(1500);
-moveTo(-1100);
-moveTo(-2730);
-rightTurn(105, 40);
+
+moveTo(-3000);
+rightTurn(98, 40);
 moveTo(2700);
+
 // shoots first ball
 reaper(1);
 pros::c::delay(300);
@@ -183,11 +185,12 @@ pros::c::delay(300);
 while(limit.get_value() != 1);
 reaper(0);
 // scores second flag
-moveTo(1800);
+moveTo(1000);
 reaper(1);
 pros::c::delay(300);
+rightTurn(20, 20);
 // scores low flag
-moveTo(1700);
+moveTo(2500);
 // goes to cube
 moveTo(-2700);
 leftTurn(91, 40);

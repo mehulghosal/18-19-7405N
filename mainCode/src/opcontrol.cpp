@@ -165,9 +165,15 @@ while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d)
 {
 	double le = frontLeftMtr.get_position();
 	double re = frontRightMtr.get_position();
+	double ble = backLeftMtr.get_position();
 	double diff = le - re;
+	double samesidediff = le - ble;
 	double adjust = 90 + (2 * diff);
-	chassisSet(90, adjust );
+	double samesideadjust = 90 + (2 * samesidediff);
+	frontLeftMtr = 90;
+	frontRightMtr= adjust;
+	backLeftMtr = samesideadjust;
+	backRightMtr= adjust;
 	pros::lcd::print(1, "Entered firstLoop");
 	pros::lcd::print(2, "fLeft encoder: %f", le);
 	pros::lcd::print(3, "fright encoder: %f", re);
@@ -184,9 +190,15 @@ if ( d < 0)
 	{
 		double le = frontLeftMtr.get_position();
 		double re = frontRightMtr.get_position();
+		double ble = backLeftMtr.get_position();
 		double diff = le - re;
+		double samesidediff = le - ble;
 		double adjust = -90 + (2 * diff);
-		chassisSet(-90, adjust );
+		double samesideadjust = -90 + (2 * samesidediff);
+		frontLeftMtr = -90;
+		frontRightMtr= adjust;
+		backLeftMtr = samesideadjust;
+		backRightMtr= adjust;
 		pros::lcd::print(1, "Entered firstLoop");
 		pros::lcd::print(2, "fLeft encoder: %f", le);
 		pros::lcd::print(3, "fright encoder: %f", re);
@@ -218,37 +230,66 @@ if ( d < 0)
 
 void moveTo(double d, int speedCoef){
 	resetPositions();
+	int speed = 0;
+	double slowdown = (4 * d) / 5;
+	if(d > 0)
+	{
+while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d)
+{
+	double le = frontLeftMtr.get_position();
+	double re = frontRightMtr.get_position();
+	double ble = backLeftMtr.get_position();
+	double diff = le - re;
+	double samesidediff = le - ble;
+	double adjust =  speedCoef + (2 * diff);
+	double samesideadjust = speedCoef + (2 * samesidediff);
+	frontLeftMtr = speedCoef;
+	frontRightMtr= adjust;
+	backLeftMtr = samesideadjust;
+	backRightMtr= adjust;
+	pros::lcd::print(1, "Entered firstLoop");
+	pros::lcd::print(2, "fLeft encoder: %f", le);
+	pros::lcd::print(3, "fright encoder: %f", re);
+	pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+	pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+		pros::lcd::print(6, "slowdown %f", slowdown);
+			pros::c::delay(50);
 
-	if(d<0){speedCoef = -speedCoef;}
-	frontLeftMtr.move_absolute(d, speedCoef*150);
-	frontRightMtr.move_absolute(d, speedCoef*150);
-	backLeftMtr.move_absolute(d, speedCoef*150);
-	backRightMtr.move_absolute(d, speedCoef*150);
-	pros::lcd::print(1,"move: %d", d);
+}
+}
+if ( d < 0)
+{
+	while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d)
+	{
+		double le = frontLeftMtr.get_position();
+		double re = frontRightMtr.get_position();
+		double ble = backLeftMtr.get_position();
+		double diff = le - re;
+		double samesidediff = le - ble;
+		double adjust = -speedCoef + (2 * diff);
+		double samesideadjust = -speedCoef + (2 * samesidediff);
+		frontLeftMtr = -speedCoef;
+		frontRightMtr= adjust;
+		backLeftMtr = samesideadjust;
+		backRightMtr= adjust;
+		pros::lcd::print(1, "Entered firstLoop");
+		pros::lcd::print(2, "fLeft encoder: %f", le);
+		pros::lcd::print(3, "fright encoder: %f", re);
+		pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+		pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+			pros::lcd::print(6, "slowdown %f", slowdown);
+				pros::c::delay(50);
 
-	while(std::abs(backLeftMtr.get_position() - d)>15){
-		pros::c::delay(10);
 	}
+	chassisSet(0,0);
+}
 }
 
 //pid - work with this l8r
 //todo: do the thing josh was talkign about with tracking velocties
 //if velo < some value: turn off all motors, but also make sure time is greater than 100
 //also incorporate chasiset for turning
-void moveTo1(double d, int RT = 1, int LT = 1){
-	resetPositions();
-	double diff = (d - frontLeftMtr.get_position());
-	//coeff
-	double q = .1;
 
-	while(diff > 5){
-		pros::lcd::print(1, "diff: %d", diff);
-		diff = (d - frontLeftMtr.get_position());
-		chassisSet(diff * q * LT, diff * q * RT);
-
-	}
-	chassisSet(0, 0);
-}
 
 
 void resetPositions(){
@@ -266,11 +307,7 @@ void motorStop() {
 }
 void testfunct(){
 	//FOR TESTING CODE//
-	pros::c::delay(3000);
-	moveTo1(3000);
-	moveTo1(2000, -1, 1);
-	moveTo1(2000, 1, -1);
-	moveTo1(-3000);
+
 }
 
 void opcontrol() {
