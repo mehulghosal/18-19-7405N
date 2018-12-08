@@ -24,12 +24,12 @@ void auton1(){
 	flywheel(true); // flywheel first, flameo - josh
 	intake(1);
 	pros::c::delay(1500);
-	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+	moveTo(3000, 90);//this is pretty close - 2900 is perfect to intake the ball
 	//pros::c::delay(1000);
 
 	pros::c::delay(500);
 	moveTo(-2850);
-	rightTurn(101);
+	rightTurn(98);
 	//moveReaper(2000, true);
 	reaper(1);
 	pros::c::delay(1000);
@@ -180,21 +180,21 @@ moveTo(2200);
 
 // shoots first ball
 reaper(1);
-pros::c::delay(300);
+pros::c::delay(500);
 // indexes second ball
 while(limit.get_value() != 1);
 reaper(0);
 // scores second flag
 moveTo(1200);
 reaper(1);
-pros::c::delay(300);
+pros::c::delay(1000);
 rightTurn(15, 20);
 // scores low flag
-moveTo(400);
-moveTo(-400);
-leftTurn(8, 20);
+moveTo(600);
+moveTo(-600);
+leftTurn(12, 20);
 // goes to cube
-moveTo(-2000);
+moveTo(-1800);
 leftTurn(91, 40);
 intake(1);
 moveTo(3000);
