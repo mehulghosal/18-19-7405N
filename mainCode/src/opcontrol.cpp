@@ -16,8 +16,6 @@ pros::Motor intakeMotor(7);
 pros::Motor armMotor(8);
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
 
-//OPCONTROL DRIVE//
-
 // VISION SENSOR STUFF//
 //https://www.vexforum.com/index.php/attachment/5be56e847b3f6_1.png
 
@@ -50,6 +48,11 @@ range	The signature range scale factor.
 type	The signature type, normal or color code.
 */
 
+//DRIVE FUNCTION//
+/*PARAMS: 
+ *m1 = left side motor speed
+ *m2 = right side motor speed
+*/
 void chassisSet(int m1, int m2){
 	backLeftMtr = m1;
 	frontLeftMtr = m1;
@@ -57,9 +60,8 @@ void chassisSet(int m1, int m2){
 	frontRightMtr = m2;
 }
 
-// void updatePosition(int posChange, int gyroAngle);
 
-
+//AUTON MOVE CONTROLS//
 void leftTurn(double mult, int speed = 100){ //  DEGREE INTERVALS
 	resetPositions();
 	int turn = (int)(mult * 8.52);
@@ -101,7 +103,7 @@ void drive(int driveL, int driveR) {
 
 }
 
-//OTHER CONTROLS//
+//OTHER FEATURE CONTROLS//
 void flywheel(bool toggle){
 	if(toggle){
 		flyWheelMotor = 127;
@@ -153,143 +155,113 @@ void arm(bool toggle){
 	}
 }
 
-//AUTON CONTROLS//
 
-void moveTo(double d){
+void moveTo(double d, int speedCoef = 90){
 	resetPositions();
 	int speed = 0;
 	double slowdown = (4 * d) / 5;
-	if(d > 0)
-	{
-while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d)
-{
-	double le = frontLeftMtr.get_position();
-	double re = frontRightMtr.get_position();
-	double ble = backLeftMtr.get_position();
-	double diff = le - re;
-	double samesidediff = le - ble;
-	double adjust = 90 + (2 * diff);
-	double samesideadjust = 90 + (2 * samesidediff);
-	frontLeftMtr = 90;
-	frontRightMtr= adjust;
-	backLeftMtr = samesideadjust;
-	backRightMtr= adjust;
-	pros::lcd::print(1, "Entered firstLoop");
-	pros::lcd::print(2, "fLeft encoder: %f", le);
-	pros::lcd::print(3, "fright encoder: %f", re);
-	pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
-	pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
-		pros::lcd::print(6, "slowdown %f", slowdown);
+
+	if(d > 0){
+		while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d){
+			double le = frontLeftMtr.get_position();
+			double re = frontRightMtr.get_position();
+			double ble = backLeftMtr.get_position();
+			double diff = le - re;
+			double samesidediff = le - ble;
+			double adjust = speedCoef + (2 * diff);
+			double samesideadjust = speedCoef + (2 * samesidediff);
+			frontLeftMtr = speedCoef;
+			frontRightMtr= adjust;
+			backLeftMtr = samesideadjust;
+			backRightMtr= adjust;
+			pros::lcd::print(1, "Entered firstLoop");
+			pros::lcd::print(2, "fLeft encoder: %f", le);
+			pros::lcd::print(3, "fright encoder: %f", re);
+			pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+			pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+			pros::lcd::print(6, "slowdown %f", slowdown);
+			pros::c::delay(50);
+		}
+	}
+
+	if ( d < 0){
+		while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d){
+			double le = frontLeftMtr.get_position();
+			double re = frontRightMtr.get_position();
+			double ble = backLeftMtr.get_position();
+			double diff = le - re;
+			double samesidediff = le - ble;
+			double adjust = -speedCoef + (2 * diff);
+			double samesideadjust = -speedCoef + (2 * samesidediff);
+			frontLeftMtr = -speedCoef;
+			frontRightMtr= adjust;
+			backLeftMtr = samesideadjust;
+			backRightMtr= adjust;
+			pros::lcd::print(1, "Entered firstLoop");
+			pros::lcd::print(2, "fLeft encoder: %f", le);
+			pros::lcd::print(3, "fright encoder: %f", re);
+			pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+			pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+			pros::lcd::print(6, "slowdown %f", slowdown);
 			pros::c::delay(50);
 
-}
-}
-if ( d < 0)
-{
-	while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d)
-	{
-		double le = frontLeftMtr.get_position();
-		double re = frontRightMtr.get_position();
-		double ble = backLeftMtr.get_position();
-		double diff = le - re;
-		double samesidediff = le - ble;
-		double adjust = -90 + (2 * diff);
-		double samesideadjust = -90 + (2 * samesidediff);
-		frontLeftMtr = -90;
-		frontRightMtr= adjust;
-		backLeftMtr = samesideadjust;
-		backRightMtr= adjust;
-		pros::lcd::print(1, "Entered firstLoop");
-		pros::lcd::print(2, "fLeft encoder: %f", le);
-		pros::lcd::print(3, "fright encoder: %f", re);
-		pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
-		pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
-			pros::lcd::print(6, "slowdown %f", slowdown);
-				pros::c::delay(50);
-
+		}
 	}
-}/*while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d)
-{
-	double le = frontLeftMtr.get_position();
-	double re = frontRightMtr.get_position();
-	double diff = le - re;
-	double adjust = 30 + (2 * diff);
-	chassisSet(30, adjust );
-	pros::lcd::print(1, "Entered second Loop");
-	pros::lcd::print(2, "Left encoder: %f", le);
-	pros::lcd::print(3, "right encoder: %f", re);
-	pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
-	pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
-		pros::lcd::print(6, "slowdown %f", slowdown);
-		pros::c::delay(50);
-*/
-
 	chassisSet(0, 0 );
 	pros::c::delay(1000);
-	}
-
-void moveTo(double d, int speedCoef){
-	resetPositions();
-	int speed = 0;
-	double slowdown = (4 * d) / 5;
-	if(d > 0)
-	{
-while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d)
-{
-	double le = frontLeftMtr.get_position();
-	double re = frontRightMtr.get_position();
-	double ble = backLeftMtr.get_position();
-	double diff = le - re;
-	double samesidediff = le - ble;
-	double adjust =  speedCoef + (2 * diff);
-	double samesideadjust = speedCoef + (2 * samesidediff);
-	frontLeftMtr = speedCoef;
-	frontRightMtr= adjust;
-	backLeftMtr = samesideadjust;
-	backRightMtr= adjust;
-	pros::lcd::print(1, "Entered firstLoop");
-	pros::lcd::print(2, "fLeft encoder: %f", le);
-	pros::lcd::print(3, "fright encoder: %f", re);
-	pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
-	pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
-		pros::lcd::print(6, "slowdown %f", slowdown);
-			pros::c::delay(50);
-
-}
-}
-if ( d < 0)
-{
-	while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d)
-	{
-		double le = frontLeftMtr.get_position();
-		double re = frontRightMtr.get_position();
-		double ble = backLeftMtr.get_position();
-		double diff = le - re;
-		double samesidediff = le - ble;
-		double adjust = -speedCoef + (2 * diff);
-		double samesideadjust = -speedCoef + (2 * samesidediff);
-		frontLeftMtr = -speedCoef;
-		frontRightMtr= adjust;
-		backLeftMtr = samesideadjust;
-		backRightMtr= adjust;
-		pros::lcd::print(1, "Entered firstLoop");
-		pros::lcd::print(2, "fLeft encoder: %f", le);
-		pros::lcd::print(3, "fright encoder: %f", re);
-		pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
-		pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
-			pros::lcd::print(6, "slowdown %f", slowdown);
-				pros::c::delay(50);
-
-	}
-
-}
-chassisSet(0,0);
 }
 
-//pid - work with this l8r
-//todo: do the thing josh was talkign about with tracking velocties
-//if velo < some value: turn off all motors, but also make sure time is greater than 100
-//also incorporate chasiset for turning
+// void moveTo(double d, int speedCoef){
+// 	resetPositions();
+// 	int speed = 0;
+// 	double slowdown = (4 * d) / 5;
+// 	if(d > 0){
+// 		while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d){
+// 			double le = frontLeftMtr.get_position();
+// 			double re = frontRightMtr.get_position();
+// 			double ble = backLeftMtr.get_position();
+// 			double diff = le - re;
+// 			double samesidediff = le - ble;
+// 			double adjust =  speedCoef + (2 * diff);
+// 			double samesideadjust = speedCoef + (2 * samesidediff);
+// 			frontLeftMtr = speedCoef;
+// 			frontRightMtr= adjust;
+// 			backLeftMtr = samesideadjust;
+// 			backRightMtr= adjust;
+// 			pros::lcd::print(1, "Entered firstLoop");
+// 			pros::lcd::print(2, "fLeft encoder: %f", le);
+// 			pros::lcd::print(3, "fright encoder: %f", re);
+// 			pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+// 			pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+// 			pros::lcd::print(6, "slowdown %f", slowdown);
+// 			pros::c::delay(50);
+// 		}
+// 	}
+// 	if ( d < 0){
+// 		while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d){
+// 			double le = frontLeftMtr.get_position();
+// 			double re = frontRightMtr.get_position();
+// 			double ble = backLeftMtr.get_position();
+// 			double diff = le - re;
+// 			double samesidediff = le - ble;
+// 			double adjust = -speedCoef + (2 * diff);
+// 			double samesideadjust = -speedCoef + (2 * samesidediff);
+// 			frontLeftMtr = -speedCoef;
+// 			frontRightMtr= adjust;
+// 			backLeftMtr = samesideadjust;
+// 			backRightMtr= adjust;
+// 			pros::lcd::print(1, "Entered firstLoop");
+// 			pros::lcd::print(2, "fLeft encoder: %f", le);
+// 			pros::lcd::print(3, "fright encoder: %f", re);
+// 			pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+// 			pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+// 			pros::lcd::print(6, "slowdown %f", slowdown);
+// 			pros::c::delay(50);
+// 		}
+// 	}
+
+// chassisSet(0,0);
+// }
 
 
 
@@ -300,14 +272,14 @@ void resetPositions(){
 	frontRightMtr.tare_position();
 }
 
-//MISC CONTROLS//
 void motorStop() {
 	for (int i = 0; i < 8; i++) {
 		motors[i] = 0;
 	}
 }
+
+//FOR TESTING CODE//
 void testfunct(){
-	//FOR TESTING CODE//
 
 }
 

@@ -6,8 +6,8 @@ void testfunct();
 void intake(int toggle);
 void reaper(int toggle);
 void flywheel(bool toggle);
-void moveTo(double d);
-void moveTo(double d, int speedCoef);
+// void moveTo(double d);
+void moveTo(double d, int speedCoef = 90);
 void turn(double d, int i); //1 FOR LEFT; 0 FOR RIGHT
 void rightTurn(double d, int speed = 100);
 void leftTurn(double d, int speed = 100);
