@@ -19,7 +19,8 @@ pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr
 // VISION SENSOR STUFF//
 //https://www.vexforum.com/index.php/attachment/5be56e847b3f6_1.png
 
-pros::vision_signature_s_t red_flag = {1,{255,255,255},8755,9319,9036,1269,1943,1606,3,0};
+
+
 /*
 typedef struct __attribute__((__packed__)) vision_signature {
   uint8_t id;
@@ -49,7 +50,7 @@ type	The signature type, normal or color code.
 */
 
 //DRIVE FUNCTION//
-/*PARAMS: 
+/*PARAMS:
  *m1 = left side motor speed
  *m2 = right side motor speed
 */
@@ -60,6 +61,45 @@ void chassisSet(int m1, int m2){
 	frontRightMtr = m2;
 }
 
+pros::vision_signature_s_t convert_sig(
+	int32_t id,
+	int32_t uMin,
+	int32_t uMax,
+	int32_t uMean,
+	int32_t vMin,
+	int32_t vMax,
+	int32_t vMean,
+	float range,
+	int32_t type
+	) {
+	pros::vision_signature_s_t sig;
+	sig.id = id;
+	sig.u_min = uMin;
+	sig.u_max = uMax;
+	sig.u_mean = uMean;
+	sig.v_min = vMin;
+	sig.v_max = vMax;
+	sig.v_mean = vMean;
+	sig.range = range;
+	sig.type = type;
+	return sig;
+}
+
+void PrintReadableVisObj(pros::vision_object_s_t inp){
+	printf("SIG: %lf | LEFT_COORD: %lf | TOP_COORD: %lf | WIDTH: %lf | HEIGHT: %lf \n X_MID: %lf | Y_MID: %lf",
+		inp.signature,
+		inp.left_coord,
+		inp.top_coord,
+		inp.width,
+		inp.height,
+		inp.x_middle_coord,
+		inp.y_middle_coord
+	);
+}
+
+pros::Vision vision_sensor (7);
+
+pros::vision_signature_s_t RED_FLAG = convert_sig(1, 6425, 9505, 7965, -203, 819, 308, 3, 0);
 
 //AUTON MOVE CONTROLS//
 void leftTurn(double mult, int speed = 100){ //  DEGREE INTERVALS
@@ -98,8 +138,6 @@ void drive(int driveL, int driveR) {
 	else {
 		chassisSet(0,0);
 	}
-	pros::lcd::print(3, "BL: %d FL: %d", (backLeftMtr.get_actual_velocity()),(frontLeftMtr.get_actual_velocity()));
-	pros::lcd::print(4, "BR: %d FR: %d", (backRightMtr.get_actual_velocity()),(frontRightMtr.get_actual_velocity()));
 
 }
 
@@ -265,6 +303,7 @@ void moveTo(double d, int speedCoef = 90){
 
 
 
+
 void resetPositions(){
 	backRightMtr.tare_position();
 	backLeftMtr.tare_position();
@@ -287,6 +326,7 @@ void opcontrol() {
 
 	//fuck this all jeez
 //	testfunct();
+	int disp = 0;
 	int prevTravelDist = 0;
 	bool flyWheelToggle = false;
 	int intakeToggle = 0;
@@ -297,19 +337,23 @@ void opcontrol() {
 	bool right = false;
 	bool bPressed = false;
 	bool lPressed = false;
+	bool autoReap = false;
 	bool rPressed = false;
 	pros::ADIDigitalIn limit ('A');
 //	pros::ADIAnalogIn gyroscope ('B');
-
+//	pros::Vision::print_signature(RED_FLAG);
 //	gyroscope.calibrate();
+
+	pros::vision_object_s_t* read_arr = new pros::vision_object_s_t[5];
+
 	while (true) {
 
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y);
 		int driveRight = master.get_analog(ANALOG_RIGHT_X);
 
 
-
-
+ 		vision_sensor.read_by_size(1, 5, read_arr);
+		PrintReadableVisObj(read_arr[0]);
 
 		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
 			if(limit.get_value() == 1 && reaperToggle == 1){
@@ -317,6 +361,7 @@ void opcontrol() {
 			}
 			else if (limit.get_value() == 1 && reaperToggle == 0){
 				reaperToggle = 1;
+				pros::Task::delay(40);
 			}
 			else if (reaperToggle == 0 || reaperToggle == -1){
 				reaperToggle = 1;
@@ -420,8 +465,20 @@ void opcontrol() {
 		reaper(reaperToggle);
 		prevTravelDist = frontLeftMtr.get_position();
 
-		pros::lcd::print(1, "Reaper: %f Intake: %d", (reaperMotor.get_actual_velocity()),(int)intakeToggle);
-		pros::lcd::print(2, "Flywheel: %f", (flyWheelMotor.get_actual_velocity()));
+		pros::lcd::print(1, "RPR: %f INT: %d FLY: %f", reaperMotor.get_actual_velocity(),(int)intakeToggle,(flyWheelMotor.get_actual_velocity()));
+		pros::lcd::print(2, "BL: %lf FL: %lf", backLeftMtr.get_actual_velocity(),frontLeftMtr.get_actual_velocity());
+		pros::lcd::print(3, "BR: %lf FR: %lf", backRightMtr.get_actual_velocity(),frontRightMtr.get_actual_velocity());
+
+//		pros::lcd::print(4, "MTRDISP: %lf ", disp);
+
+		if(backLeftMtr.get_actual_velocity() != frontLeftMtr.get_actual_velocity() || backRightMtr.get_actual_velocity() != frontRightMtr.get_actual_velocity()){
+			printf("MOTOR DISPUTE | ");
+			printf(" BL %lf FL %lf |\n",  backLeftMtr.get_actual_velocity(),frontLeftMtr.get_actual_velocity());
+			printf(" BR %lf FR %lf |\n",  backRightMtr.get_actual_velocity(),frontRightMtr.get_actual_velocity());
+		}
+
+
+
 	//	pros::lcd::print(3, "GYRO: %d", (gyroscope.get_value()));
 
 		pros::Task::delay(20);
