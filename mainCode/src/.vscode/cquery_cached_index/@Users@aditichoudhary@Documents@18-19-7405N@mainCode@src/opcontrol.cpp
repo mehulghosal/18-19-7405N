@@ -15,13 +15,12 @@ pros::Motor flyWheelMotor(6);
 pros::Motor intakeMotor(7);
 pros::Motor armMotor(8);
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
-pros::Vision vision_sensor(3);
-//OPCONTROL DRIVE//
 
 // VISION SENSOR STUFF//
 //https://www.vexforum.com/index.php/attachment/5be56e847b3f6_1.png
 
-pros::vision_signature_s_t red_flag = {1,{255,255,255},8755,9319,9036,1269,1943,1606,3,0};
+
+
 /*
 typedef struct __attribute__((__packed__)) vision_signature {
   uint8_t id;
@@ -50,6 +49,11 @@ range	The signature range scale factor.
 type	The signature type, normal or color code.
 */
 
+//DRIVE FUNCTION//
+/*PARAMS:
+ *m1 = left side motor speed
+ *m2 = right side motor speed
+*/
 void chassisSet(int m1, int m2){
 	backLeftMtr = m1;
 	frontLeftMtr = m1;
@@ -57,9 +61,47 @@ void chassisSet(int m1, int m2){
 	frontRightMtr = m2;
 }
 
-// void updatePosition(int posChange, int gyroAngle);
+pros::vision_signature_s_t convert_sig(
+	int32_t id,
+	int32_t uMin,
+	int32_t uMax,
+	int32_t uMean,
+	int32_t vMin,
+	int32_t vMax,
+	int32_t vMean,
+	float range,
+	int32_t type
+	) {
+	pros::vision_signature_s_t sig;
+	sig.id = id;
+	sig.u_min = uMin;
+	sig.u_max = uMax;
+	sig.u_mean = uMean;
+	sig.v_min = vMin;
+	sig.v_max = vMax;
+	sig.v_mean = vMean;
+	sig.range = range;
+	sig.type = type;
+	return sig;
+}
 
+void PrintReadableVisObj(pros::vision_object_s_t inp){
+	printf("SIG: %lf | LEFT_COORD: %lf | TOP_COORD: %lf | WIDTH: %lf | HEIGHT: %lf \n X_MID: %lf | Y_MID: %lf",
+		inp.signature,
+		inp.left_coord,
+		inp.top_coord,
+		inp.width,
+		inp.height,
+		inp.x_middle_coord,
+		inp.y_middle_coord
+	);
+}
 
+pros::Vision vision_sensor (7);
+
+pros::vision_signature_s_t RED_FLAG = convert_sig(1, 6425, 9505, 7965, -203, 819, 308, 3, 0);
+
+//AUTON MOVE CONTROLS//
 void leftTurn(double mult, int speed = 100){ //  DEGREE INTERVALS
 	resetPositions();
 	int turn = (int)(mult * 8.52);
@@ -96,12 +138,10 @@ void drive(int driveL, int driveR) {
 	else {
 		chassisSet(0,0);
 	}
-	pros::lcd::print(3, "BL: %d FL: %d", (backLeftMtr.get_actual_velocity()),(frontLeftMtr.get_actual_velocity()));
-	pros::lcd::print(4, "BR: %d FR: %d", (backRightMtr.get_actual_velocity()),(frontRightMtr.get_actual_velocity()));
 
 }
 
-//OTHER CONTROLS//
+//OTHER FEATURE CONTROLS//
 void flywheel(bool toggle){
 	if(toggle){
 		flyWheelMotor = 127;
@@ -153,55 +193,214 @@ void arm(bool toggle){
 	}
 }
 
-//AUTON CONTROLS//
 
-void moveTo(double d){
+void moveTo(double d, int speedCoef = 90){
 	resetPositions();
-	int speedCoef = 1;
-	if(d<0){speedCoef = -1;}
-	frontLeftMtr.move_absolute(d, speedCoef*150);
-	frontRightMtr.move_absolute(d, speedCoef*150);
-	backLeftMtr.move_absolute(d, speedCoef*150);
-	backRightMtr.move_absolute(d, speedCoef*150);
-	pros::lcd::print(1,"move: %d", d);
+	int speed = 0;
+	double slowdown = (4 * d) / 5;
+	double kp = .1;
 
-	while(std::abs(backLeftMtr.get_position() - d)>15){
-		pros::c::delay(10);
+
+
+	if(d > 0){
+		while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d){
+			double le = frontLeftMtr.get_position();
+			double re = frontRightMtr.get_position();
+			double ble = backLeftMtr.get_position();
+			double diff = abs(le - re);
+			diff = .25 * diff;
+			double samesidediff = abs(le - ble);
+			double adjust = speedCoef + (2 * diff);
+			double samesideadjust = speedCoef + (2 * samesidediff);
+
+			if(le >= re)
+			 {
+
+				 if(abs(d - frontRightMtr.get_position()) * kp > 127)
+				 {
+					 speedCoef = 90;
+				 }
+				 else if(abs(d - frontRightMtr.get_position()) * kp < 10)
+				 {
+					 speedCoef = 10;
+				 }
+				 else{
+					 speedCoef = abs(d - frontRightMtr.get_position()) * kp;
+				 }
+						frontLeftMtr = speedCoef - diff;
+						frontRightMtr= speedCoef + diff;
+						backLeftMtr = speedCoef - diff;
+						backRightMtr= speedCoef + diff + 5;
+				}
+			if(re > le)
+			{
+
+				if(abs(d - frontRightMtr.get_position()) * kp > 127)
+ 			 {
+ 				 speedCoef = 90;
+ 			 }
+ 			 else if(abs(d - frontRightMtr.get_position()) * kp < 10)
+ 			 {
+ 				 speedCoef = 10;
+ 			 }
+ 			 else{
+ 				 speedCoef = abs(d - frontRightMtr.get_position()) * kp;
+ 			 }
+				frontLeftMtr = speedCoef + diff;
+				frontRightMtr= speedCoef - diff;
+				backLeftMtr = speedCoef + diff;
+				backRightMtr= speedCoef - diff - 5;
+			}
+
+	/*	if(adjust >= 105)
+		{
+		frontLeftMtr = speedCoef - (2 * diff);
+		frontRightMtr= adjust;
+		backLeftMtr = speedCoef - (2 * diff);
+		backRightMtr= adjust;
+	}
+	*/
+
+			pros::lcd::print(1, "Entered firstLoop");
+			pros::lcd::print(2, "fLeft encoder: %f", le);
+			pros::lcd::print(3, "fright encoder: %f", re);
+			pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+			pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+			pros::lcd::print(6, "diff  %f", diff);
+			pros::c::delay(150);
+
 	}
 }
-void moveTo(double d, int speedCoef){
-	resetPositions();
 
-	if(d<0){speedCoef = -speedCoef;}
-	frontLeftMtr.move_absolute(d, speedCoef*150);
-	frontRightMtr.move_absolute(d, speedCoef*150);
-	backLeftMtr.move_absolute(d, speedCoef*150);
-	backRightMtr.move_absolute(d, speedCoef*150);
-	pros::lcd::print(1,"move: %d", d);
 
-	while(std::abs(backLeftMtr.get_position() - d)>15){
-		pros::c::delay(10);
+	if ( d < 0){
+		while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d){
+			double le = frontLeftMtr.get_position();
+			double re = frontRightMtr.get_position();
+			double ble = backLeftMtr.get_position();
+			double bre = backRightMtr.get_position();
+			double diff = abs(le - re);
+			diff = .25 * diff;
+			double backdiff = ble - re;
+			double backrightdiff = bre - le;
+			backdiff = backdiff * .2;
+			backrightdiff = backrightdiff * .2;
+			double adjust = -speedCoef + (2 * diff);
+
+			if(le >= re)
+			{
+				if(abs(d - frontRightMtr.get_position()) * kp > 100)
+			 {
+				 speedCoef = 90;
+			 }
+			 else if(abs(d - frontRightMtr.get_position()) * kp < 10)
+			 {
+				 speedCoef = 25;
+			 }
+			 else{
+				 speedCoef = abs(d - frontRightMtr.get_position()) * kp;
+			 }
+
+			frontLeftMtr = -speedCoef - diff;
+			frontRightMtr= -speedCoef + diff;
+			backLeftMtr = -speedCoef - backdiff;
+			backRightMtr= -speedCoef - backrightdiff ;
+		}
+		if(re > le)
+		{
+			if(abs(d - frontRightMtr.get_position()) * kp > 100)
+		 {
+			 speedCoef = 70;
+		 }
+		 else if(abs(d - frontRightMtr.get_position()) * kp < 10)
+		 {
+			 speedCoef = 25;
+		 }
+		 else{
+			 speedCoef = abs(d - frontRightMtr.get_position()) * kp;
+		 }
+
+			frontLeftMtr = -speedCoef + diff;
+			frontRightMtr= -speedCoef - diff;
+			backLeftMtr = -speedCoef - backdiff;
+			backRightMtr= -speedCoef - backrightdiff ;
+		}
+	/*	if(adjust < -105)
+		{
+			frontLeftMtr = -speedCoef + (2 * diff);
+			frontRightMtr= -100;
+			backLeftMtr = -speedCoef + (2 * diff);
+			backRightMtr= -100;
+		}
+		*/
+			pros::lcd::print(1, "Entered firstLoop");
+			pros::lcd::print(2, "fLeft encoder: %f", le);
+			pros::lcd::print(3, "fright encoder: %f", re);
+			pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+			pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+			pros::lcd::print(6, "speedCoef %d", speedCoef);
+			pros::lcd::print(7, "diff %f", diff);
+			pros::c::delay(200);
+
+		}
 	}
+	chassisSet(0, 0 );
+	pros::c::delay(1000);
 }
 
-//pid - work with this l8r
-//todo: do the thing josh was talkign about with tracking velocties
-//if velo < some value: turn off all motors, but also make sure time is greater than 100
-//also incorporate chasiset for turning
-void moveTo1(double d, int RT = 1, int LT = 1){
-	resetPositions();
-	double diff = (d - frontLeftMtr.get_position());
-	//coeff
-	double q = .1;
+// void moveTo(double d, int speedCoef){
+// 	resetPositions();
+// 	int speed = 0;
+// 	double slowdown = (4 * d) / 5;
+// 	if(d > 0){
+// 		while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d){
+// 			double le = frontLeftMtr.get_position();
+// 			double re = frontRightMtr.get_position();
+// 			double ble = backLeftMtr.get_position();
+// 			double diff = le - re;
+// 			double samesidediff = le - ble;
+// 			double adjust =  speedCoef + (2 * diff);
+// 			double samesideadjust = speedCoef + (2 * samesidediff);
+// 			frontLeftMtr = speedCoef;
+// 			frontRightMtr= adjust;
+// 			backLeftMtr = samesideadjust;
+// 			backRightMtr= adjust;
+// 			pros::lcd::print(1, "Entered firstLoop");
+// 			pros::lcd::print(2, "fLeft encoder: %f", le);
+// 			pros::lcd::print(3, "fright encoder: %f", re);
+// 			pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+// 			pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+// 			pros::lcd::print(6, "slowdown %f", slowdown);
+// 			pros::c::delay(50);
+// 		}
+// 	}
+// 	if ( d < 0){
+// 		while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d){
+// 			double le = frontLeftMtr.get_position();
+// 			double re = frontRightMtr.get_position();
+// 			double ble = backLeftMtr.get_position();
+// 			double diff = le - re;
+// 			double samesidediff = le - ble;
+// 			double adjust = -speedCoef + (2 * diff);
+// 			double samesideadjust = -speedCoef + (2 * samesidediff);
+// 			frontLeftMtr = -speedCoef;
+// 			frontRightMtr= adjust;
+// 			backLeftMtr = samesideadjust;
+// 			backRightMtr= adjust;
+// 			pros::lcd::print(1, "Entered firstLoop");
+// 			pros::lcd::print(2, "fLeft encoder: %f", le);
+// 			pros::lcd::print(3, "fright encoder: %f", re);
+// 			pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
+// 			pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
+// 			pros::lcd::print(6, "slowdown %f", slowdown);
+// 			pros::c::delay(50);
+// 		}
+// 	}
 
-	while(diff > 5){
-		pros::lcd::print(1, "diff: %d", diff);
-		diff = (d - frontLeftMtr.get_position());
-		chassisSet(diff * q * LT, diff * q * RT);
+// chassisSet(0,0);
+// }
 
-	}
-	chassisSet(0, 0);
-}
+
 
 
 void resetPositions(){
@@ -211,25 +410,22 @@ void resetPositions(){
 	frontRightMtr.tare_position();
 }
 
-//MISC CONTROLS//
 void motorStop() {
 	for (int i = 0; i < 8; i++) {
 		motors[i] = 0;
 	}
 }
+
+//FOR TESTING CODE//
 void testfunct(){
-	//FOR TESTING CODE//
-	pros::c::delay(3000);
-	moveTo1(3000);
-	moveTo1(2000, -1, 1);
-	moveTo1(2000, 1, -1);
-	moveTo1(-3000);
+
 }
 
 void opcontrol() {
 
 	//fuck this all jeez
 //	testfunct();
+	int disp = 0;
 	int prevTravelDist = 0;
 	bool flyWheelToggle = false;
 	int intakeToggle = 0;
@@ -240,19 +436,23 @@ void opcontrol() {
 	bool right = false;
 	bool bPressed = false;
 	bool lPressed = false;
+	bool autoReap = false;
 	bool rPressed = false;
 	pros::ADIDigitalIn limit ('A');
 //	pros::ADIAnalogIn gyroscope ('B');
-
+//	pros::Vision::print_signature(RED_FLAG);
 //	gyroscope.calibrate();
+
+	pros::vision_object_s_t* read_arr = new pros::vision_object_s_t[5];
+
 	while (true) {
 
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y);
 		int driveRight = master.get_analog(ANALOG_RIGHT_X);
 
 
-
-
+ 		vision_sensor.read_by_size(1, 5, read_arr);
+		PrintReadableVisObj(read_arr[0]);
 
 		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
 			if(limit.get_value() == 1 && reaperToggle == 1){
@@ -260,6 +460,10 @@ void opcontrol() {
 			}
 			else if (limit.get_value() == 1 && reaperToggle == 0){
 				reaperToggle = 1;
+				reaper(reaperToggle);
+				pros::lcd::print(1, " Ball is shot");
+				pros::c::delay(300);
+					pros::lcd::print(1, " Ball is shot after wait");
 			}
 			else if (reaperToggle == 0 || reaperToggle == -1){
 				reaperToggle = 1;
@@ -363,8 +567,20 @@ void opcontrol() {
 		reaper(reaperToggle);
 		prevTravelDist = frontLeftMtr.get_position();
 
-		pros::lcd::print(1, "Reaper: %f Intake: %d", (reaperMotor.get_actual_velocity()),(int)intakeToggle);
-		pros::lcd::print(2, "Flywheel: %f", (flyWheelMotor.get_actual_velocity()));
+		pros::lcd::print(1, "RPR: %f INT: %d FLY: %f", reaperMotor.get_actual_velocity(),(int)intakeToggle,(flyWheelMotor.get_actual_velocity()));
+		pros::lcd::print(2, "BL: %lf FL: %lf", backLeftMtr.get_actual_velocity(),frontLeftMtr.get_actual_velocity());
+		pros::lcd::print(3, "BR: %lf FR: %lf", backRightMtr.get_actual_velocity(),frontRightMtr.get_actual_velocity());
+
+//		pros::lcd::print(4, "MTRDISP: %lf ", disp);
+
+		if(backLeftMtr.get_actual_velocity() != frontLeftMtr.get_actual_velocity() || backRightMtr.get_actual_velocity() != frontRightMtr.get_actual_velocity()){
+			printf("MOTOR DISPUTE | ");
+			printf(" BL %lf FL %lf |\n",  backLeftMtr.get_actual_velocity(),frontLeftMtr.get_actual_velocity());
+			printf(" BR %lf FR %lf |\n",  backRightMtr.get_actual_velocity(),frontRightMtr.get_actual_velocity());
+		}
+
+
+
 	//	pros::lcd::print(3, "GYRO: %d", (gyroscope.get_value()));
 
 		pros::Task::delay(20);

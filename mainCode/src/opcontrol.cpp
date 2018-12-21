@@ -198,50 +198,149 @@ void moveTo(double d, int speedCoef = 90){
 	resetPositions();
 	int speed = 0;
 	double slowdown = (4 * d) / 5;
+	double kp = .1;
+
+
 
 	if(d > 0){
 		while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d){
 			double le = frontLeftMtr.get_position();
 			double re = frontRightMtr.get_position();
 			double ble = backLeftMtr.get_position();
-			double diff = le - re;
-			double samesidediff = le - ble;
+			double diff = abs(le - re);
+			diff = .25 * diff;
+			double samesidediff = abs(le - ble);
 			double adjust = speedCoef + (2 * diff);
 			double samesideadjust = speedCoef + (2 * samesidediff);
-			frontLeftMtr = speedCoef;
-			frontRightMtr= adjust;
-			backLeftMtr = samesideadjust;
-			backRightMtr= adjust;
+
+			if(le >= re)
+			 {
+
+				 if(abs(d - frontRightMtr.get_position()) * kp > 127)
+				 {
+					 speedCoef = 90;
+				 }
+				 else if(abs(d - frontRightMtr.get_position()) * kp < 10)
+				 {
+					 speedCoef = 10;
+				 }
+				 else{
+					 speedCoef = abs(d - frontRightMtr.get_position()) * kp;
+				 }
+						frontLeftMtr = speedCoef - diff;
+						frontRightMtr= speedCoef + diff;
+						backLeftMtr = speedCoef - diff;
+						backRightMtr= speedCoef + diff + 5;
+				}
+			if(re > le)
+			{
+
+				if(abs(d - frontRightMtr.get_position()) * kp > 127)
+ 			 {
+ 				 speedCoef = 90;
+ 			 }
+ 			 else if(abs(d - frontRightMtr.get_position()) * kp < 10)
+ 			 {
+ 				 speedCoef = 10;
+ 			 }
+ 			 else{
+ 				 speedCoef = abs(d - frontRightMtr.get_position()) * kp;
+ 			 }
+				frontLeftMtr = speedCoef + diff;
+				frontRightMtr= speedCoef - diff;
+				backLeftMtr = speedCoef + diff;
+				backRightMtr= speedCoef - diff - 5;
+			}
+
+	/*	if(adjust >= 105)
+		{
+		frontLeftMtr = speedCoef - (2 * diff);
+		frontRightMtr= adjust;
+		backLeftMtr = speedCoef - (2 * diff);
+		backRightMtr= adjust;
+	}
+	*/
+
 			pros::lcd::print(1, "Entered firstLoop");
 			pros::lcd::print(2, "fLeft encoder: %f", le);
 			pros::lcd::print(3, "fright encoder: %f", re);
 			pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
 			pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
-			pros::lcd::print(6, "slowdown %f", slowdown);
-			pros::c::delay(50);
-		}
+			pros::lcd::print(6, "diff  %f", diff);
+			pros::c::delay(150);
+
 	}
+}
+
 
 	if ( d < 0){
 		while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d){
 			double le = frontLeftMtr.get_position();
 			double re = frontRightMtr.get_position();
 			double ble = backLeftMtr.get_position();
-			double diff = le - re;
-			double samesidediff = le - ble;
+			double bre = backRightMtr.get_position();
+			double diff = abs(le - re);
+			diff = .25 * diff;
+			double backdiff = ble - re;
+			double backrightdiff = bre - le;
+			backdiff = backdiff * .2;
+			backrightdiff = backrightdiff * .2;
 			double adjust = -speedCoef + (2 * diff);
-			double samesideadjust = -speedCoef + (2 * samesidediff);
-			frontLeftMtr = -speedCoef;
-			frontRightMtr= adjust;
-			backLeftMtr = samesideadjust;
-			backRightMtr= adjust;
+
+			if(le >= re)
+			{
+				if(abs(d - frontRightMtr.get_position()) * kp > 100)
+			 {
+				 speedCoef = 90;
+			 }
+			 else if(abs(d - frontRightMtr.get_position()) * kp < 10)
+			 {
+				 speedCoef = 25;
+			 }
+			 else{
+				 speedCoef = abs(d - frontRightMtr.get_position()) * kp;
+			 }
+
+			frontLeftMtr = -speedCoef - diff;
+			frontRightMtr= -speedCoef + diff;
+			backLeftMtr = -speedCoef - backdiff;
+			backRightMtr= -speedCoef - backrightdiff ;
+		}
+		if(re > le)
+		{
+			if(abs(d - frontRightMtr.get_position()) * kp > 100)
+		 {
+			 speedCoef = 70;
+		 }
+		 else if(abs(d - frontRightMtr.get_position()) * kp < 10)
+		 {
+			 speedCoef = 25;
+		 }
+		 else{
+			 speedCoef = abs(d - frontRightMtr.get_position()) * kp;
+		 }
+
+			frontLeftMtr = -speedCoef + diff;
+			frontRightMtr= -speedCoef - diff;
+			backLeftMtr = -speedCoef - backdiff;
+			backRightMtr= -speedCoef - backrightdiff ;
+		}
+	/*	if(adjust < -105)
+		{
+			frontLeftMtr = -speedCoef + (2 * diff);
+			frontRightMtr= -100;
+			backLeftMtr = -speedCoef + (2 * diff);
+			backRightMtr= -100;
+		}
+		*/
 			pros::lcd::print(1, "Entered firstLoop");
 			pros::lcd::print(2, "fLeft encoder: %f", le);
 			pros::lcd::print(3, "fright encoder: %f", re);
 			pros::lcd::print(4, "bleft encoder: %f", backLeftMtr.get_position());
 			pros::lcd::print(5, "bright encoder: %f", backRightMtr.get_position());
-			pros::lcd::print(6, "slowdown %f", slowdown);
-			pros::c::delay(50);
+			pros::lcd::print(6, "speedCoef %d", speedCoef);
+			pros::lcd::print(7, "diff %f", diff);
+			pros::c::delay(200);
 
 		}
 	}
@@ -361,7 +460,10 @@ void opcontrol() {
 			}
 			else if (limit.get_value() == 1 && reaperToggle == 0){
 				reaperToggle = 1;
-				pros::Task::delay(40);
+				reaper(reaperToggle);
+				pros::lcd::print(1, " Ball is shot");
+				pros::c::delay(300);
+					pros::lcd::print(1, " Ball is shot after wait");
 			}
 			else if (reaperToggle == 0 || reaperToggle == -1){
 				reaperToggle = 1;

@@ -6,8 +6,8 @@ void testfunct();
 void intake(int toggle);
 void reaper(int toggle);
 void flywheel(bool toggle);
-void moveTo(double d);
-void moveTo(double d, int speedCoef);
+// void moveTo(double d);
+void moveTo(double d, int speedCoef = 90);
 void turn(double d, int i); //1 FOR LEFT; 0 FOR RIGHT
 void rightTurn(double d, int speed = 100);
 void leftTurn(double d, int speed = 100);
@@ -28,19 +28,19 @@ void auton1(){
 	//pros::c::delay(1000);
 
 	pros::c::delay(500);
-	moveTo(-2850);
-	rightTurn(101);
+	moveTo(-2730);
+	rightTurn(95);
 	//moveReaper(2000, true);
 	reaper(1);
-	pros::c::delay(1000);
+	pros::c::delay(500);
 	reaper(0);
 	//pros::c::delay(1000);
-	moveTo(1700);
+	moveTo(1800);
 	reaper(1);
 	pros::c::delay(3000);
 	reaper(0);
 	rightTurn(14);
-	moveTo(1200);
+	moveTo(1800);
 
 
 	//park
@@ -55,6 +55,7 @@ void auton1(){
 
 void auton2(){
 	pros::lcd::print(0, "INIT auton2");
+
 	flywheel(true); // flywheel first, flameo - josh
 	intake(1);
 	pros::c::delay(1500);
@@ -62,10 +63,10 @@ void auton2(){
 	//pros::c::delay(1000);
 	pros::c::delay(500);
 	moveTo(-2730);
-	leftTurn(89);
+	leftTurn(88);
 	//moveReaper(2000, true);
 	reaper(1);
-	pros::c::delay(1000);
+	pros::c::delay(300);
 	reaper(0);
 
 	//pros::c::delay(1000);
@@ -76,7 +77,7 @@ void auton2(){
 	pros::c::delay(50);
 	leftTurn(8);
 	//leftTurn(14);
-	moveTo(1400);
+	moveTo(1700);
 
 
 	//park
@@ -156,11 +157,14 @@ intake(1);
 void autonskills()
 {
 	pros::lcd::print(0, "INIT autonskills");
+
+
+
 flywheel(true); // flywheel first, flameo - josh
 intake(1);
 pros::c::delay(1500);
-moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-pros::c::delay(1500);
+moveTo(2700, 60);//this is pretty close - 2900 is perfect to intake the ball
+pros::c::delay(2000);
 // intakes second ball
 reaper(1);
 while(limit.get_value() != 1);
@@ -168,12 +172,13 @@ reaper(0);
 intake(-1);
 pros::c::delay(1000);
 // moves to flip first cap
-moveTo(1000, 20);
+moveTo(650, 20);
 pros::c::delay(1500);
-moveTo(-1100);
-moveTo(-2730);
-rightTurn(109, 40);
-moveTo(2700);
+
+moveTo(-2500);
+rightTurn(88, 40);
+moveTo(3000);
+
 // shoots first ball
 reaper(1);
 pros::c::delay(300);
@@ -181,13 +186,16 @@ pros::c::delay(300);
 while(limit.get_value() != 1);
 reaper(0);
 // scores second flag
-moveTo(1800);
+moveTo(600);
 reaper(1);
-pros::c::delay(300);
+pros::c::delay(1000);
+rightTurn(10, 20);
 // scores low flag
-moveTo(1700);
+moveTo(600);
+moveTo(-600);
+leftTurn(12, 20);
 // goes to cube
-moveTo(-2700);
+moveTo(-1800);
 leftTurn(91, 40);
 intake(1);
 moveTo(3000);
