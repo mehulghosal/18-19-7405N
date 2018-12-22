@@ -142,9 +142,9 @@ void drive(int driveL, int driveR) {
 }
 
 //OTHER FEATURE CONTROLS//
-void flywheel(bool toggle){
+void flywheel(bool toggle, int speed = 127){
 	if(toggle){
-		flyWheelMotor = 127;
+		flyWheelMotor = speed;
 	}
 	else {
 		flyWheelMotor = 0;

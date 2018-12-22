@@ -5,9 +5,10 @@ pros::ADIDigitalIn limit ('A');
 void testfunct();
 void intake(int toggle);
 void reaper(int toggle);
-void flywheel(bool toggle);
+void flywheel(bool toggle, int speed = 127);
 // void moveTo(double d);
-void moveTo(double d, int speedCoef = 90);
+void moveTo(double d);
+void moveTo(double d, double speed);
 void turn(double d, int i); //1 FOR LEFT; 0 FOR RIGHT
 void rightTurn(double d, int speed = 100);
 void leftTurn(double d, int speed = 100);
@@ -104,13 +105,29 @@ void auton3(){
 	reaper(1);
 	while(limit.get_value() != 1);
 	reaper(0);
+	intake(0);
+	pros::c::delay(300);
+	leftTurn(85);
+	moveTo(-200, 30);
+	reaper(1);
+	pros::c::delay(200);
+	flywheel(true, 90);
 
-	rightTurn(95, 40); // needs to be tuned
-	pros::c::delay(200);
-	intake(-1);
-	pros::c::delay(200);
-	moveTo(1000, 30); // needs to be tuned
-	moveTo(-1000);
+	// rightTurn(95, 40); // needs to be tuned
+	// pros::c::delay(200);
+	// intake(-1);
+	// pros::c::delay(200);
+	// moveTo(100, 20); // needs to be tuned
+	// moveTo(-500);
+	// leftTurn(178);
+	// reaper(1);
+	// pros::c::delay(200);
+	// reaper(0);
+	// leftTurn(90);
+	// moveTo(500);
+	// rightTurn(94);
+	// moveTo(1500);
+
 
 
 }
