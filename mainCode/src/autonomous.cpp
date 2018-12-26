@@ -97,21 +97,28 @@ void auton2(){
 void auton3(){
 	pros::lcd::print(0, "INIT auton3");
 	//backred
-	flywheel(true); // flywheel first, flameo - josh
+	flywheel(true, 120); // flywheel first, flameo - josh
 	intake(1);
-
+	pros::c::delay(1500);
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
 	pros::c::delay(1500);
+
+	moveTo(-150, 25);
+	leftTurn(84);
+	moveTo(-700, 30);
 	reaper(1);
+	pros::c::delay(300);
+	flywheel(true, 117);
 	while(limit.get_value() != 1);
 	reaper(0);
-	intake(0);
+	// intake(0);
 	pros::c::delay(300);
-	leftTurn(85);
-	moveTo(-200, 30);
 	reaper(1);
-	pros::c::delay(200);
-	flywheel(true, 90);
+	pros::c::delay(1000);
+	leftTurn(16);
+	intake(-1);
+	moveTo(3000, 127);
+
 
 	// rightTurn(95, 40); // needs to be tuned
 	// pros::c::delay(200);

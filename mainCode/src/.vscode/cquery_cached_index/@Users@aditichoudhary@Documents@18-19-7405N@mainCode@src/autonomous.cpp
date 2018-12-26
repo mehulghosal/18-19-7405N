@@ -5,9 +5,10 @@ pros::ADIDigitalIn limit ('A');
 void testfunct();
 void intake(int toggle);
 void reaper(int toggle);
-void flywheel(bool toggle);
+void flywheel(bool toggle, int speed = 127);
 // void moveTo(double d);
-void moveTo(double d, int speedCoef = 90);
+void moveTo(double d);
+void moveTo(double d, double speed);
 void turn(double d, int i); //1 FOR LEFT; 0 FOR RIGHT
 void rightTurn(double d, int speed = 100);
 void leftTurn(double d, int speed = 100);
@@ -21,13 +22,14 @@ void arm(bool toggle);
 void auton1(){
 	pros::lcd::print(0,"INIT Auton1");
 	//move forward to ball in front
+
 	flywheel(true); // flywheel first, flameo - josh
 	intake(1);
-	pros::c::delay(1500);
+
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
 	//pros::c::delay(1000);
 
-	pros::c::delay(500);
+
 	moveTo(-2730);
 	rightTurn(95);
 	//moveReaper(2000, true);
@@ -37,10 +39,12 @@ void auton1(){
 	//pros::c::delay(1000);
 	moveTo(1800);
 	reaper(1);
-	pros::c::delay(3000);
+	pros::c::delay(1500);
 	reaper(0);
-	rightTurn(14);
+	rightTurn(20);
 	moveTo(1800);
+	moveTo(-1500);
+	leftTurn(90);
 
 
 	//park
@@ -56,28 +60,30 @@ void auton1(){
 void auton2(){
 	pros::lcd::print(0, "INIT auton2");
 
+
 	flywheel(true); // flywheel first, flameo - josh
 	intake(1);
-	pros::c::delay(1500);
+
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
 	//pros::c::delay(1000);
-	pros::c::delay(500);
-	moveTo(-2730);
-	leftTurn(88);
+
+	moveTo(-2800);
+	leftTurn(90);
 	//moveReaper(2000, true);
 	reaper(1);
-	pros::c::delay(300);
+	pros::c::delay(500);
 	reaper(0);
 
 	//pros::c::delay(1000);
 	moveTo(1800);
 	reaper(1);
-	pros::c::delay(2000);
+	pros::c::delay(1500);
 	reaper(0);
 	pros::c::delay(50);
-	leftTurn(8);
+	leftTurn(20);
 	//leftTurn(14);
-	moveTo(1700);
+	moveTo(1000);
+		moveTo(-1000);
 
 
 	//park
@@ -93,17 +99,35 @@ void auton3(){
 	//backred
 	flywheel(true); // flywheel first, flameo - josh
 	intake(1);
-	pros::c::delay(1500);
+
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
 	pros::c::delay(1500);
 	reaper(1);
 	while(limit.get_value() != 1);
 	reaper(0);
+	intake(0);
+	pros::c::delay(300);
+	leftTurn(85);
+	moveTo(-200, 30);
+	reaper(1);
 	pros::c::delay(200);
-	moveTo(-230);
-	leftTurn(94, 40); // needs to be tuned
-	pros::c::delay(200);
-	moveTo(3300); // needs to be tuned
+	flywheel(true, 90);
+
+	// rightTurn(95, 40); // needs to be tuned
+	// pros::c::delay(200);
+	// intake(-1);
+	// pros::c::delay(200);
+	// moveTo(100, 20); // needs to be tuned
+	// moveTo(-500);
+	// leftTurn(178);
+	// reaper(1);
+	// pros::c::delay(200);
+	// reaper(0);
+	// leftTurn(90);
+	// moveTo(500);
+	// rightTurn(94);
+	// moveTo(1500);
+
 
 
 }
