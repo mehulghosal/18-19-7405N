@@ -19,7 +19,7 @@ void arm(bool toggle);
 
 
 //AUTONS//
-void auton1(){
+void topBlue(){
 	pros::lcd::print(0,"INIT Auton1");
 	//move forward to ball in front
 
@@ -57,7 +57,7 @@ void auton1(){
 }
 
 
-void auton2(){
+void topRed(){
 	pros::lcd::print(0, "INIT auton2");
 
 
@@ -120,7 +120,7 @@ void newBackBlue(){
 	intake(-1);
 	moveTo(3300, 127);
 }
-void auton3(){ // back blue
+void backRed(){ // back blue
 	pros::lcd::print(0, "INIT auton3");
 	//backred
 	flywheel(true, 120); // flywheel first, flameo - josh
@@ -281,16 +281,16 @@ void test(){
 // std::string autonstateNames[] = {"top blue", "top red", "back blue", "back red", "codeSkills"};
 void autonomous() {
 	if(getAutonState() == 1){
-		auton1(); // top blue
+		topBlue(); // top blue
 	}
 	else if(getAutonState() == 2){
-		auton2(); // top red
+		topRed(); // top red
 	}
 	else if(getAutonState() == 3){
 		newBackBlue(); // back blue
 	}
 	else if(getAutonState() == 4){
-		auton3(); // back red
+		backRed(); // back red
 	}
 	else if(getAutonState() == 5){
 		autonskills();
