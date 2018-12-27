@@ -94,7 +94,33 @@ void auton2(){
 	moveTo(2500);*/
 
 }
-void auton3(){
+
+void newBackBlue(){
+	pros::lcd::print(0, "INIT auton3");
+	//backred
+	flywheel(true, 120); // flywheel first, flameo - josh
+	intake(1);
+	pros::c::delay(1500);
+	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+	pros::c::delay(1500);
+
+	moveTo(-150, 25);
+	rightTurn(88);
+	moveTo(-700, 30);
+	reaper(1);
+	pros::c::delay(300);
+	flywheel(true, 117);
+	while(limit.get_value() != 1);
+	reaper(0);
+	// intake(0);
+	pros::c::delay(300);
+	reaper(1);
+	pros::c::delay(1000);
+	rightTurn(16);
+	intake(-1);
+	moveTo(3300, 127);
+}
+void auton3(){ // back blue
 	pros::lcd::print(0, "INIT auton3");
 	//backred
 	flywheel(true, 120); // flywheel first, flameo - josh
@@ -252,22 +278,22 @@ void test(){
 	//right turn by 90 degrees
 	turn(90, 0);
 }
-
+// std::string autonstateNames[] = {"top blue", "top red", "back blue", "back red", "codeSkills"};
 void autonomous() {
 	if(getAutonState() == 1){
-		auton1();
+		auton1(); // top blue
 	}
 	else if(getAutonState() == 2){
-		auton2();
+		auton2(); // top red
 	}
 	else if(getAutonState() == 3){
-		auton4();
+		newBackBlue(); // back blue
 	}
 	else if(getAutonState() == 4){
-		auton3();
+		auton3(); // back red
 	}
 	else if(getAutonState() == 5){
-			autonskills();
+		autonskills();
 	}
 	//auton1();
 	//test();
