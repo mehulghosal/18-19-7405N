@@ -5,7 +5,8 @@ pros::ADIDigitalIn limit ('A');
 void testfunct();
 void intake(int toggle);
 void reaper(int toggle);
-void flywheel(bool toggle, int speed = 127);
+void flywheel(bool toggle, int speed = 200);
+
 // void moveTo(double d);
 void moveTo(double d);
 void moveTo(double d, double speed);
@@ -24,7 +25,7 @@ void topBlue(){
 	pros::lcd::print(0,"INIT Auton1");
 	//move forward to ball in front
 
-	flywheel(true); // flywheel first, flameo - josh
+	flywheel(true, 195); // flywheel first, flameo - josh
 	intake(1);
 
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
@@ -32,7 +33,9 @@ void topBlue(){
 
 
 	moveTo(-2730);
-	rightTurn(95);
+	rightTurn(91);
+	moveTo(300);
+
 	//moveReaper(2000, true);
 	reaper(1);
 	pros::c::delay(500);
@@ -62,7 +65,7 @@ void topRed(){
 	pros::lcd::print(0, "INIT auton2");
 
 
-	flywheel(true); // flywheel first, flameo - josh
+	flywheel(true, 195); // flywheel first, flameo - josh
 	intake(1);
 
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
@@ -99,7 +102,7 @@ void topRed(){
 void backBlue(){
 	pros::lcd::print(0, "INIT auton3");
 	//backblue
-	flywheel(true, 119); // flywheel first, flameo - josh
+	flywheel(true, 187); // flywheel first, flameo - josh
 	intake(1);
 	pros::c::delay(1500);
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
@@ -110,7 +113,7 @@ void backBlue(){
 	moveTo(-700, 30);
 	reaper(1);
 	pros::c::delay(300);
-	flywheel(true, 119);
+	flywheel(true, 170);
 	while(limit.get_value() != 1);
 	reaper(0);
 	// intake(0);
@@ -126,7 +129,7 @@ void backBlue(){
 void backRed(){ // back blue
 	pros::lcd::print(0, "INIT auton3");
 	//backred
-	flywheel(true, 120); // flywheel first, flameo - josh
+	flywheel(true, 187); // flywheel first, flameo - josh
 	intake(1);
 	pros::c::delay(1500);
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
@@ -154,7 +157,7 @@ void backRed(){ // back blue
 void autonskills(){
 	pros::lcd::print(0, "INIT autonskills");
 
-	flywheel(true, 119); // flywheel first, flameo - josh
+	flywheel(true, 200); // flywheel first, flameo - josh
 	intake(1);
 	pros::c::delay(1500);
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball

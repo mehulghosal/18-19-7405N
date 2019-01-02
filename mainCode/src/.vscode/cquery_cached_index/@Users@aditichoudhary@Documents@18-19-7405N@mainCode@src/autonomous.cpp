@@ -5,7 +5,8 @@ pros::ADIDigitalIn limit ('A');
 void testfunct();
 void intake(int toggle);
 void reaper(int toggle);
-void flywheel(bool toggle, int speed = 127);
+void flywheel(bool toggle, int speed = 200);
+
 // void moveTo(double d);
 void moveTo(double d);
 void moveTo(double d, double speed);
@@ -24,7 +25,7 @@ void topBlue(){
 	pros::lcd::print(0,"INIT Auton1");
 	//move forward to ball in front
 
-	flywheel(true); // flywheel first, flameo - josh
+	flywheel(true, 195); // flywheel first, flameo - josh
 	intake(1);
 
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
@@ -32,7 +33,9 @@ void topBlue(){
 
 
 	moveTo(-2730);
-	rightTurn(95);
+	rightTurn(91);
+	moveTo(300);
+
 	//moveReaper(2000, true);
 	reaper(1);
 	pros::c::delay(500);
@@ -62,7 +65,7 @@ void topRed(){
 	pros::lcd::print(0, "INIT auton2");
 
 
-	flywheel(true); // flywheel first, flameo - josh
+	flywheel(true, 195); // flywheel first, flameo - josh
 	intake(1);
 
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
@@ -98,8 +101,8 @@ void topRed(){
 
 void backBlue(){
 	pros::lcd::print(0, "INIT auton3");
-	//backred
-	flywheel(true, 119); // flywheel first, flameo - josh
+	//backblue
+	flywheel(true, 187); // flywheel first, flameo - josh
 	intake(1);
 	pros::c::delay(1500);
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
@@ -110,25 +113,23 @@ void backBlue(){
 	moveTo(-700, 30);
 	reaper(1);
 	pros::c::delay(300);
-	flywheel(true, 119);
+	flywheel(true, 170);
 	while(limit.get_value() != 1);
 	reaper(0);
 	// intake(0);
 	pros::c::delay(300);
 	reaper(1);
 	pros::c::delay(1000);
-	if(getParkState())
-	{
-
-	rightTurn(10);
-	intake(-1);
-	moveTo(3100, 127);
-}
+	if(getParkState()){
+		rightTurn(10);
+		intake(-1);
+		moveTo(3100, 127);
+	}
 }
 void backRed(){ // back blue
 	pros::lcd::print(0, "INIT auton3");
 	//backred
-	flywheel(true, 120); // flywheel first, flameo - josh
+	flywheel(true, 187); // flywheel first, flameo - josh
 	intake(1);
 	pros::c::delay(1500);
 	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
@@ -146,69 +147,84 @@ void backRed(){ // back blue
 	pros::c::delay(300);
 	reaper(1);
 	pros::c::delay(1000);
-	if(getParkState())
-	{
-	leftTurn(10);
-	intake(-1);
-	moveTo(3000, 127);
-}
+	if(getParkState()){
+		leftTurn(10);
+		intake(-1);
+		moveTo(3000, 127);
+	}
 }
 
 void autonskills(){
 	pros::lcd::print(0, "INIT autonskills");
 
-	flywheel(true); // flywheel first, flameo - josh
+	flywheel(true, 200); // flywheel first, flameo - josh
 	intake(1);
 	pros::c::delay(1500);
-	moveTo(2700, 60);//this is pretty close - 2900 is perfect to intake the ball
-	pros::c::delay(2000);
-	// intakes second ball
-	reaper(1);
-	while(limit.get_value() != 1);
-	reaper(0);
-	intake(-1);
-	pros::c::delay(1000);
-	// moves to flip first cap
-	moveTo(650, 20);
+	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
 	pros::c::delay(1500);
-
-	moveTo(-3100);
-	rightTurn(88, 40);
-	moveTo(3000);
-
-	// shoots first ball
+	moveTo(-150, 25);
+	rightTurn(88);
+	moveTo(-700, 30);
 	reaper(1);
 	pros::c::delay(300);
-	// indexes second ball
+	flywheel(true, 119);
 	while(limit.get_value() != 1);
 	reaper(0);
-	// scores second flag
-	moveTo(600);
+	// intake(0);
+	pros::c::delay(300);
 	reaper(1);
-	pros::c::delay(1000);
-	rightTurn(10, 20);
-	// scores low flag
-	moveTo(600);
-	moveTo(-600);
-	leftTurn(12, 20);
-	// goes to cube
-	moveTo(-1800);
-	leftTurn(91, 40);
+	pros::c::delay(500);
+
+
+	moveTo(700 + 150);
+	rightTurn(-88);
+	intake(-1);//flip cap
+	moveTo(700);
+
+
+	moveTo(-(700 + 3000));
+	rightTurn(90);
+
+	moveTo(3000);
+	leftTurn(90);
+
+
 	intake(1);
 	moveTo(3000);
-	// intakes ball
-	while(limit.get_value() != 1);
-	reaper(0);
-	intake(-1);
-	pros::c::delay(1000);
-	// flips second cap
-	moveTo(1000, 20);
-	moveTo(-1100);
-	rightTurn(110,40);
-	moveTo(2000);
+	moveTo(-2730);
+	rightTurn(95);
 	reaper(1);
-	pros::c::delay(1000);
+	pros::c::delay(500);
+	reaper(0);
+	moveTo(1800);
+	reaper(1);
+	pros::c::delay(1500);
+	reaper(0);
+	rightTurn(20);
+	moveTo(1800);
+	moveTo(-1500);
+	leftTurn(90);
+
+	leftTurn(-90);
+	moveTo(-1000);
+	intake(-1);
+	leftTurn(90);
+	moveTo(3300);
+
+	moveTo(-300);
+	rightTurn(90);
 	moveTo(1500);
+
+	rightTurn(180);
+	moveTo(3500);
+
+	moveTo(-500);
+	leftTurn(90);
+	moveTo(500);
+	leftTurn(-90);
+	moveTo(1300);
+	rightTurn(90);
+	moveTo(1300);
 
 
 }

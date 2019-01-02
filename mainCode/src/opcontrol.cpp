@@ -10,7 +10,7 @@ pros::Motor frontLeftMtr(10);
 pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor backRightMtr(4, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor reaperMotor(5, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor flyWheelMotor(6);
+pros::Motor flyWheelMotor(6, pros::E_MOTOR_GEARSET_18);
 pros::Motor intakeMotor(7);
 pros::Motor armMotor(8);
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
@@ -150,13 +150,15 @@ void drive(int driveL, int driveR) {
 }
 
 //OTHER FEATURE CONTROLS//
-void flywheel(bool toggle, int speed = 127){
+void flywheel(bool toggle, int speed = 200){
 	if(toggle){
-		flyWheelMotor = speed;
+
+		flyWheelMotor.move_velocity(speed);
 	}
 	else {
 		flyWheelMotor = 0;
 	}
+			pros::lcd::print(3, "flywheel %d", flyWheelMotor.get_actual_velocity());
 }
 void reaper(int toggle){
 	if(toggle == 1){

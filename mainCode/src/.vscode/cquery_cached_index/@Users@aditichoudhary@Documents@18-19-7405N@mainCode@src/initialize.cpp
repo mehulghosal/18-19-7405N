@@ -32,7 +32,7 @@ bool getParkState()
     ParkState = true;
   }
 
- 	pros::lcd::print(3, "ParkState: %d", ParkState);
+ 	pros::lcd::print(6, "ParkState: %d", ParkState);
 }
 void onCenterButton( ){
  	std::string inp = "RUNNING AUTON: " + autonstateNames[autonstate - 1];
