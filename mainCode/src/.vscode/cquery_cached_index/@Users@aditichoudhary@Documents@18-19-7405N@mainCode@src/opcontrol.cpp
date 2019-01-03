@@ -139,11 +139,31 @@ void rightTurn(double mult, int speed = 100){
 }
 
 void drive(int driveL, int driveR) {
+if(abs(driveL) > 15 && driveR < 15 && driveR > -15)
+{
 
-	if(abs(driveL) >= 15 || abs(driveR) >= 15) {
+	double le = frontLeftMtr.get_position();
+	double re = frontRightMtr.get_position();
+	double ble = backLeftMtr.get_position();
+	double bre = backRightMtr.get_position();
+	double diff = le - re;
+	diff = .25 * diff;
+	double samesidediff = le - ble;
+	samesidediff = samesidediff * .25;
+	double backrightadjust = .25 *(le - bre);
+	frontLeftMtr = driveL;
+	frontRightMtr= driveL + diff;
+	backLeftMtr = driveL + samesidediff;
+	backRightMtr= driveL+ backrightadjust;
+
+}
+	else if(abs(driveL) >= 15 || abs(driveR) >= 15) {
 		chassisSet(std::min(std::max(driveL + driveR, -127),127), std::min(std::max(driveL - driveR, -127),127));
+		resetPositions();
 	}
 	else {
+
+		setBrake();
 		chassisSet(0,0);
 	}
 
