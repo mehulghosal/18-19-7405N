@@ -17,36 +17,40 @@ int getAutonState();
 bool getParkState();
 void moveReaper(int dist, bool delay);
 void arm(bool toggle);
+int getLimit();
 
 
 
 //AUTONS//
 void topBlue(){
 	pros::lcd::print(0,"INIT Auton1");
-	//move forward to ball in front
 
-	flywheel(true, 195); // flywheel first, flameo - josh
+	//turn on flywheel and intake on first
+	flywheel(true, 195);
 	intake(1);
 
-	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-	//pros::c::delay(1000);
+	//move forward to ball in front
+	moveTo(3000);
 
-
+	//move back and allign top flag
 	moveTo(-2730);
 	rightTurn(90);
+	moveTo(300);
 
-
-moveTo(300);
+	//shoot top flag
 	reaper(1);
 	pros::c::delay(500);
 	reaper(0);
-	//pros::c::delay(1000);
-	moveTo(1800);
+
+	//allign and shoot middle flag
+	moveTo(1500);
 	reaper(1);
-	pros::c::delay(1500);
+	pros::c::delay(1800);
 	reaper(0);
+
+	//allign and ram bottom flag
 	rightTurn(20);
-	moveTo(1800);
+	moveTo(1500);
 	moveTo(-1500);
 	leftTurn(90);
 
@@ -64,30 +68,32 @@ moveTo(300);
 void topRed(){
 	pros::lcd::print(0, "INIT auton2");
 
-
+	//turn on flywheel
 	flywheel(true, 195); // flywheel first, flameo - josh
 	intake(1);
 
-	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-	//pros::c::delay(1000);
+	//move forward to ball
+	moveTo(3000);
 
+	//move back and allign top flag
 	moveTo(-2800);
 	leftTurn(90);
-	//moveReaper(2000, true);
+	moveTo(300);
+	//shoot top flag
 	reaper(1);
 	pros::c::delay(500);
 	reaper(0);
 
-	//pros::c::delay(1000);
+	//allign and shoot middle flag
 	moveTo(1800);
 	reaper(1);
 	pros::c::delay(1500);
 	reaper(0);
-	pros::c::delay(50);
+
+	//allign and ram bottom flag
 	leftTurn(20);
-	//leftTurn(14);
 	moveTo(1300);
-		moveTo(-1300);
+	moveTo(-1300);
 
 
 	//park
@@ -101,131 +107,140 @@ void topRed(){
 
 void backBlue(){
 	pros::lcd::print(0, "INIT auton3");
-	//backblue
-	flywheel(true, 187); // flywheel first, flameo - josh
+
+	//turn on flywheel and intake first
+	flywheel(true, 200);
 	intake(1);
 	pros::c::delay(1500);
-	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-	pros::c::delay(1500);
 
-	moveTo(-150, 25);
-	rightTurn(88);
-	moveTo(-700, 30);
+	//move forward to ball
+	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
+	pros::c::delay(750);
+
+	//allign top flag
+	moveTo(-2750);
+	rightTurn(55);
+	moveTo(-200, 25);
+
+
+	//shoot top flag
 	reaper(1);
 	pros::c::delay(300);
-	flywheel(true, 170);
-	while(limit.get_value() != 1);
+	flywheel(true, 185);
+	while(getLimit() != 1);
 	reaper(0);
-	// intake(0);
+
+	//shoot middle flag
 	pros::c::delay(300);
 	reaper(1);
-	pros::c::delay(1000);
+	pros::c::delay(500);
+
+	//park
 	if(getParkState()){
-		rightTurn(10);
+		moveTo(200, 25);
+		rightTurn(35);
+		moveTo(1200, 25);
+		leftTurn(90);
 		intake(-1);
-		moveTo(3250, 127);
+		moveTo(1500, 127);
 	}
 }
-void backRed(){ // back blue
+void backRed(){
 	pros::lcd::print(0, "INIT auton3");
-	//backred
-	flywheel(true, 185); // flywheel first, flameo - josh
+
+	//turn on flywheel and intake first
+	flywheel(true, 190);
 	intake(1);
 	pros::c::delay(1500);
-	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-	pros::c::delay(1500);
 
-	moveTo(-150, 25);
+	//move forward to ball
+	moveTo(3000);
+	pros::c::delay(750);
+
+	//allign top flag
+	moveTo(-250, 25);
 	leftTurn(82);
 	moveTo(-700, 30);
+
+	//shoot top flag
 	reaper(1);
 	pros::c::delay(300);
-	flywheel(true, 175);
-	while(limit.get_value() != 1);
+	flywheel(true, 172);
+	while(getLimit()!= 1);
 	reaper(0);
-	// intake(0);
+
+	//shoot middle flag
 	pros::c::delay(300);
 	reaper(1);
 	pros::c::delay(1000);
+
+	//park
 	if(getParkState()){
 		leftTurn(10);
 		intake(-1);
-		moveTo(3050, 127);
+		moveTo(3150, 127);
 	}
 }
 
 void autonskills(){
 	pros::lcd::print(0, "INIT autonskills");
 
-flywheel(true, 187); // flywheel first, flameo - josh
-	intake(1);
-	pros::c::delay(1500);
-	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-	pros::c::delay(1500);
-	moveTo(-150, 25);
-	rightTurn(88);
-	moveTo(-700, 30);
-	reaper(1);
-	pros::c::delay(300);
-
-	while(limit.get_value() != 1);
-	reaper(0);
-	// intake(0);
-	flywheel(true, 170);
-	pros::c::delay(300);
-	reaper(1);
-	pros::c::delay(500);
+	pros::lcd::print(0, "INIT autonskills");
 
 
-	moveTo(700 + 150);
-	rightTurn(-88);
-	intake(-1);//flip capf
-	moveTo(700);
 
+flywheel(true, 200); // flywheel first, flameo - josh
+intake(1);
+pros::c::delay(1500);
+moveTo(2500, 60);//this is pretty close - 2900 is perfect to intake the ball
+pros::c::delay(2000);
+// intakes second ball
+reaper(1);
+while(limit.get_value() != 1);
+reaper(0);
+intake(-1);
+pros::c::delay(1000);
+// moves to flip first cap
+moveTo(700, 20);
+pros::c::delay(1500);
 
-	moveTo(-(700 + 3000));
-	rightTurn(90);
+moveTo(-3250);
+rightTurn(88.5, 40);
+moveTo(3500);
 
-	moveTo(3000);
-	leftTurn(90);
-
-
-	intake(1);
-	moveTo(3000);
-	moveTo(-2730);
-	rightTurn(95);
-	reaper(1);
-	pros::c::delay(500);
-	reaper(0);
-	moveTo(1800);
-	reaper(1);
-	pros::c::delay(1500);
-	reaper(0);
-	rightTurn(20);
-	moveTo(1800);
-	moveTo(-1500);
-	leftTurn(90);
-
-	leftTurn(-90);
-	moveTo(-1000);
-	intake(-1);
-	leftTurn(90);
-	moveTo(3300);
-
-	moveTo(-300);
-	rightTurn(90);
-	moveTo(1500);
-
-	rightTurn(180);
-	moveTo(3500);
-
-	moveTo(-500);
-	leftTurn(90);
-	moveTo(500);
-	leftTurn(-90);
-	moveTo(1300);
-	rightTurn(90);
-	moveTo(1300);
+// shoots first ball
+reaper(1);
+pros::c::delay(300);
+// indexes second ball
+while(limit.get_value() != 1);
+reaper(0);
+// scores second flag
+moveTo(1500);
+reaper(1);
+pros::c::delay(1000);
+rightTurn(10, 20);
+// scores low flag
+moveTo(1200);
+moveTo(-1200);
+leftTurn(12, 20);
+// goes to cube
+moveTo(-1800);
+leftTurn(85, 40);
+intake(1);
+moveTo(3000);
+// intakes ball
+while(limit.get_value() != 1);
+reaper(0);
+intake(-1);
+pros::c::delay(1000);
+// flips second cap
+moveTo(1000, 20);
+moveTo(-1100);
+rightTurn(110,40);
+moveTo(2000);
+reaper(1);
+pros::c::delay(1000);
+moveTo(1500);
 
 
 }

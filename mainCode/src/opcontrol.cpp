@@ -14,6 +14,8 @@ pros::Motor flyWheelMotor(6, pros::E_MOTOR_GEARSET_18);
 pros::Motor intakeMotor(7);
 pros::Motor armMotor(8);
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
+pros::ADIDigitalIn rbumper ('A');
+pros::ADIDigitalIn lbumper ('F');
 
 void setBrake(){
 
@@ -147,14 +149,20 @@ if(abs(driveL) > 15 && driveR < 15 && driveR > -15)
 	double ble = backLeftMtr.get_position();
 	double bre = backRightMtr.get_position();
 	double diff = le - re;
-	diff = .25 * diff;
+	diff = .5 * diff;
 	double samesidediff = le - ble;
-	samesidediff = samesidediff * .25;
-	double backrightadjust = .25 *(le - bre);
+	samesidediff = samesidediff * .5;
+	double backrightadjust = .5 *(le - bre);
 	frontLeftMtr = driveL;
 	frontRightMtr= driveL + diff;
 	backLeftMtr = driveL + samesidediff;
 	backRightMtr= driveL+ backrightadjust;
+	pros::lcd::print(4, "fLeft encoder: %f",frontLeftMtr.get_position());
+	pros::lcd::print(5, "fRight encode %f",frontRightMtr.get_position());
+	pros::lcd::print(6, "diff %f",diff);
+	pros::lcd::print(2, " FL: %lf",frontLeftMtr.get_actual_velocity());
+	pros::lcd::print(3, " FR: %lf",frontRightMtr.get_actual_velocity());
+
 
 }
 	else if(abs(driveL) >= 15 || abs(driveR) >= 15) {
@@ -165,6 +173,7 @@ if(abs(driveL) > 15 && driveR < 15 && driveR > -15)
 
 		setBrake();
 		chassisSet(0,0);
+
 	}
 
 }
@@ -414,7 +423,15 @@ void moveTo(double d, double speed){
 
 
 
-
+int getLimit(){
+	if(lbumper.get_value() == 1 || rbumper.get_value() == 1)
+	{
+		return 1;
+	}
+	else{
+		return 0;
+	}
+}
 
 void resetPositions(){
 	backRightMtr.tare_position();
@@ -451,7 +468,8 @@ void opcontrol() {
 	bool lPressed = false;
 	bool autoReap = false;
 	bool rPressed = false;
-	pros::ADIDigitalIn limit ('A');
+
+	//pros::ADIDigitalIn limit ('A');
 //	pros::ADIAnalogIn gyroscope ('B');
 //	pros::Vision::print_signature(RED_FLAG);
 //	gyroscope.calibrate();
@@ -468,10 +486,10 @@ void opcontrol() {
 		PrintReadableVisObj(read_arr[0]);
 
 		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
-			if(limit.get_value() == 1 && reaperToggle == 1){
+			if(getLimit() == 1 && reaperToggle == 1){
 				reaperToggle = 0;
 			}
-			else if (limit.get_value() == 1 && reaperToggle == 0){
+			else if (getLimit() == 1 && reaperToggle == 0){
 				reaperToggle = 1;
 				reaper(reaperToggle);
 				pros::lcd::print(1, " Ball is shot");
@@ -487,10 +505,10 @@ void opcontrol() {
 			xPressed = true;
 		}
 		else if(master.get_digital(DIGITAL_X) == 0) {
-			if(limit.get_value() == 1 && reaperToggle == 1){
+			if(getLimit() == 1 && reaperToggle == 1){
 				reaperToggle = 0;
 			}
-			else if (limit.get_value() == 1 && reaperToggle == 0){
+			else if (getLimit() == 1 && reaperToggle == 0){
 				reaperToggle = 0;
 			}
 			xPressed = false;
@@ -583,6 +601,7 @@ void opcontrol() {
 		pros::lcd::print(1, "RPR: %f INT: %d FLY: %f", reaperMotor.get_actual_velocity(),(int)intakeToggle,(flyWheelMotor.get_actual_velocity()));
 		pros::lcd::print(2, "BL: %lf FL: %lf", backLeftMtr.get_actual_velocity(),frontLeftMtr.get_actual_velocity());
 		pros::lcd::print(3, "BR: %lf FR: %lf", backRightMtr.get_actual_velocity(),frontRightMtr.get_actual_velocity());
+		pros::lcd::print(5, "touching %d", getLimit());
 
 //		pros::lcd::print(4, "MTRDISP: %lf ", disp);
 
