@@ -45,13 +45,14 @@ void topBlue(){
 	//allign and shoot middle flag
 	moveTo(1500);
 	reaper(1);
-	pros::c::delay(1800);
+	while(getLimit() != 1);
+	pros::c::delay(500);
 	reaper(0);
 
 	//allign and ram bottom flag
 	rightTurn(20);
-	moveTo(1500);
-	moveTo(-1500);
+	moveTo(1000);
+	moveTo(-1000);
 	leftTurn(90);
 
 
@@ -87,13 +88,14 @@ void topRed(){
 	//allign and shoot middle flag
 	moveTo(1800);
 	reaper(1);
-	pros::c::delay(1500);
+	while(getLimit() != 1);
+	pros::c::delay(500);
 	reaper(0);
 
 	//allign and ram bottom flag
 	leftTurn(20);
-	moveTo(1300);
-	moveTo(-1300);
+	moveTo(1000);
+	moveTo(-1000);
 
 
 	//park
@@ -196,7 +198,7 @@ moveTo(2500, 60);//this is pretty close - 2900 is perfect to intake the ball
 pros::c::delay(2000);
 // intakes second ball
 reaper(1);
-while(limit.get_value() != 1);
+while(getLimit() != 1);
 reaper(0);
 intake(-1);
 pros::c::delay(1000);
@@ -210,14 +212,14 @@ moveTo(3500);
 
 // shoots first ball
 reaper(1);
-pros::c::delay(300);
+pros::c::delay(500);
 // indexes second ball
-while(limit.get_value() != 1);
+while(getLimit() != 1);
 reaper(0);
 // scores second flag
 moveTo(1500);
 reaper(1);
-pros::c::delay(1000);
+pros::c::delay(500);
 rightTurn(10, 20);
 // scores low flag
 moveTo(1200);
@@ -229,7 +231,7 @@ leftTurn(85, 40);
 intake(1);
 moveTo(3000);
 // intakes ball
-while(limit.get_value() != 1);
+	while(getLimit() != 1);
 reaper(0);
 intake(-1);
 pros::c::delay(1000);

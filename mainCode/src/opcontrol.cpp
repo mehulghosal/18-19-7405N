@@ -493,7 +493,7 @@ void opcontrol() {
 				reaperToggle = 1;
 				reaper(reaperToggle);
 				pros::lcd::print(1, " Ball is shot");
-				pros::c::delay(300);
+				pros::c::delay(500);
 					pros::lcd::print(1, " Ball is shot after wait");
 			}
 			else if (reaperToggle == 0 || reaperToggle == -1){
