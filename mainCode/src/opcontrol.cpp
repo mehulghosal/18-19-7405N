@@ -242,18 +242,17 @@ void moveTo(double d){
 
 	if(d > 0){
 		while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d){
+			double kp = .15;
+
 			double le = frontLeftMtr.get_position();
 			double re = frontRightMtr.get_position();
 			double ble = backLeftMtr.get_position();
 			double bre = backRightMtr.get_position();
-			double diff = le - re;
-			double kp = .15;
-			diff = .25 * diff;
-			double samesidediff = le - ble;
-			samesidediff = samesidediff * .25;
+			
+			double diff = .25 * (le - re);
+			double samesidediff = .25 * (le - ble);
 			double backrightadjust = .25 *(le - bre);
-			double adjust = speedCoef + (2 * diff);
-			double samesideadjust = speedCoef + (2 * samesidediff);
+			
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
 				{
 					speedCoef = 80;
@@ -271,9 +270,6 @@ void moveTo(double d){
 			backLeftMtr = speedCoef + samesidediff;
 			backRightMtr= speedCoef + backrightadjust;
 
-
-
-
 			pros::lcd::print(1, "Entered firstLoop");
 			pros::lcd::print(3, "fLeft encoder: %f | fright encoder: %f", le, re);
 			pros::lcd::print(4, "bleft encoder: %f | bright encoder: %f", backLeftMtr.get_position(), backRightMtr.get_position());
@@ -286,16 +282,17 @@ void moveTo(double d){
 
 	if ( d < 0){
 		while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d){
+			double kp = .15;
+
 			double le = frontLeftMtr.get_position();
 			double re = frontRightMtr.get_position();
 			double ble = backLeftMtr.get_position();
 			double bre = backRightMtr.get_position();
-			double diff = le - re;
-			double kp = .15;
-			diff = .25 * diff;
-			double samesidediff = le - ble;
-			samesidediff = samesidediff * .25;
+
+			double diff = .25 * (le - re);
+			double samesidediff = .25 * (le - ble);
 			double backrightadjust = .25 *(le - bre);
+
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
 				{
 					speedCoef = 80;
@@ -307,7 +304,6 @@ void moveTo(double d){
 				else{
 					speedCoef = abs(d - frontRightMtr.get_position()) * kp;
 				}
-
 
 			frontLeftMtr = -speedCoef;
 			frontRightMtr= -speedCoef + diff;
