@@ -203,11 +203,11 @@ reaper(0);
 intake(-1);
 pros::c::delay(1000);
 // moves to flip first cap
-moveTo(700, 20);
+moveTo(1000, 20);
 pros::c::delay(1500);
 
-moveTo(-3250);
-rightTurn(88.5, 40);
+moveTo(-3450);
+leftTurn(92, 40);
 moveTo(3500);
 
 // shoots first ball
@@ -220,14 +220,14 @@ reaper(0);
 moveTo(1500);
 reaper(1);
 pros::c::delay(500);
-rightTurn(10, 20);
+leftTurn(10, 20);
 // scores low flag
 moveTo(1200);
 moveTo(-1200);
-leftTurn(12, 20);
+rightTurn(12, 20);
 // goes to cube
 moveTo(-1800);
-leftTurn(85, 40);
+rightTurn(85, 40);
 intake(1);
 moveTo(3000);
 // intakes ball
