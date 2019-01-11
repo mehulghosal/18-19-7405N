@@ -1,7 +1,7 @@
 #include "main.h"
 
 //OPCONTROL//
-pros::ADIDigitalIn limit ('A');
+
 void testfunct();
 void intake(int toggle);
 void reaper(int toggle);
@@ -206,30 +206,30 @@ pros::c::delay(1000);
 moveTo(1000, 20);
 pros::c::delay(1500);
 
-moveTo(-3450);
-leftTurn(92, 40);
-moveTo(3500);
+moveTo(-3400,50);
+leftTurn(90, 40);
+moveTo(3700, 40);
 
 // shoots first ball
 reaper(1);
-pros::c::delay(500);
+pros::c::delay(300);
 // indexes second ball
 while(getLimit() != 1);
 reaper(0);
 // scores second flag
-moveTo(1500);
+moveTo(1500, 40);
 reaper(1);
 pros::c::delay(500);
-leftTurn(10, 20);
+leftTurn(15, 20);
 // scores low flag
-moveTo(1200);
-moveTo(-1200);
-rightTurn(12, 20);
+moveTo(1100, 40);
+moveTo(-1100, 40);
+rightTurn(15, 20);
 // goes to cube
-moveTo(-1800);
-rightTurn(85, 40);
+moveTo(-2000);
+rightTurn(95, 40);
 intake(1);
-moveTo(3000);
+moveTo(2300, 40);
 // intakes ball
 	while(getLimit() != 1);
 reaper(0);
@@ -237,12 +237,21 @@ intake(-1);
 pros::c::delay(1000);
 // flips second cap
 moveTo(1000, 20);
-moveTo(-1100);
-rightTurn(110,40);
-moveTo(2000);
+
+leftTurn(96,40);
+moveTo(1650, 40);
 reaper(1);
 pros::c::delay(1000);
+leftTurn(15, 20);
+moveTo(1000);
+moveTo(-1400);
+rightTurn(120, 20);
+intake(-1);
 moveTo(1500);
+moveTo(1500, 40);
+leftTurn(90, 20);
+moveTo(1000);
+
 
 
 }
