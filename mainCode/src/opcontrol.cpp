@@ -11,7 +11,7 @@ pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor backRightMtr(4, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor reaperMotor(5, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor flyWheelMotor(7, pros::E_MOTOR_GEARSET_18);
-pros::Motor intakeMotor(11);
+pros::Motor intakeMotor(12);
 pros::Motor armMotor(8);
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
 pros::ADIDigitalIn limit ('E');
@@ -24,7 +24,14 @@ void setBrake(){
 	frontLeftMtr.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 	frontRightMtr.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 }
-
+void old_flywheel(bool toggle, int speed = 127){
+	if(toggle){
+		flyWheelMotor = speed;
+	}
+	else {
+		flyWheelMotor = 0;
+	}
+}
 
 // VISION SENSOR STUFF//
 //https://www.vexforum.com/index.php/attachment/5be56e847b3f6_1.png

@@ -6,7 +6,7 @@ void testfunct();
 void intake(int toggle);
 void reaper(int toggle);
 void flywheel(bool toggle, int speed = 200);
-
+void old_flywheel(bool toggle, int speed = 127);
 // void moveTo(double d);
 void moveTo(double d);
 void moveTo(double d, double speed);
@@ -265,31 +265,44 @@ moveTo(5000, 127);
 
 
 
+
 void newBackBlue(){
 	pros::lcd::print(0, "INIT auton3");
 	//backred
-	flywheel(true, 200); // flywheel first, flameo - josh
+	old_flywheel(true, 127); // flywheel first, flameo - josh
 	intake(1);
 	pros::c::delay(1500);
-	moveTo(3000);//this is pretty close - 2900 is perfect to intake the ball
-	pros::c::delay(1500);
-
-	moveTo(-150, 25);
-	rightTurn(88);
-	moveTo(-700, 30);
-	reaper(1);
-	pros::c::delay(300);
-	flywheel(true, 185);
-	while(getLimit() != 1);
-	reaper(0);
-	// intake(0);
-	pros::c::delay(300);
-	reaper(1);
-	pros::c::delay(1000);
-	rightTurn(16);
-	intake(-1);
-	moveTo(3300, 127);
+	moveTo(2700);//this is pretty close - 2900 is perfect to intake the ball
+	if(getParkState()){
+		pros::c::delay(1500);
+		moveTo(-200);
+		rightTurn(90);
+		moveTo(2100);
+	}
+	else{
+		moveTo(-2300);
+	}
 }
+
+void newBackRed(){
+	pros::lcd::print(0, "INIT auton3");
+	//backred
+	old_flywheel(true, 127); // flywheel first, flameo - josh
+	intake(1);
+	pros::c::delay(1500);
+	moveTo(2700);//this is pretty close - 2900 is perfect to intake the ball
+	if(getParkState()){
+		pros::c::delay(1500);
+		moveTo(-200);
+		leftTurn(90);
+		moveTo(2100);
+	}
+	else{
+		moveTo(-2300);
+	}
+}
+
+
 
 void test(){
 	moveTo(2600);
@@ -310,7 +323,7 @@ void autonomous(){
 		newBackBlue(); // back blue
 	}
 	else if(aS == 4){
-		backRed(); // back red
+		newBackRed(); // back red
 	}
 	else if(aS == 5){
 		autonskills();
