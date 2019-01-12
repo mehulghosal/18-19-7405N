@@ -149,10 +149,10 @@ if(abs(driveL) > 15 && driveR < 15 && driveR > -15)
 	double ble = backLeftMtr.get_position();
 	double bre = backRightMtr.get_position();
 	double diff = le - re;
-	diff = .5 * diff;
+	diff = .4 * diff;
 	double samesidediff = le - ble;
-	samesidediff = samesidediff * .5;
-	double backrightadjust = .5 *(le - bre);
+	samesidediff = samesidediff * .4;
+	double backrightadjust = .4 *(le - bre);
 	frontLeftMtr = driveL;
 	frontRightMtr= driveL + diff;
 	backLeftMtr = driveL + samesidediff;
@@ -249,9 +249,9 @@ void moveTo(double d){
 			double ble = backLeftMtr.get_position();
 			double bre = backRightMtr.get_position();
 
-			double diff = .25 * (le - re);
-			double samesidediff = .25 * (le - ble);
-			double backrightadjust = .25 *(le - bre);
+			double diff = .35 * (le - re);
+			double samesidediff = .35 * (le - ble);
+			double backrightadjust = .35 *(le - bre);
 
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
 				{
@@ -289,9 +289,9 @@ void moveTo(double d){
 			double ble = backLeftMtr.get_position();
 			double bre = backRightMtr.get_position();
 
-			double diff = .25 * (le - re);
-			double samesidediff = .25 * (le - ble);
-			double backrightadjust = .25 *(le - bre);
+			double diff = .3 * (le - re);
+			double samesidediff = .3 * (le - ble);
+			double backrightadjust = .3 *(le - bre);
 
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
 				{
