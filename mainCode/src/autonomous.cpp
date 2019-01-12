@@ -34,7 +34,7 @@ void topBlue(){
 
 	//move back and allign top flag
 	moveTo(-2730);
-	rightTurn(90);
+	rightTurn(91);
 	moveTo(300);
 
 	//shoot top flag
@@ -78,7 +78,7 @@ void topRed(){
 
 	//move back and allign top flag
 	moveTo(-2800);
-	leftTurn(90);
+	leftTurn(91);
 	moveTo(300);
 	//shoot top flag
 	reaper(1);
