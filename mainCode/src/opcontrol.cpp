@@ -10,8 +10,8 @@ pros::Motor frontLeftMtr(10);
 pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor backRightMtr(4, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor reaperMotor(5, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor flyWheelMotor(6, pros::E_MOTOR_GEARSET_18);
-pros::Motor intakeMotor(7);
+pros::Motor flyWheelMotor(7, pros::E_MOTOR_GEARSET_18);
+pros::Motor intakeMotor(11);
 pros::Motor armMotor(8);
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
 pros::ADIDigitalIn limit ('E');
@@ -337,10 +337,10 @@ void moveTo(double d, double speed){
 			double bre = backRightMtr.get_position();
 			double diff = le - re;
 			double kp = .09;
-			diff = .25 * diff;
+			diff = .35 * diff;
 			double samesidediff = le - ble;
-			samesidediff = samesidediff * .25;
-			double backrightadjust = .25 *(le - bre);
+			samesidediff = samesidediff * .35;
+			double backrightadjust = .35 *(le - bre);
 			double adjust = speedCoef + (2 * diff);
 			double samesideadjust = speedCoef + (2 * samesidediff);
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
@@ -381,10 +381,10 @@ void moveTo(double d, double speed){
 			double bre = backRightMtr.get_position();
 			double diff = le - re;
 			double kp = .1;
-			diff = .25 * diff;
+			diff = .3 * diff;
 			double samesidediff = le - ble;
-			samesidediff = samesidediff * .25;
-			double backrightadjust = .25 *(le - bre);
+			samesidediff = samesidediff * .3;
+			double backrightadjust = .3 *(le - bre);
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
 				{
 					speedCoef = 80;

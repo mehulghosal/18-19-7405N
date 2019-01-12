@@ -207,12 +207,12 @@ moveTo(1000, 20);
 pros::c::delay(1500);
 
 moveTo(-3400,50);
-leftTurn(90, 40);
+leftTurn(92, 40);
 moveTo(3700, 40);
 
 // shoots first ball
 reaper(1);
-pros::c::delay(300);
+pros::c::delay(350);
 // indexes second ball
 while(getLimit() != 1);
 reaper(0);
@@ -245,13 +245,20 @@ pros::c::delay(1000);
 leftTurn(15, 20);
 moveTo(1000);
 moveTo(-1400);
-rightTurn(120, 20);
+rightTurn(125, 20);
 intake(-1);
 moveTo(1500);
 moveTo(1500, 40);
+rightTurn(90, 20);
+moveTo(1000);
 leftTurn(90, 20);
 moveTo(1000);
-
+rightTurn(90, 20);
+moveTo(1000);
+rightTurn(90, 20);
+moveTo(1000);
+moveto(-500);
+moveTo(5000, 127);
 
 
 }
