@@ -5,17 +5,17 @@ void resetPositions();
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 //MOTOR INITS//
-pros::Motor backLeftMtr(9);
+pros::Motor backLeftMtr(3);
 pros::Motor frontLeftMtr(10);
 pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor backRightMtr(4, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor backRightMtr(13, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor reaperMotor(5, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor flyWheelMotor(6, pros::E_MOTOR_GEARSET_18);
-pros::Motor intakeMotor(7);
+pros::Motor flyWheelMotor(7, pros::E_MOTOR_GEARSET_18);
+pros::Motor intakeMotor(12);
 pros::Motor armMotor(8);
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
-pros::ADIDigitalIn rbumper ('A');
-pros::ADIDigitalIn lbumper ('F');
+pros::ADIDigitalIn limit ('E');
+
 
 void setBrake(){
 
@@ -24,7 +24,14 @@ void setBrake(){
 	frontLeftMtr.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 	frontRightMtr.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 }
-
+void old_flywheel(bool toggle, int speed = 127){
+	if(toggle){
+		flyWheelMotor = speed;
+	}
+	else {
+		flyWheelMotor = 0;
+	}
+}
 
 // VISION SENSOR STUFF//
 //https://www.vexforum.com/index.php/attachment/5be56e847b3f6_1.png
@@ -149,10 +156,10 @@ if(abs(driveL) > 15 && driveR < 15 && driveR > -15)
 	double ble = backLeftMtr.get_position();
 	double bre = backRightMtr.get_position();
 	double diff = le - re;
-	diff = .5 * diff;
+	diff = .4 * diff;
 	double samesidediff = le - ble;
-	samesidediff = samesidediff * .5;
-	double backrightadjust = .5 *(le - bre);
+	samesidediff = samesidediff * .4;
+	double backrightadjust = .4 *(le - bre);
 	frontLeftMtr = driveL;
 	frontRightMtr= driveL + diff;
 	backLeftMtr = driveL + samesidediff;
@@ -179,6 +186,7 @@ if(abs(driveL) > 15 && driveR < 15 && driveR > -15)
 }
 
 //OTHER FEATURE CONTROLS//
+
 void flywheel(bool toggle, int speed = 200){
 	if(toggle){
 
@@ -242,18 +250,17 @@ void moveTo(double d){
 
 	if(d > 0){
 		while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d){
+			double kp = .15;
+
 			double le = frontLeftMtr.get_position();
 			double re = frontRightMtr.get_position();
 			double ble = backLeftMtr.get_position();
 			double bre = backRightMtr.get_position();
-			double diff = le - re;
-			double kp = .15;
-			diff = .25 * diff;
-			double samesidediff = le - ble;
-			samesidediff = samesidediff * .25;
-			double backrightadjust = .25 *(le - bre);
-			double adjust = speedCoef + (2 * diff);
-			double samesideadjust = speedCoef + (2 * samesidediff);
+
+			double diff = .35 * (le - re);
+			double samesidediff = .35 * (le - ble);
+			double backrightadjust = .35 *(le - bre);
+
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
 				{
 					speedCoef = 80;
@@ -271,9 +278,6 @@ void moveTo(double d){
 			backLeftMtr = speedCoef + samesidediff;
 			backRightMtr= speedCoef + backrightadjust;
 
-
-
-
 			pros::lcd::print(1, "Entered firstLoop");
 			pros::lcd::print(3, "fLeft encoder: %f | fright encoder: %f", le, re);
 			pros::lcd::print(4, "bleft encoder: %f | bright encoder: %f", backLeftMtr.get_position(), backRightMtr.get_position());
@@ -286,16 +290,17 @@ void moveTo(double d){
 
 	if ( d < 0){
 		while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d){
+			double kp = .15;
+
 			double le = frontLeftMtr.get_position();
 			double re = frontRightMtr.get_position();
 			double ble = backLeftMtr.get_position();
 			double bre = backRightMtr.get_position();
-			double diff = le - re;
-			double kp = .15;
-			diff = .25 * diff;
-			double samesidediff = le - ble;
-			samesidediff = samesidediff * .25;
-			double backrightadjust = .25 *(le - bre);
+
+			double diff = .3 * (le - re);
+			double samesidediff = .3 * (le - ble);
+			double backrightadjust = .3 *(le - bre);
+
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
 				{
 					speedCoef = 80;
@@ -307,7 +312,6 @@ void moveTo(double d){
 				else{
 					speedCoef = abs(d - frontRightMtr.get_position()) * kp;
 				}
-
 
 			frontLeftMtr = -speedCoef;
 			frontRightMtr= -speedCoef + diff;
@@ -340,11 +344,11 @@ void moveTo(double d, double speed){
 			double ble = backLeftMtr.get_position();
 			double bre = backRightMtr.get_position();
 			double diff = le - re;
-			double kp = .15;
-			diff = .25 * diff;
+			double kp = .1;
+			diff = .3 * diff;
 			double samesidediff = le - ble;
-			samesidediff = samesidediff * .25;
-			double backrightadjust = .25 *(le - bre);
+			samesidediff = samesidediff * .3;
+			double backrightadjust = .3 *(le - bre);
 			double adjust = speedCoef + (2 * diff);
 			double samesideadjust = speedCoef + (2 * samesidediff);
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
@@ -384,7 +388,7 @@ void moveTo(double d, double speed){
 			double ble = backLeftMtr.get_position();
 			double bre = backRightMtr.get_position();
 			double diff = le - re;
-			double kp = .15;
+			double kp = .1;
 			diff = .25 * diff;
 			double samesidediff = le - ble;
 			samesidediff = samesidediff * .25;
@@ -424,7 +428,7 @@ void moveTo(double d, double speed){
 
 
 int getLimit(){
-	if(lbumper.get_value() == 1 || rbumper.get_value() == 1)
+	if(limit.get_value() == 1)
 	{
 		return 1;
 	}
@@ -493,7 +497,7 @@ void opcontrol() {
 				reaperToggle = 1;
 				reaper(reaperToggle);
 				pros::lcd::print(1, " Ball is shot");
-				pros::c::delay(500);
+				pros::c::delay(300);
 					pros::lcd::print(1, " Ball is shot after wait");
 			}
 			else if (reaperToggle == 0 || reaperToggle == -1){
