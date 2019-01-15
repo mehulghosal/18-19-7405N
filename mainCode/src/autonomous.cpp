@@ -88,28 +88,35 @@ void topRed(){
 	intake(1);
 
 	//move forward to ball
-	moveTo(3000, 50);
+	moveTo(3000, 65);
 
 	//move back and allign top flag
-	moveTo(-2800, 50);
-	leftTurn(90);
-	moveTo(300, 15);
+	moveTo(-2800, 65);
+	leftTurn(91);
 	//shoot top flag
 	reaper(1);
-	pros::c::delay(600);
+	pros::c::delay(400);
 	reaper(0);
 
 	//allign and shoot middle flag
 	moveTo(1800);
 	reaper(1);
 	while(getLimit() != 1);
-	pros::c::delay(500);
+	pros::c::delay(250);
 	reaper(0);
 
 	//allign and ram bottom flag
-	leftTurn(25);
-	moveTo(1000);
-	moveTo(-1000);
+	leftTurn(20);
+	moveTo(1200);
+	pros::c::delay(50);
+	moveTo(-1400, 60);
+	rightTurn(100);
+	intake(-1);
+	pros::c::delay(50);
+	moveTo(1500);
+	pros::c::delay(50);
+	leftTurn(60);
+	moveTo(2000);
 
 
 	//park
