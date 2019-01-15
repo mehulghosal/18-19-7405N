@@ -30,11 +30,11 @@ void topBlue(){
 	intake(1);
 
 	//move forward to ball in front
-	moveTo(3000, 50);
+	moveTo(2800);
 
 	//move back and allign top flag
-	moveTo(-2730, 60);
-	rightTurn(95, 40);
+	moveTo(-2550);
+	rightTurn(93, 80);
 	moveTo(100);
 
 	//shoot top flag
@@ -50,10 +50,14 @@ void topBlue(){
 	reaper(0);
 
 	//allign and ram bottom flag
-	rightTurn(19);
+	rightTurn(14);
 	moveTo(1300);
-	moveTo(-1300);
+	moveTo(-1500, 90);
 	leftTurn(90);
+	intake(-1);
+	moveTo(1500, 100);
+	rightTurn(45);
+	moveTo(2000, 120);
 
 
 	//park
