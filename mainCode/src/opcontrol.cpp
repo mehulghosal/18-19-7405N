@@ -251,41 +251,76 @@ void moveTo(double d){
 	int speed = 0;
 	double speedCoef = 0;
 	double slowdown = (4 * d) / 5;
+	double sdiff = 0;
+	double ssamesidediff = 0;
+	double sbackrightadjust = 0;
+	double mdiff = 0;
+	double msamesidediff = 0;
+	double mbackrightadjust = 0;
 
 	if(d > 0){
-		while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d){
+		while(frontLeftMtr.get_position() < d ){
 			double kp = .15;
 
-			double le = frontLeftMtr.get_position();
-			double re = frontRightMtr.get_position();
-			double ble = backLeftMtr.get_position();
-			double bre = backRightMtr.get_position();
 
-			double diff = .35 * (le - re);
-			double samesidediff = .35 * (le - ble);
-			double backrightadjust = .35 *(le - bre);
 
-			if(abs(d - frontRightMtr.get_position()) * kp > 127)
+			if(abs(d - frontLeftMtr.get_position()) * kp > 127)
 				{
-					speedCoef = 80;
+					double le = frontLeftMtr.get_position();
+					double re = frontRightMtr.get_position();
+					double ble = backLeftMtr.get_position();
+					double bre = backRightMtr.get_position();
+
+					double diff = .35 * (le - re);
+					double samesidediff = .35 * (le - ble);
+					double backrightadjust = .35 *(le - bre);
+					speedCoef = 100;
+					frontLeftMtr = speedCoef;
+					frontRightMtr= speedCoef + diff;
+					backLeftMtr = speedCoef + samesidediff;
+					backRightMtr= speedCoef + backrightadjust;
+					// while the robot is traveling at optimal speeds it finds the difference between encoders
+					// it then uses this value to adjust by adding and subtracting a fractional part of it to the motors
+
 				}
-				else if(abs(d - frontRightMtr.get_position()) * kp < 10)
+				else if(abs(d - frontLeftMtr.get_position()) * kp < 10)
 				{
 					speedCoef = 10;
+					frontLeftMtr = speedCoef;
+					frontRightMtr= speedCoef + sdiff;
+					backLeftMtr = speedCoef + ssamesidediff;
+					backRightMtr= speedCoef + sbackrightadjust;
+					double le = frontLeftMtr.get_position();
+					double re = frontRightMtr.get_position();
+					double ble = backLeftMtr.get_position();
+					double bre = backRightMtr.get_position();
+				 sdiff = .2 * (le - re);
+	 		 	 ssamesidediff = .2 * (le - ble);
+		 		 sbackrightadjust = .2 *(le - bre);
+				 // when the bot is close to its final destination is travels at 10 speed until it reaches
+				 // I use different variables because I want to restart the values at 0.
+				 // this is why i set sdiff after i assign the speeds
+
 				}
 				else{
-					speedCoef = abs(d - frontRightMtr.get_position()) * kp;
+					speedCoef = abs(d - frontLeftMtr.get_position()) * kp;
+					frontLeftMtr = speedCoef;
+					frontRightMtr= speedCoef + mdiff;
+					backLeftMtr = speedCoef + msamesidediff;
+					backRightMtr= speedCoef + mbackrightadjust;
+					double le = frontLeftMtr.get_position();
+					double re = frontRightMtr.get_position();
+					double ble = backLeftMtr.get_position();
+					double bre = backRightMtr.get_position();
+				 mdiff = .2 * (le - re);
+				 msamesidediff = .2 * (le - ble);
+				 mbackrightadjust = .2 *(le - bre);
+				 // while bot approaches the final destination, the speed slows down
 				}
 
-			frontLeftMtr = speedCoef;
-			frontRightMtr= speedCoef + diff;
-			backLeftMtr = speedCoef + samesidediff;
-			backRightMtr= speedCoef + backrightadjust;
 
-			pros::lcd::print(1, "Entered firstLoop");
-			pros::lcd::print(3, "fLeft encoder: %f | fright encoder: %f", le, re);
-			pros::lcd::print(4, "bleft encoder: %f | bright encoder: %f", backLeftMtr.get_position(), backRightMtr.get_position());
-			pros::lcd::print(6, "diff %f", diff);
+
+
 			pros::c::delay(170);
 		}
 			setBrake();
@@ -293,40 +328,62 @@ void moveTo(double d){
 	}
 
 	if ( d < 0){
-		while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d){
+		while(frontLeftMtr.get_position() > d ){
 			double kp = .15;
 
-			double le = frontLeftMtr.get_position();
-			double re = frontRightMtr.get_position();
-			double ble = backLeftMtr.get_position();
-			double bre = backRightMtr.get_position();
 
-			double diff = .3 * (le - re);
-			double samesidediff = .3 * (le - ble);
-			double backrightadjust = .3 *(le - bre);
 
-			if(abs(d - frontRightMtr.get_position()) * kp > 127)
+			if(abs(d - frontLeftMtr.get_position()) * kp > 127)
 				{
-					speedCoef = 80;
+					double le = frontLeftMtr.get_position();
+					double re = frontRightMtr.get_position();
+					double ble = backLeftMtr.get_position();
+					double bre = backRightMtr.get_position();
+
+					double diff = .3 * (le - re);
+					double samesidediff = .3 * (le - ble);
+					double backrightadjust = .3 *(le - bre);
+					speedCoef = 100;
+					frontLeftMtr = -speedCoef;
+					frontRightMtr= -speedCoef + diff;
+					backLeftMtr = -speedCoef + samesidediff;
+					backRightMtr= -speedCoef + backrightadjust;
+
 				}
-				else if(abs(d - frontRightMtr.get_position()) * kp < 20)
+				else if(abs(d - frontLeftMtr.get_position()) * kp < 20)
 				{
 					speedCoef = 20;
+					frontLeftMtr = -speedCoef;
+					frontRightMtr= -speedCoef + sdiff;
+					backLeftMtr = -speedCoef + ssamesidediff;
+					backRightMtr= -speedCoef + sbackrightadjust;
+					double le = frontLeftMtr.get_position();
+					double re = frontRightMtr.get_position();
+					double ble = backLeftMtr.get_position();
+					double bre = backRightMtr.get_position();
+				 sdiff = .2 * (le - re);
+				 ssamesidediff = .2 * (le - ble);
+				 sbackrightadjust = .2 *(le - bre);
 				}
 				else{
-					speedCoef = abs(d - frontRightMtr.get_position()) * kp;
+					speedCoef = abs(d - frontLeftMtr.get_position()) * kp;
+					frontLeftMtr = -speedCoef;
+					frontRightMtr= -speedCoef + mdiff;
+					backLeftMtr = -speedCoef + msamesidediff;
+					backRightMtr= -speedCoef + mbackrightadjust;
+					double le = frontLeftMtr.get_position();
+					double re = frontRightMtr.get_position();
+					double ble = backLeftMtr.get_position();
+					double bre = backRightMtr.get_position();
+				 mdiff = .2 * (le - re);
+				 msamesidediff = .2 * (le - ble);
+				 mbackrightadjust = .2 *(le - bre);
 				}
 
-			frontLeftMtr = -speedCoef;
-			frontRightMtr= -speedCoef + diff;
-			backLeftMtr = -speedCoef + samesidediff;
-			backRightMtr= -speedCoef + backrightadjust;
 
-			pros::lcd::print(1, "Entered firstLoop");
-			pros::lcd::print(3, "fLeft encoder: %f | fright encoder: %f", le, re);
-			pros::lcd::print(4, "bleft encoder: %f | bright encoder: %f", backLeftMtr.get_position(), backRightMtr.get_position());
-			pros::lcd::print(6, "diff %f", diff);
-			pros::c::delay(50);
+
+
+			pros::c::delay(150);
 
 		}
 			setBrake();
