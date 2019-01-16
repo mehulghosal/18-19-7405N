@@ -700,7 +700,7 @@ void opcontrol() {
 
 	//	pros::lcd::print(3, "GYRO: %d", (gyroscope.get_value()));
 
-		pros::Task::delay(20);
+		pros::Task::delay(10);
 
 	}
 }
