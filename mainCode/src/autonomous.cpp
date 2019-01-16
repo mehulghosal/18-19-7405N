@@ -79,9 +79,26 @@ void backRed(){ // this is actually back red lmao
 	pros::c::delay(300);
 	moveTo(-1000);
 	leftTurn(40);
+	//
 	reaper(1);
 	while(getLimit() != 1);
+	reaper(0);
+	rightTurn(60);
+	moveTo(1450);
+	rightTurn(45);
+	moveTo(1450);
+	changeArm(127);
+	pros::c::delay(500);
+	changeArm(0);
+	moveTo(-1450);
+	leftTurn(45); // 45 to straighten + 30 to flag
+	moveTo(1450);
+	leftTurn(30);
 	reaper(1);
+	while(getLimit() != 1);
+	reaper(0);
+
+
 }
 
 
@@ -173,6 +190,7 @@ void backBlue(){
 		moveTo(1500, 127);
 	}
 }
+/*
 void backRed(){
 	pros::lcd::print(0, "INIT auton3");
 
@@ -209,7 +227,7 @@ void backRed(){
 		moveTo(3150, 127);
 	}
 }
-
+*/
 void autonskills(){
 	pros::lcd::print(0, "INIT autonskills");
 

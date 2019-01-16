@@ -522,6 +522,7 @@ void opcontrol() {
 //	testfunct();
 	int disp = 0;
 	int prevTravelDist = 0;
+	int flyWheelSpeed = 127;
 	bool flyWheelToggle = false;
 	int intakeToggle = 0;
 	int reaperToggle = 0;
@@ -530,6 +531,8 @@ void opcontrol() {
 	bool left = false;
 	bool right = false;
 	bool bPressed = false;
+	bool r2Pressed = false;
+	bool l2Pressed = false;
 	bool lPressed = false;
 	bool autoReap = false;
 	bool rPressed = false;
@@ -557,9 +560,6 @@ void opcontrol() {
 			else if (getLimit() == 1 && reaperToggle == 0){
 				reaperToggle = 1;
 				reaper(reaperToggle);
-				pros::lcd::print(1, " Ball is shot");
-				pros::c::delay(300);
-					pros::lcd::print(1, " Ball is shot after wait");
 			}
 			else if (reaperToggle == 0 || reaperToggle == -1){
 				reaperToggle = 1;
@@ -637,6 +637,25 @@ void opcontrol() {
 			yPressed = false;
 		}
 
+		if (master.get_digital(DIGITAL_R2) == 1 && r2Pressed == false){
+			flyWheelSpeed = flyWheelSpeed + 1;
+			r2Pressed = true;
+			pros::Task::delay(20);
+		}
+		else if (master.get_digital(DIGITAL_R2) == 0){
+			r2Pressed = false;
+		}
+
+		if (master.get_digital(DIGITAL_L2) == 1 && l2Pressed == false){
+			flyWheelSpeed = flyWheelSpeed - 1;
+			l2Pressed = true;
+			pros::Task::delay(20);
+		}
+		else if (master.get_digital(DIGITAL_L2) == 0){
+			l2Pressed = false;
+		}
+
+
 		// pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;
 		if(master.get_digital(DIGITAL_R1) == 1){
 				armMotor = 100;
@@ -658,12 +677,13 @@ void opcontrol() {
 			motorStop();
 		}
 		intake(intakeToggle);
-		flywheel(flyWheelToggle);
+		flywheel(flyWheelToggle, flyWheelSpeed);
 		drive(driveLeft, driveRight);
 		reaper(reaperToggle);
+
 		prevTravelDist = frontLeftMtr.get_position();
 
-		pros::lcd::print(1, "RPR: %f INT: %d FLY: %f", reaperMotor.get_actual_velocity(),(int)intakeToggle,(flyWheelMotor.get_actual_velocity()));
+		pros::lcd::print(1, "RPR: %f INT: %d FLY: %f FLYTARG: %d", reaperMotor.get_actual_velocity(),(int)intakeToggle,(flyWheelMotor.get_actual_velocity()), flyWheelSpeed);
 		pros::lcd::print(2, "BL: %lf FL: %lf", backLeftMtr.get_actual_velocity(),frontLeftMtr.get_actual_velocity());
 		pros::lcd::print(3, "BR: %lf FR: %lf", backRightMtr.get_actual_velocity(),frontRightMtr.get_actual_velocity());
 		pros::lcd::print(5, "touching %d", getLimit());
