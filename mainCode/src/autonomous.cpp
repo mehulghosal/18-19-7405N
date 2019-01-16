@@ -18,8 +18,7 @@ bool getParkState();
 void moveReaper(int dist, bool delay);
 void arm(bool toggle);
 int getLimit();
-
-
+void changeArm(int val);
 
 //AUTONS//
 void topBlue(){
@@ -69,21 +68,23 @@ void topBlue(){
 
 }
 
-void newnewBackBlue(){
-	pros::lcd::print(0, "INIT auton3");
-	//backred
-	old_flywheel(true, 127); // flywheel first, flameo - josh
+void backRed(){ // this is actually back red lmao
+	old_flywheel(true, 127);
+	moveTo(200);
+	leftTurn(20);
 	intake(1);
-	pros::c::delay(1500);
-	moveTo(2700);//this is pretty close - 2900 is perfect to intake the ball
-	while(getLimit() != 1)
-	moveTo(-2400);
-	rightTurn(55);
+	changeArm(-127);
+	moveTo(1000);
+	changeArm(0);
+	pros::c::delay(300);
+	moveTo(-1000);
+	leftTurn(40);
 	reaper(1);
-	old_flywheel(true, 115);
-	pros::c::delay(1000);
+	while(getLimit() != 1);
 	reaper(1);
 }
+
+
 void topRed(){
 	pros::lcd::print(0, "INIT auton2");
 
@@ -369,10 +370,10 @@ void autonomous(){
 		topRed(); // top red
 	}
 	else if(aS == 3){
-		newBackBlue(); // back blue
+		backBlue(); // back blue
 	}
 	else if(aS == 4){
-		newBackRed(); // back red
+		backRed(); // back red
 	}
 	else if(aS == 5){
 		autonskills();

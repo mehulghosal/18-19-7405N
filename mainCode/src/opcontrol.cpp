@@ -33,6 +33,10 @@ void old_flywheel(bool toggle, int speed = 127){
 	}
 }
 
+
+void changeArm(int val){
+	armMotor = val;
+}
 // VISION SENSOR STUFF//
 //https://www.vexforum.com/index.php/attachment/5be56e847b3f6_1.png
 
