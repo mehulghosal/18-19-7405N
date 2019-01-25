@@ -80,9 +80,10 @@ void backRed(){ // this is actually back red lmao
 	changeArm(-127);
 	moveTo(1000);
 	changeArm(127);
-	pros::c::delay(300); // 191 for top flag 180 to shoot middle flag
+	pros::c::delay(300); // 191 for top flag 180 to shoot middle flag	changeArm(0);
+	changeArm(0);
 	moveTo(-1000);
-	leftTurn(34);
+	leftTurn(36);
 	//
 	reaper(1);
 	pros::c::delay(600);
@@ -93,13 +94,13 @@ void backRed(){ // this is actually back red lmao
 	reaper(1);
 	pros::c::delay(500);
 
-	rightTurn(54);
+	rightTurn(56);
 	flywheel(true, 200);
 	moveTo(3000);
 	while(getLimit() != 1);
 	reaper(0);
 	moveTo(-500);
-	leftTurn(58);
+	leftTurn(53);
 	reaper(1);
 
 
