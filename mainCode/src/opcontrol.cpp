@@ -18,7 +18,14 @@ pros::Motor armMotor(8);
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
 pros::ADIDigitalIn limit ('E');
 
-
+double getflywheelspeed()
+{
+	return flyWheelMotor.get_actual_velocity();
+}
+void setFlywheelspeed(int speed)
+{
+	flyWheelMotor = speed;
+}
 void setBrake(){
 
 	backLeftMtr.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
@@ -196,6 +203,8 @@ if(abs(driveL) > 15 && driveR < 15 && driveR > -15)
 }
 
 //OTHER FEATURE CONTROLS//
+
+
 
 void flywheel(bool toggle, int speed = 200){
 	if(toggle){

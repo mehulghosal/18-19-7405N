@@ -20,13 +20,54 @@ void moveReaper(int dist, bool delay);
 void arm(bool toggle);
 int getLimit();
 void changeArm(int val);
-
+int targetspeed = 0;
+double getflywheelspeed();
+void setFlywheelspeed(int speed);
+double previousError = 0;
 //AUTONS//
+double flywheelVelocity = 0;
+double flywheelaccel(double error)
+{
+	double integral = 0;
+	double derivative = 0;
+ error = targetspeed - getflywheelspeed();
+ integral += error;
+ derivative = error - previousError;
+double pid = (error * .5) + (integral * 0) + (derivative * 1.15);
+
+previousError = error;
+
+pros::lcd::print(0, "P: %f",error);
+pros::lcd::print(1, "I: %f",integral);
+pros::lcd::print(2, "D: %f",derivative);
+pros::lcd::print(3, "PID: %f", pid);
+
+return pid;
+}
+void maintainflywheel(void* a)
+{
+	while (true) {
+
+		if (targetspeed == 0) {
+			setFlywheelspeed(0);
+		}
+		else {
+			double acceleration = flywheelaccel(targetspeed - getflywheelspeed() * (127.0 / 200));
+			flywheelVelocity += acceleration * 0.020;
+
+			//pros::lcd::print(3, "Flywheel Acceleration: %f", acceleration);
+		}
+
+		//pros::lcd::print(4, "Flywheel Set Velocity: %f", flywheelVelocity);
+		//pros::lcd::print(5, "Actual Flywheel Velocity: %f", flywheel.get_actual_velocity() * (127.0 / 200));
 
 
+		setFlywheelspeed(flywheelVelocity);
+		pros::c::delay(20);
+	}
+}
 void topBlue(){ // starts about two inches in front of the wall, and 2 inches left of the mat's edge (on the left side)
 	pros::lcd::print(0,"INIT Auton1");
-
 	//turn on flywheel and intake on first
 	flywheel(true, 195);
 	intake(1);
@@ -73,6 +114,7 @@ void topBlue(){ // starts about two inches in front of the wall, and 2 inches le
 }
 
 void backRed(){ // this is actually back red lmao
+
 	flywheel(true, 191);
 	moveTo(250, 40);
 	leftTurn(20);
@@ -403,6 +445,7 @@ void test(){
 }
 // std::string autonstateNames[] = {"top blue", "top red", "back blue", "back red", "codeSkills"};
 void autonomous(){
+	pros::Task my_task(maintainflywheel);
 
 	int aS = getAutonState();
 	if(aS == 1){
