@@ -181,11 +181,11 @@ if(abs(driveL) > 15 && driveR < 15 && driveR > -15)
 	frontRightMtr= driveL + diff;
 	backLeftMtr = driveL + samesidediff;
 	backRightMtr= driveL+ backrightadjust;
-	pros::lcd::print(4, "fLeft encoder: %f",frontLeftMtr.get_position());
-	pros::lcd::print(5, "fRight encode %f",frontRightMtr.get_position());
-	pros::lcd::print(6, "diff %f",diff);
-	pros::lcd::print(2, " FL: %lf",frontLeftMtr.get_actual_velocity());
-	pros::lcd::print(3, " FR: %lf",frontRightMtr.get_actual_velocity());
+//	pros::lcd::print(4, "fLeft encoder: %f",frontLeftMtr.get_position());
+//	pros::lcd::print(5, "fRight encode %f",frontRightMtr.get_position());
+//	pros::lcd::print(6, "diff %f",diff);
+//	pros::lcd::print(2, " FL: %lf",frontLeftMtr.get_actual_velocity());
+//	pros::lcd::print(3, " FR: %lf",frontRightMtr.get_actual_velocity());
 
 
 }
@@ -214,7 +214,7 @@ void flywheel(bool toggle, int speed = 200){
 	else {
 		flyWheelMotor = 0;
 	}
-			pros::lcd::print(3, "flywheel %d", flyWheelMotor.get_actual_velocity());
+	//		pros::lcd::print(3, "flywheel %d", flyWheelMotor.get_actual_velocity());
 }
 void reaper(int toggle){
 	if(toggle == 1){
@@ -449,10 +449,10 @@ void moveTo(double d, double speed){
 
 
 
-			pros::lcd::print(1, "Entered firstLoop");
-			pros::lcd::print(3, "fLeft encoder: %f | fright encoder: %f", le, re);
-			pros::lcd::print(4, "bleft encoder: %f | bright encoder: %f", backLeftMtr.get_position(), backRightMtr.get_position());
-			pros::lcd::print(6, "diff %f", diff);
+	//		pros::lcd::print(1, "Entered firstLoop");
+//			pros::lcd::print(3, "fLeft encoder: %f | fright encoder: %f", le, re);
+//			pros::lcd::print(4, "bleft encoder: %f | bright encoder: %f", backLeftMtr.get_position(), backRightMtr.get_position());
+//			pros::lcd::print(6, "diff %f", diff);
 			pros::c::delay(170);
 		}
 		setBrake();
@@ -489,10 +489,10 @@ void moveTo(double d, double speed){
 			backLeftMtr = -speed + samesidediff;
 			backRightMtr= -speed + backrightadjust;
 
-			pros::lcd::print(1, "Entered firstLoop");
-			pros::lcd::print(3, "fLeft encoder: %f | fright encoder: %f", le, re);
-			pros::lcd::print(4, "bleft encoder: %f | bright encoder: %f", backLeftMtr.get_position(), backRightMtr.get_position());
-			pros::lcd::print(6, "diff %f", diff);
+//		pros::lcd::print(1, "Entered firstLoop");
+///			pros::lcd::print(3, "fLeft encoder: %f | fright encoder: %f", le, re);
+	//		pros::lcd::print(4, "bleft encoder: %f | bright encoder: %f", backLeftMtr.get_position(), backRightMtr.get_position());
+//			pros::lcd::print(6, "diff %f", diff);
 			pros::c::delay(50);
 
 		}
@@ -502,9 +502,9 @@ void moveTo(double d, double speed){
 	setBrake();
 	chassisSet(0, 0 );
 	pros::c::delay(500);
-	pros::lcd::print(1, "Entered firstLoop");
-	pros::lcd::print(3, "fLeft: %f | fright: %f", frontLeftMtr.get_position(), frontRightMtr.get_position());
-	pros::lcd::print(4, "bleft: %f | bright: %f", backLeftMtr.get_position(), backRightMtr.get_position());
+//	pros::lcd::print(1, "Entered firstLoop");
+//	pros::lcd::print(3, "fLeft: %f | fright: %f", frontLeftMtr.get_position(), frontRightMtr.get_position());
+//	pros::lcd::print(4, "bleft: %f | bright: %f", backLeftMtr.get_position(), backRightMtr.get_position());
 
 }
 

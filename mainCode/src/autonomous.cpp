@@ -33,14 +33,11 @@ double flywheelaccel(double error)
  error = targetspeed - getflywheelspeed();
  integral += error;
  derivative = error - previousError;
-double pid = (error * .5) + (integral * 0) + (derivative * 1.15);
+double pid = (error * .18) + (integral * 0) + (derivative * .5);
 
 previousError = error;
 
-pros::lcd::print(0, "P: %f",error);
-pros::lcd::print(1, "I: %f",integral);
-pros::lcd::print(2, "D: %f",derivative);
-pros::lcd::print(3, "PID: %f", pid);
+pros::lcd::print(1, "P:%f|I:%f|D:%f|PID:%f",error,integral,derivative,pid);
 
 return pid;
 }
@@ -55,12 +52,12 @@ void maintainflywheel(void* a)
 			double acceleration = flywheelaccel(targetspeed - getflywheelspeed() * (127.0 / 200));
 			flywheelVelocity += acceleration * 0.020;
 
-			//pros::lcd::print(3, "Flywheel Acceleration: %f", acceleration);
+			pros::lcd::print(3, "Flywheel Acceleration: %f", acceleration);
 		}
 
-		//pros::lcd::print(4, "Flywheel Set Velocity: %f", flywheelVelocity);
-		//pros::lcd::print(5, "Actual Flywheel Velocity: %f", flywheel.get_actual_velocity() * (127.0 / 200));
-
+		pros::lcd::print(4, "Flywheel Set Velocity: %f", flywheelVelocity);
+		pros::lcd::print(5, "Actual Flywheel Velocity: %f", getflywheelspeed());
+		pros::lcd::print(6, "diff: %f", flywheelVelocity - getflywheelspeed());
 
 		setFlywheelspeed(flywheelVelocity);
 		pros::c::delay(20);
@@ -436,7 +433,11 @@ void newBackRed(){
 	}
 }
 
+void checkAutonSpeed(){
+		targetspeed = 160;
 
+
+}
 
 void test(){
 	moveTo(2600);
@@ -449,7 +450,7 @@ void autonomous(){
 
 	int aS = getAutonState();
 	if(aS == 1){
-		topBlue(); // top blue
+			checkAutonSpeed();//topBlue(); // top blue
 	}
 	else if(aS == 2){
 		topRed(); // top red
