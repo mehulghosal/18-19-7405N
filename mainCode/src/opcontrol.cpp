@@ -1,18 +1,20 @@
 #include "main.h"
 
+
 void resetPositions();
 //CONTROLLER
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 //MOTOR INITS//
-pros::Motor backLeftMtr(3);
+pros::Motor backLeftMtr(9);
 pros::Motor frontLeftMtr(10);
 pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor backRightMtr(13, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor reaperMotor(5, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor flyWheelMotor(7, pros::E_MOTOR_GEARSET_18);
-pros::Motor intakeMotor(12);
+pros::Motor flyWheelMotor(4, pros::E_MOTOR_GEARSET_18);
+pros::Motor intakeMotor(3);
 pros::Motor armMotor(8);
+
 pros::Motor motors [8] = {backLeftMtr, backRightMtr, frontLeftMtr, frontRightMtr, flyWheelMotor, intakeMotor, armMotor, reaperMotor};
 pros::ADIDigitalIn limit ('E');
 
@@ -39,7 +41,11 @@ void changeArm(int val){
 }
 // VISION SENSOR STUFF//
 //https://www.vexforum.com/index.php/attachment/5be56e847b3f6_1.png
-
+void display()
+{
+	pros::lcd::print(3, "fLeft: %f | fright: %f", frontLeftMtr.get_position(), frontRightMtr.get_position());
+	pros::lcd::print(4, "bleft: %f | bright: %f", backLeftMtr.get_position(), backRightMtr.get_position());
+}
 
 
 /*
@@ -206,7 +212,9 @@ void reaper(int toggle){
 		reaperMotor = 127;
 	}
 	else if(toggle == 0){
+		reaperMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 		reaperMotor = 0;
+
 	}
 	else {
 		reaperMotor = -127;
@@ -248,7 +256,7 @@ void arm(bool toggle){
 void moveTo(double d){
 	resetPositions();
 
-	int speed = 0;
+
 	double speedCoef = 0;
 	double slowdown = (4 * d) / 5;
 	double sdiff = 0;
@@ -259,8 +267,8 @@ void moveTo(double d){
 	double mbackrightadjust = 0;
 
 	if(d > 0){
-		while(frontLeftMtr.get_position() < d ){
-			double kp = .15;
+		while(frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d){
+			double kp = .10;
 
 
 
@@ -271,9 +279,9 @@ void moveTo(double d){
 					double ble = backLeftMtr.get_position();
 					double bre = backRightMtr.get_position();
 
-					double diff = .35 * (le - re);
-					double samesidediff = .35 * (le - ble);
-					double backrightadjust = .35 *(le - bre);
+					double diff = .05 * (le - re);
+					double samesidediff = .05 * (le - ble);
+					double backrightadjust = .05 *(le - bre);
 					speedCoef = 100;
 					frontLeftMtr = speedCoef;
 					frontRightMtr= speedCoef + diff;
@@ -323,13 +331,13 @@ void moveTo(double d){
 
 			pros::c::delay(170);
 		}
-			setBrake();
+
 			chassisSet(0, 0);
 	}
 
 	if ( d < 0){
-		while(frontLeftMtr.get_position() > d ){
-			double kp = .15;
+		while(frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d){
+			double kp = .1;
 
 
 
@@ -340,9 +348,9 @@ void moveTo(double d){
 					double ble = backLeftMtr.get_position();
 					double bre = backRightMtr.get_position();
 
-					double diff = .3 * (le - re);
-					double samesidediff = .3 * (le - ble);
-					double backrightadjust = .3 *(le - bre);
+					double diff = .05 * (le - re);
+					double samesidediff = .05 * (le - ble);
+					double backrightadjust = .05 *(le - bre);
 					speedCoef = 100;
 					frontLeftMtr = -speedCoef;
 					frontRightMtr= -speedCoef + diff;
@@ -361,9 +369,9 @@ void moveTo(double d){
 					double re = frontRightMtr.get_position();
 					double ble = backLeftMtr.get_position();
 					double bre = backRightMtr.get_position();
-				 sdiff = .2 * (le - re);
-				 ssamesidediff = .2 * (le - ble);
-				 sbackrightadjust = .2 *(le - bre);
+				 sdiff = .05 * (le - re);
+				 ssamesidediff = .05 * (le - ble);
+				 sbackrightadjust = .05 *(le - bre);
 				}
 				else{
 					speedCoef = abs(d - frontLeftMtr.get_position()) * kp;
@@ -375,9 +383,9 @@ void moveTo(double d){
 					double re = frontRightMtr.get_position();
 					double ble = backLeftMtr.get_position();
 					double bre = backRightMtr.get_position();
-				 mdiff = .2 * (le - re);
-				 msamesidediff = .2 * (le - ble);
-				 mbackrightadjust = .2 *(le - bre);
+				 mdiff = .05 * (le - re);
+				 msamesidediff = .05 * (le - ble);
+				 mbackrightadjust = .05 *(le - bre);
 				}
 
 
@@ -482,8 +490,13 @@ void moveTo(double d, double speed){
 		setBrake();
 		chassisSet(0,0);
 	}
+	setBrake();
 	chassisSet(0, 0 );
 	pros::c::delay(500);
+	pros::lcd::print(1, "Entered firstLoop");
+	pros::lcd::print(3, "fLeft: %f | fright: %f", frontLeftMtr.get_position(), frontRightMtr.get_position());
+	pros::lcd::print(4, "bleft: %f | bright: %f", backLeftMtr.get_position(), backRightMtr.get_position());
+
 }
 
 
@@ -520,9 +533,10 @@ void opcontrol() {
 
 	//fuck this all jeez
 //	testfunct();
+
 	int disp = 0;
 	int prevTravelDist = 0;
-	int flyWheelSpeed = 127;
+	int flyWheelSpeed = 200;
 	bool flyWheelToggle = false;
 	int intakeToggle = 0;
 	int reaperToggle = 0;
@@ -554,12 +568,13 @@ void opcontrol() {
 		PrintReadableVisObj(read_arr[0]);
 
 		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false){
-			if(getLimit() == 1 && reaperToggle == 1){
+			if(limit.get_value() == 1 && reaperToggle == 1){
 				reaperToggle = 0;
 			}
-			else if (getLimit() == 1 && reaperToggle == 0){
+			else if (limit.get_value() == 1 && reaperToggle == 0){
 				reaperToggle = 1;
 				reaper(reaperToggle);
+				pros::c::delay(350);
 			}
 			else if (reaperToggle == 0 || reaperToggle == -1){
 				reaperToggle = 1;
@@ -578,8 +593,6 @@ void opcontrol() {
 			}
 			xPressed = false;
 		}
-
-
 
 		if (master.get_digital(DIGITAL_B) == 1 && bPressed == false) {
 			if (reaperToggle == -1){
@@ -688,7 +701,7 @@ void opcontrol() {
 		pros::lcd::print(3, "BR: %lf FR: %lf", backRightMtr.get_actual_velocity(),frontRightMtr.get_actual_velocity());
 		pros::lcd::print(5, "touching %d", getLimit());
 
-//		pros::lcd::print(4, "MTRDISP: %lf ", disp);
+		//pros::lcd::print(4, "MTRDISP: %lf ", disp);
 
 		if(backLeftMtr.get_actual_velocity() != frontLeftMtr.get_actual_velocity() || backRightMtr.get_actual_velocity() != frontRightMtr.get_actual_velocity()){
 			printf("MOTOR DISPUTE | ");
@@ -698,9 +711,10 @@ void opcontrol() {
 
 
 
-	//	pros::lcd::print(3, "GYRO: %d", (gyroscope.get_value()));
+	//pros::lcd::print(3, "GYRO: %d", (gyroscope.get_value()));
 
-		pros::Task::delay(10);
+		pros::Task::delay(20);
 
 	}
+
 }
