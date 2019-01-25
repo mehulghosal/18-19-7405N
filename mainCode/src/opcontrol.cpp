@@ -414,10 +414,10 @@ void moveTo(double d, double speed){
 			double bre = backRightMtr.get_position();
 			double diff = le - re;
 			double kp = .1;
-			diff = .3 * diff;
+			diff = .05 * diff;
 			double samesidediff = le - ble;
-			samesidediff = samesidediff * .3;
-			double backrightadjust = .3 *(le - bre);
+			samesidediff = samesidediff * .05;
+			double backrightadjust = .05 *(le - bre);
 			double adjust = speedCoef + (2 * diff);
 			double samesideadjust = speedCoef + (2 * samesidediff);
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
@@ -458,10 +458,10 @@ void moveTo(double d, double speed){
 			double bre = backRightMtr.get_position();
 			double diff = le - re;
 			double kp = .1;
-			diff = .25 * diff;
+			diff = .05 * diff;
 			double samesidediff = le - ble;
-			samesidediff = samesidediff * .25;
-			double backrightadjust = .25 *(le - bre);
+			samesidediff = samesidediff * .05;
+			double backrightadjust = .05 *(le - bre);
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
 				{
 					speedCoef = 80;

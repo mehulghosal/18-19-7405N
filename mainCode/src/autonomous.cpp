@@ -73,19 +73,38 @@ void topBlue(){ // starts about two inches in front of the wall, and 2 inches le
 }
 
 void backRed(){ // this is actually back red lmao
-	flywheel(true, 195);
-	moveTo(200);
+	flywheel(true, 191);
+	moveTo(250, 40);
 	leftTurn(20);
 	intake(1);
 	changeArm(-127);
 	moveTo(1000);
-	changeArm(0);
-	pros::c::delay(300);
+	changeArm(127);
+	pros::c::delay(300); // 191 for top flag 180 to shoot middle flag
 	moveTo(-1000);
-	leftTurn(40);
+	leftTurn(34);
 	//
 	reaper(1);
+	pros::c::delay(600);
 	while(getLimit() != 1);
+	reaper(0);
+	flywheel(true, 180);
+	pros::c::delay(900);
+	reaper(1);
+	pros::c::delay(500);
+
+	rightTurn(54);
+	flywheel(true, 200);
+	moveTo(3000);
+	while(getLimit() != 1);
+	reaper(0);
+	moveTo(-500);
+	leftTurn(58);
+	reaper(1);
+
+
+
+	/*
 	reaper(0);
 	rightTurn(60);
 	moveTo(1450);
@@ -101,7 +120,7 @@ void backRed(){ // this is actually back red lmao
 	reaper(1);
 	while(getLimit() != 1);
 	reaper(0);
-
+	*/
 
 }
 
