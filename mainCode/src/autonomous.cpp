@@ -14,17 +14,20 @@ void moveTo(double d, double speed);
 void turn(double d, int i); //1 FOR LEFT; 0 FOR RIGHT
 void rightTurn(double d, int speed = 100);
 void leftTurn(double d, int speed = 100);
+
 int getAutonState();
 bool getParkState();
+
 void moveReaper(int dist, bool delay);
 void arm(bool toggle);
 int getLimit();
 void changeArm(int val);
+
 int targetspeed = 0;
 double getflywheelspeed();
 void setFlywheelspeed(int speed);
+
 double previousError = 0;
-//AUTONS//
 double flywheelVelocity = 0;
 double flywheelaccel(double error)
 {
@@ -111,7 +114,6 @@ void topBlue(){ // starts about two inches in front of the wall, and 2 inches le
 }
 
 void backRed(){ // this is actually back red lmao
-
 	targetspeed = 191;
 	moveTo(250, 40);
 	leftTurn(20);
@@ -254,44 +256,7 @@ void backBlue(){
 		moveTo(1500, 127);
 	}
 }
-/*
-void backRed(){
-	pros::lcd::print(0, "INIT auton3");
 
-	//turn on flywheel and intake first
-	flywheel(true, 190);
-	intake(1);
-	pros::c::delay(1500);
-
-	//move forward to ball
-	moveTo(3000);
-	pros::c::delay(750);
-
-	//allign top flag
-	moveTo(-250, 25);
-	leftTurn(82);
-	moveTo(-700, 30);
-
-	//shoot top flag
-	reaper(1);
-	pros::c::delay(300);
-	flywheel(true, 172);
-	while(getLimit()!= 1);
-	reaper(0);
-
-	//shoot middle flag
-	pros::c::delay(300);
-	reaper(1);
-	pros::c::delay(1000);
-
-	//park
-	if(getParkState()){
-		leftTurn(10);
-		intake(-1);
-		moveTo(3150, 127);
-	}
-}
-*/
 void autonskills(){
 	pros::lcd::print(0, "INIT autonskills");
 	targetspeed = 200;
