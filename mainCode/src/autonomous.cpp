@@ -33,7 +33,7 @@ double flywheelaccel(double error)
  error = targetspeed - getflywheelspeed();
  integral += error;
  derivative = error - previousError;
-double pid = (error * .18) + (integral * 0) + (derivative * .5);
+double pid = (error * .3) + (integral * 0) + (derivative * 1);
 
 previousError = error;
 
@@ -55,9 +55,7 @@ void maintainflywheel(void* a)
 			pros::lcd::print(3, "Flywheel Acceleration: %f", acceleration);
 		}
 
-		pros::lcd::print(4, "Flywheel Set Velocity: %f", flywheelVelocity);
-		pros::lcd::print(5, "Actual Flywheel Velocity: %f", getflywheelspeed());
-		pros::lcd::print(6, "diff: %f", flywheelVelocity - getflywheelspeed());
+
 
 		setFlywheelspeed(flywheelVelocity);
 		pros::c::delay(20);
@@ -72,13 +70,15 @@ void topBlue(){ // starts about two inches in front of the wall, and 2 inches le
 	//move forward to ball in front
 	moveTo(2800);
 
+
 	//move back and allign top flag
-	moveTo(-2550);
-	rightTurn(94, 80);
+	moveTo(-2600);
+	rightTurn(92, 80);
 
 //	moveTo(-400); // adjust this for top flag hitting
 
 	//shoot top flag
+	pros::c::delay(1000);
 	reaper(1);
 	pros::c::delay(500);
 	reaper(0);
@@ -87,16 +87,18 @@ void topBlue(){ // starts about two inches in front of the wall, and 2 inches le
 	moveTo(2000);
 	reaper(1);
 	while(getLimit() != 1);
+	rightTurn(5);
 	pros::c::delay(500);
 	reaper(0);
 
 	//allign and ram bottom flag
-	rightTurn(9);
-	moveTo(1300);
+	rightTurn(20);
+	moveTo(1000);
 	moveTo(-1500, 90);
-	leftTurn(90);
+	leftTurn(88);
 	intake(-1);
-	moveTo(1500, 60);
+	moveTo(1800, 60);
+	intake(0);
 	rightTurn(40);
 	moveTo(4000, 127);
 
@@ -177,32 +179,32 @@ void topRed(){
 
 	//move back and allign top flag
 	moveTo(-2600);
-	leftTurn(90);
+	leftTurn(92);
 
 	//shoot top flag
 	reaper(1);
-	pros::c::delay(500);
+	pros::c::delay(400);
 	reaper(0);
 
 	//allign and shoot middle flag
 	moveTo(2000);
 	reaper(1);
 	while(getLimit() != 1);
-	pros::c::delay(600);
+	pros::c::delay(400);
 	reaper(0);
 
 	//allign and ram bottom flag
-	leftTurn(20);
+	leftTurn(15);
 	moveTo(1200);
-	pros::c::delay(50);
-	moveTo(-1500, 60);
-	rightTurn(100);
+	moveTo(-1500);
+	rightTurn(112);
 	intake(-1);
+
+	moveTo(1700, 60);
 	pros::c::delay(50);
-	moveTo(1500, 60);
-	pros::c::delay(50);
-	leftTurn(50);
-	moveTo(3000);
+	moveTo(-200, 127);
+	leftTurn(42);
+	moveTo(4000,127);
 
 
 	//park

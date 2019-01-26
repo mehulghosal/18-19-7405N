@@ -52,6 +52,7 @@ void display()
 {
 	pros::lcd::print(3, "fLeft: %f | fright: %f", frontLeftMtr.get_position(), frontRightMtr.get_position());
 	pros::lcd::print(4, "bleft: %f | bright: %f", backLeftMtr.get_position(), backRightMtr.get_position());
+	pros::lcd::print(5, "flywheel %f", getflywheelspeed());
 }
 
 
@@ -288,9 +289,9 @@ void moveTo(double d){
 					double ble = backLeftMtr.get_position();
 					double bre = backRightMtr.get_position();
 
-					double diff = .05 * (le - re);
-					double samesidediff = .05 * (le - ble);
-					double backrightadjust = .05 *(le - bre);
+					double diff = .1 * (le - re);
+					double samesidediff = .1 * (le - ble);
+					double backrightadjust = .1 *(le - bre);
 					speedCoef = 100;
 					frontLeftMtr = speedCoef;
 					frontRightMtr= speedCoef + diff;
@@ -311,9 +312,9 @@ void moveTo(double d){
 					double re = frontRightMtr.get_position();
 					double ble = backLeftMtr.get_position();
 					double bre = backRightMtr.get_position();
-				 sdiff = .2 * (le - re);
-	 		 	 ssamesidediff = .2 * (le - ble);
-		 		 sbackrightadjust = .2 *(le - bre);
+				 sdiff = .1 * (le - re);
+	 		 	 ssamesidediff = .1 * (le - ble);
+		 		 sbackrightadjust = .1 *(le - bre);
 				 // when the bot is close to its final destination is travels at 10 speed until it reaches
 				 // I use different variables because I want to restart the values at 0.
 				 // this is why i set sdiff after i assign the speeds
@@ -329,9 +330,9 @@ void moveTo(double d){
 					double re = frontRightMtr.get_position();
 					double ble = backLeftMtr.get_position();
 					double bre = backRightMtr.get_position();
-				 mdiff = .2 * (le - re);
-				 msamesidediff = .2 * (le - ble);
-				 mbackrightadjust = .2 *(le - bre);
+				 mdiff = .1 * (le - re);
+				 msamesidediff = .1 * (le - ble);
+				 mbackrightadjust = .1 *(le - bre);
 				 // while bot approaches the final destination, the speed slows down
 				}
 
@@ -357,9 +358,9 @@ void moveTo(double d){
 					double ble = backLeftMtr.get_position();
 					double bre = backRightMtr.get_position();
 
-					double diff = .05 * (le - re);
-					double samesidediff = .05 * (le - ble);
-					double backrightadjust = .05 *(le - bre);
+					double diff = .1 * (le - re);
+					double samesidediff = .1 * (le - ble);
+					double backrightadjust = .1 *(le - bre);
 					speedCoef = 100;
 					frontLeftMtr = -speedCoef;
 					frontRightMtr= -speedCoef + diff;
@@ -378,9 +379,9 @@ void moveTo(double d){
 					double re = frontRightMtr.get_position();
 					double ble = backLeftMtr.get_position();
 					double bre = backRightMtr.get_position();
-				 sdiff = .05 * (le - re);
-				 ssamesidediff = .05 * (le - ble);
-				 sbackrightadjust = .05 *(le - bre);
+				 sdiff = .1 * (le - re);
+				 ssamesidediff = .1 * (le - ble);
+				 sbackrightadjust = .1 *(le - bre);
 				}
 				else{
 					speedCoef = abs(d - frontLeftMtr.get_position()) * kp;
@@ -392,9 +393,9 @@ void moveTo(double d){
 					double re = frontRightMtr.get_position();
 					double ble = backLeftMtr.get_position();
 					double bre = backRightMtr.get_position();
-				 mdiff = .05 * (le - re);
-				 msamesidediff = .05 * (le - ble);
-				 mbackrightadjust = .05 *(le - bre);
+				 mdiff = .1 * (le - re);
+				 msamesidediff = .1 * (le - ble);
+				 mbackrightadjust = .1 *(le - bre);
 				}
 
 
@@ -407,7 +408,7 @@ void moveTo(double d){
 			chassisSet(0,0);
 	}
 	chassisSet(0,0);
-	pros::c::delay(500);
+	pros::c::delay(300);
 }
 void moveTo(double d, double speed){
 	resetPositions();
@@ -423,10 +424,10 @@ void moveTo(double d, double speed){
 			double bre = backRightMtr.get_position();
 			double diff = le - re;
 			double kp = .1;
-			diff = .05 * diff;
+			diff = .1 * diff;
 			double samesidediff = le - ble;
-			samesidediff = samesidediff * .05;
-			double backrightadjust = .05 *(le - bre);
+			samesidediff = samesidediff * .1;
+			double backrightadjust = .1 *(le - bre);
 			double adjust = speedCoef + (2 * diff);
 			double samesideadjust = speedCoef + (2 * samesidediff);
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
@@ -467,10 +468,10 @@ void moveTo(double d, double speed){
 			double bre = backRightMtr.get_position();
 			double diff = le - re;
 			double kp = .1;
-			diff = .05 * diff;
+			diff = .1 * diff;
 			double samesidediff = le - ble;
-			samesidediff = samesidediff * .05;
-			double backrightadjust = .05 *(le - bre);
+			samesidediff = samesidediff * .1;
+			double backrightadjust = .1 *(le - bre);
 			if(abs(d - frontRightMtr.get_position()) * kp > 127)
 				{
 					speedCoef = 80;
@@ -501,7 +502,7 @@ void moveTo(double d, double speed){
 	}
 	setBrake();
 	chassisSet(0, 0 );
-	pros::c::delay(500);
+	pros::c::delay(300);
 //	pros::lcd::print(1, "Entered firstLoop");
 //	pros::lcd::print(3, "fLeft: %f | fright: %f", frontLeftMtr.get_position(), frontRightMtr.get_position());
 //	pros::lcd::print(4, "bleft: %f | bright: %f", backLeftMtr.get_position(), backRightMtr.get_position());
