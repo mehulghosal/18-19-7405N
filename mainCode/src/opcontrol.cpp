@@ -24,8 +24,8 @@ pros::Motor motors[8] = {
   armMotor,
   reaperMotor
 };
-pros::ADIDigitalIn limit('E');
-
+pros::ADIAnalogIn linesens('E');
+pros::ADIAnalogIn linesens2('A');
 void changeFlywheel(bool change);
 double getflywheelspeed() {
   return flyWheelMotor.get_actual_velocity();
@@ -50,6 +50,7 @@ void old_flywheel(bool toggle, int speed = 127) {
 
 void changeArm(int val) {
   armMotor = val;
+  armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 // VISION SENSOR STUFF//
 //https://www.vexforum.com/index.php/attachment/5be56e847b3f6_1.png
@@ -471,7 +472,7 @@ void moveTo(double d, double speed) {
 }
 
 int getLimit() {
-  if (limit.get_value() == 1) {
+  if (linesens.get_value() <= 1500 || linesens2.get_value() <= 1500) {
     return 1;
   } else {
     return 0;
@@ -534,9 +535,9 @@ void opcontrol() {
     PrintReadableVisObj(read_arr[0]);
 
     if (master.get_digital(DIGITAL_R2) == 1 && r2Pressed == false) {
-      if (limit.get_value() == 1 && reaperToggle == 1) {
+      if (getLimit() == 1 && reaperToggle == 1) {
         reaperToggle = 0;
-      } else if (limit.get_value() == 1 && reaperToggle == 0) {
+      } else if (getLimit() == 1 && reaperToggle == 0) {
         reaperToggle = 1;
         reaper(reaperToggle);
         pros::c::delay(350);
@@ -645,7 +646,7 @@ void opcontrol() {
     pros::lcd::print(1, "RPR: %f INT: %d FLY: %f FLYTARG: %d", reaperMotor.get_actual_velocity(), (int) intakeToggle, (flyWheelMotor.get_actual_velocity()), flyWheelSpeed);
     pros::lcd::print(2, "BL: %lf FL: %lf", backLeftMtr.get_actual_velocity(), frontLeftMtr.get_actual_velocity());
     pros::lcd::print(3, "BR: %lf FR: %lf", backRightMtr.get_actual_velocity(), frontRightMtr.get_actual_velocity());
-    pros::lcd::print(5, "touching %d", getLimit());
+    pros::lcd::print(5, "READ %d", linesens.get_value());
 
     //pros::lcd::print(4, "MTRDISP: %lf ", disp);
 

@@ -65,7 +65,7 @@ void maintainflywheel(void * a) {
   }
 }
 void changeFlywheel(bool change){
-  runFlywheel = change; 
+  runFlywheel = change;
 }
 
 void topBlue() { // starts about two inches in front of the wall, and 2 inches left of the mat's edge (on the left side)
@@ -214,6 +214,29 @@ void topRed() {
   moveTo(-1700 - 600);
   rightTurn(90);
   moveTo(2500);*/
+
+}
+
+void newTopRedCauseImBored(){
+  targetspeed = 191;
+  intake(1);
+  changeArm(-127);
+  moveTo(1000,70);
+  changeArm(0);
+  moveTo(-1000, 60);
+  leftTurn(128);
+  changeArm(25);
+  moveTo(500);
+  changeArm(0);
+  reaper(1);
+  while(getLimit() != 1);
+  pros::c::delay(400);
+  reaper(1);
+  moveTo(1300);
+  while(getLimit() != 1);
+  pros::c::delay(400);
+  reaper(1);
+  moveTo(1500);
 
 }
 
@@ -387,7 +410,7 @@ void autonomous() {
   if (aS == 1) {
     topBlue(); // top blue
   } else if (aS == 2) {
-    topRed(); // top red
+    newTopRedCauseImBored(); // top red
   } else if (aS == 3) {
     backBlue(); // back blue
   } else if (aS == 4) {
