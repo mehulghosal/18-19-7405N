@@ -79,7 +79,7 @@ void topBlue() { // starts about two inches in front of the wall, and 2 inches l
 
   //move back and allign top flag
   moveTo(-2600);
-  rightTurn(92, 80);
+  rightTurn(110, 80);
 
   //	moveTo(-400); // adjust this for top flag hitting
 
@@ -90,22 +90,23 @@ void topBlue() { // starts about two inches in front of the wall, and 2 inches l
   reaper(0);
 
   //allign and shoot middle flag
-  moveTo(2000);
+  moveTo(1700);
   reaper(1);
   while (getLimit() != 1);
-  rightTurn(5);
+
   pros::c::delay(500);
   reaper(0);
 
   //allign and ram bottom flag
-  rightTurn(20);
-  moveTo(1000);
+  rightTurn(15);
+  moveTo(1200);
   moveTo(-1500, 90);
-  leftTurn(88);
+  leftTurn(100);
   intake(-1);
-  moveTo(1800, 60);
+  moveTo(1400, 60);
+  moveTo(-200, 90);
   intake(0);
-  rightTurn(40);
+  rightTurn(45);
   moveTo(4000, 127);
 
   //park
@@ -202,10 +203,10 @@ void topRed() {
   rightTurn(112);
   intake(-1);
 
-  moveTo(1700, 60);
+  moveTo(1400, 60);
   pros::c::delay(50);
   moveTo(-200, 127);
-  leftTurn(42);
+  leftTurn(32);
   moveTo(4000, 127);
 
   //park
@@ -410,7 +411,7 @@ void autonomous() {
   if (aS == 1) {
     topBlue(); // top blue
   } else if (aS == 2) {
-    newTopRedCauseImBored(); // top red
+    topRed(); // top red
   } else if (aS == 3) {
     backBlue(); // back blue
   } else if (aS == 4) {
