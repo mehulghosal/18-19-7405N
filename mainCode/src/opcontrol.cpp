@@ -177,10 +177,10 @@ void drive(int driveL, int driveR) {
     double ble = backLeftMtr.get_position();
     double bre = backRightMtr.get_position();
     double diff = le - re;
-    diff = .4 * diff;
+    diff = .1 * diff;
     double samesidediff = le - ble;
-    samesidediff = samesidediff * .4;
-    double backrightadjust = .4 * (le - bre);
+    samesidediff = samesidediff * .1;
+    double backrightadjust = .1 * (le - bre);
     frontLeftMtr = driveL;
     frontRightMtr = driveL + diff;
     backLeftMtr = driveL + samesidediff;

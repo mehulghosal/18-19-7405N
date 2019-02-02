@@ -24,43 +24,47 @@ int targetspeed = 0;
 double getflywheelspeed();
 void setFlywheelspeed(int speed);
 double previousError = 0;
+bool runFlywheel = true;
 //AUTONS//
 double flywheelVelocity = 0;
 
 double flywheelaccel(double error) {
   double integral = 0;
   double derivative = 0;
-  error = targetspeed - getflywheelspeed();
+
   integral += error;
   derivative = error - previousError;
-  double pid = (error * .3) + (integral * 0) + (derivative * 1);
+  double pid = (error * .8) + (integral * 0) + (derivative * .4);
 
   previousError = error;
 
-  pros::lcd::print(1, "P:%f|I:%f|D:%f|PID:%f", error, integral, derivative, pid);
-
+  pros::lcd::print(1, "PID %f",pid);
+  display();
+  pros::lcd::print(7,"%d",targetspeed);
   return pid;
 }
 
-bool runFlywheel = true;
+
 
 void maintainflywheel(void * a) {
   while (true) {
     if(runFlywheel){
       if (targetspeed == 0) {
         setFlywheelspeed(0);
-      } else {
-        double acceleration = flywheelaccel(targetspeed - getflywheelspeed() * (127.0 / 200));
-        flywheelVelocity += acceleration * 0.020;
+      }
+      else {
+        double acceleration = flywheelaccel((targetspeed - getflywheelspeed()) * (127.0 / 200));
 
-        pros::lcd::print(3, "Flywheel Acceleration: %f", acceleration);
+        flywheelVelocity = std::min(130.0 , flywheelVelocity + (acceleration * 0.020));
+
+        pros::lcd::print(3, "Flywheel Vel: %f", flywheelVelocity);
       }
 
       setFlywheelspeed(flywheelVelocity);
       pros::c::delay(20);
     }
     else{
-      setFlywheelspeed(195);
+      setFlywheelspeed(125);
     }
   }
 }
@@ -78,15 +82,15 @@ void topBlue() { // starts about two inches in front of the wall, and 2 inches l
   moveTo(2800);
 
   //move back and allign top flag
-  moveTo(-2600);
-  rightTurn(110, 80);
+  moveTo(-2550);
+  rightTurn(92, 80);
 
   //	moveTo(-400); // adjust this for top flag hitting
 
   //shoot top flag
-  pros::c::delay(1000);
+while(getflywheelspeed() < 195);
   reaper(1);
-  pros::c::delay(500);
+  pros::c::delay(400);
   reaper(0);
 
   //allign and shoot middle flag
@@ -99,14 +103,14 @@ void topBlue() { // starts about two inches in front of the wall, and 2 inches l
 
   //allign and ram bottom flag
   rightTurn(15);
-  moveTo(1200);
+  moveTo(1400);
   moveTo(-1500, 90);
   leftTurn(100);
   intake(-1);
   moveTo(1400, 60);
   moveTo(-200, 90);
   intake(0);
-  rightTurn(45);
+  rightTurn(50);
   moveTo(4000, 127);
 
   //park
@@ -117,8 +121,42 @@ void topBlue() { // starts about two inches in front of the wall, and 2 inches l
   moveTo(2500);*/
 
 }
+void backRed(){
+  intake(1);
+  targetspeed = 195;
+  moveTo(2800, 100);
+  pros::c::delay(500);
+  moveTo(-2500, 100);
+  leftTurn(61);
+while(getflywheelspeed() < 195);
+    display();
+  reaper(1);
+  pros::c::delay(400);
 
-void backRed() { // this is actually back red lmao
+  targetspeed = 180;
+  while (getLimit() != 1);
+  reaper(0);
+   // second shot speed
+  while(getflywheelspeed() > 184);
+    display();
+    // second shot delay
+  reaper(1);
+  pros::c::delay(400);
+if(getParkState())
+{
+
+    moveTo(200, 25);
+    leftTurn(35);
+    moveTo(1350, 25);
+    rightTurn(92);
+    intake(-1);
+    moveTo(2000, 127);
+
+}
+
+}
+
+void armBackRed() { // this is actually back red lmao
 
   targetspeed = 191;
   moveTo(250, 40);
@@ -170,6 +208,7 @@ void backRed() { // this is actually back red lmao
 
 }
 
+
 void topRed() {
   pros::lcd::print(0, "INIT auton2");
 
@@ -185,6 +224,7 @@ void topRed() {
   leftTurn(92);
 
   //shoot top flag
+  while(getflywheelspeed() < 195);
   reaper(1);
   pros::c::delay(400);
   reaper(0);
@@ -206,7 +246,7 @@ void topRed() {
   moveTo(1400, 60);
   pros::c::delay(50);
   moveTo(-200, 127);
-  leftTurn(32);
+  leftTurn(38);
   moveTo(4000, 127);
 
   //park
@@ -245,8 +285,17 @@ void backBlue() {
   pros::lcd::print(0, "INIT auton3");
 
   //turn on flywheel and intake first
-  targetspeed = 200;
-  intake(1);
+/*  targetspeed = 200;
+  pros::c::delay(7500);
+
+  targetspeed = 180;
+  pros::c::delay(1500);
+  pros::lcd::print(6, "changing speed");
+  pros::c::delay(9500);
+
+*/
+targetspeed = 200;
+intake(1);
   pros::c::delay(1500);
 
   //move forward to ball
@@ -257,16 +306,19 @@ void backBlue() {
   moveTo(-2750);
   rightTurn(55);
   moveTo(-200, 25);
-
+while(getflywheelspeed() < 194);
   //shoot top flag
+  display();
   reaper(1);
   pros::c::delay(300);
-  targetspeed = 185;
+
+  targetspeed = 180;
   while (getLimit() != 1);
   reaper(0);
 
   //shoot middle flag
-  pros::c::delay(300);
+while(getflywheelspeed() > 184);
+  display();
   reaper(1);
   pros::c::delay(500);
 
@@ -274,58 +326,23 @@ void backBlue() {
   if (getParkState()) {
     moveTo(200, 25);
     rightTurn(35);
-    moveTo(1200, 25);
+    moveTo(1350, 25);
     leftTurn(90);
     intake(-1);
-    moveTo(1500, 127);
+    moveTo(2000, 127);
   }
+
 }
-/*
-void backRed(){
-pros::lcd::print(0, "INIT auton3");
 
-//turn on flywheel and intake first
-flywheel(true, 190);
-intake(1);
-pros::c::delay(1500);
 
-//move forward to ball
-moveTo(3000);
-pros::c::delay(750);
 
-//allign top flag
-moveTo(-250, 25);
-leftTurn(82);
-moveTo(-700, 30);
-
-//shoot top flag
-reaper(1);
-pros::c::delay(300);
-flywheel(true, 172);
-while(getLimit()!= 1);
-reaper(0);
-
-//shoot middle flag
-pros::c::delay(300);
-reaper(1);
-pros::c::delay(1000);
-
-//park
-if(getParkState()){
-leftTurn(10);
-intake(-1);
-moveTo(3150, 127);
-}
-}
-*/
 void autonskills() {
   pros::lcd::print(0, "INIT autonskills");
   targetspeed = 200;
   intake(1);
-  pros::c::delay(1500);
+
   moveTo(2500); //this is pretty close - 2900 is perfect to intake the ball
-  display();
-  pros::c::delay(100000);
+
   // intakes second ball
   reaper(1);
   while (getLimit() != 1);
@@ -335,19 +352,21 @@ void autonskills() {
   // moves to flip first cap
   moveTo(1000, 40);
   moveTo(-3300);
-  leftTurn(88, 30);
-  moveTo(3900);
+  leftTurn(91, 30);
+  moveTo(4000);
 
-  // shoots first ball
+  while(getflywheelspeed() < 195);
   reaper(1);
-  pros::c::delay(600);
-  // indexes second ball
-  while (getLimit() != 1);
+  pros::c::delay(400);
   reaper(0);
-  // scores second flag
-  moveTo(1500);
+
+  //allign and shoot middle flag
+  moveTo(2000);
   reaper(1);
-  pros::c::delay(500);
+  while (getLimit() != 1);
+  pros::c::delay(400);
+  reaper(0);
+
   leftTurn(15, 20);
   // scores low flag
   moveTo(1100, 40);
@@ -355,7 +374,7 @@ void autonskills() {
   rightTurn(15, 20);
   // goes to cube
   moveTo(-2000);
-  rightTurn(95, 40);
+  rightTurn(93, 40);
   intake(1);
   moveTo(2300, 40);
   // intakes ball
@@ -373,15 +392,21 @@ void autonskills() {
   leftTurn(15, 20);
   moveTo(1000);
   moveTo(-1400);
-  rightTurn(125, 20);
+  rightTurn(108, 20);
   intake(-1);
   moveTo(1500);
   moveTo(2000, 40);
   moveTo(-1300, 40);
   rightTurn(90, 20);
-  moveTo(3000, 127);
-  rightTurn(90, 40);
-  moveTo(2000, 127);
+  moveTo(1400);
+  leftTurn(92, 40);
+  moveTo(1300);
+  rightTurn(92, 40);
+  moveTo(1600);
+  rightTurn(92, 40);
+  moveTo(-1000);
+  moveTo(6300, 127 );
+
   /*moveTo(1000);
   leftTurn(90, 20);
   moveTo(1000);
