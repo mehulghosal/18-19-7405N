@@ -9,7 +9,7 @@ pros::Motor backLeftMtr(9);
 pros::Motor frontLeftMtr(10);
 pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor reaperMotor(5, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor reaperMotor(5, pros::E_MOTOR_GEARSET_06, true);
 pros::Motor flyWheelMotor(4, pros::E_MOTOR_GEARSET_18);
 pros::Motor intakeMotor(3);
 pros::Motor armMotor(8);
@@ -378,9 +378,10 @@ void moveTo(double d) {
       pros::c::delay(150);
 
     }
-    setBrake();
+
     chassisSet(0, 0);
   }
+      setBrake();
   chassisSet(0, 0);
   pros::c::delay(300);
 }
@@ -518,6 +519,7 @@ void opcontrol() {
   bool lPressed = false;
   bool autoReap = false;
   bool rPressed = false;
+  bool xPressed = false;
 
   //pros::ADIDigitalIn limit ('A');
   //	pros::ADIAnalogIn gyroscope ('B');
@@ -534,23 +536,31 @@ void opcontrol() {
     vision_sensor.read_by_size(1, 5, read_arr);
     PrintReadableVisObj(read_arr[0]);
 
+
     if (master.get_digital(DIGITAL_R2) == 1 && r2Pressed == false) {
       if (getLimit() == 1 && reaperToggle == 1) {
         reaperToggle = 0;
+        master.print(0, 0, "Ball");
+        master.rumble(". .");
       } else if (getLimit() == 1 && reaperToggle == 0) {
+        master.print(0, 0, " ");
         reaperToggle = 1;
         reaper(reaperToggle);
         pros::c::delay(350);
       } else if (reaperToggle == 0 || reaperToggle == -1) {
+        master.print(0, 0, " ");
         reaperToggle = 1;
       } else if (reaperToggle == 1) {
+        master.print(0, 0, " ");
         reaperToggle = 0;
       }
       r2Pressed = true;
     } else if (master.get_digital(DIGITAL_R2) == 0) {
       if (getLimit() == 1 && reaperToggle == 1) {
+        master.print(0, 0, " ");
         reaperToggle = 0;
       } else if (getLimit() == 1 && reaperToggle == 0) {
+        master.print(0, 0, " ");
         reaperToggle = 0;
       }
       r2Pressed = false;
@@ -568,10 +578,23 @@ void opcontrol() {
       bPressed = false;
     }
 
+
     //intake toggling
+if(master.get_digital(DIGITAL_X) == 1 && xPressed == false)
+{
+  reaper(1);
+  pros::c::delay(300);
+  reaper(0);
+  moveTo(-1500);
+  reaper(1);
+  xPressed = true;
+}
+else if(master.get_digital(DIGITAL_X) == 0)
+{
+  xPressed = false;
+}
 
-		intakeToggle = 0;
-
+intakeToggle = 0;
     if (master.get_digital(DIGITAL_L2) == 1) {
 /*
       if (intakeToggle == 1) {
@@ -657,6 +680,7 @@ void opcontrol() {
     }
 
     //pros::lcd::print(3, "GYRO: %d", (gyroscope.get_value()));
+    master.print(1, 0, "Flywheel: %f", getflywheelspeed());
 
     pros::Task::delay(20);
 

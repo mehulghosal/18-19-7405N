@@ -351,9 +351,9 @@ void autonskills() {
   pros::c::delay(200);
   // moves to flip first cap
   moveTo(1000, 40);
-  moveTo(-3300);
-  leftTurn(91, 30);
-  moveTo(4000);
+  moveTo(-3200);
+  leftTurn(90, 30);
+  moveTo(3300);
 
   while(getflywheelspeed() < 195);
   reaper(1);
@@ -364,10 +364,10 @@ void autonskills() {
   moveTo(2000);
   reaper(1);
   while (getLimit() != 1);
-  pros::c::delay(400);
+   pros::c::delay(400);
   reaper(0);
 
-  leftTurn(15, 20);
+  leftTurn(20, 20);
   // scores low flag
   moveTo(1100, 40);
   moveTo(-1100, 40);
@@ -434,7 +434,7 @@ void autonomous() {
 
   int aS = getAutonState();
   if (aS == 1) {
-    topBlue(); // top blue
+    autonskills(); // top blue
   } else if (aS == 2) {
     topRed(); // top red
   } else if (aS == 3) {
