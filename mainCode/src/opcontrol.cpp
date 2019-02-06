@@ -520,7 +520,7 @@ void opcontrol() {
   bool autoReap = false;
   bool rPressed = false;
   bool xPressed = false;
-
+  bool rumbCon  = false;
   //pros::ADIDigitalIn limit ('A');
   //	pros::ADIAnalogIn gyroscope ('B');
   //	pros::Vision::print_signature(RED_FLAG);
@@ -540,27 +540,27 @@ void opcontrol() {
     if (master.get_digital(DIGITAL_R2) == 1 && r2Pressed == false) {
       if (getLimit() == 1 && reaperToggle == 1) {
         reaperToggle = 0;
-        master.print(0, 0, "Ball");
-        master.rumble(". .");
+
       } else if (getLimit() == 1 && reaperToggle == 0) {
-        master.print(0, 0, " ");
+        master.print(0, 0, "        ");
         reaperToggle = 1;
         reaper(reaperToggle);
         pros::c::delay(350);
       } else if (reaperToggle == 0 || reaperToggle == -1) {
-        master.print(0, 0, " ");
+        master.print(0, 0, "          ");
         reaperToggle = 1;
       } else if (reaperToggle == 1) {
-        master.print(0, 0, " ");
+        master.print(0, 0, "          ");
         reaperToggle = 0;
       }
       r2Pressed = true;
     } else if (master.get_digital(DIGITAL_R2) == 0) {
       if (getLimit() == 1 && reaperToggle == 1) {
-        master.print(0, 0, " ");
+        master.print(0, 0, "Ball fuck ");
+
         reaperToggle = 0;
       } else if (getLimit() == 1 && reaperToggle == 0) {
-        master.print(0, 0, " ");
+        master.print(0, 0, "Ball");
         reaperToggle = 0;
       }
       r2Pressed = false;

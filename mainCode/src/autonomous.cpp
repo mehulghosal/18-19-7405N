@@ -121,6 +121,30 @@ while(getflywheelspeed() < 195);
   moveTo(2500);*/
 
 }
+
+// 35 degrees +
+
+void backRedAlignment(){
+  intake(1);
+  targetspeed = 195;
+  moveTo(2900, 60);
+  pros::c::delay(500);
+  moveTo(-2900, 60);
+  leftTurn(55);
+  while(getflywheelspeed() < 195);
+    display();
+  reaper(1);
+  pros::c::delay(400);
+  targetspeed = 180;
+  while(getLimit() != 1);
+  reaper(0);
+
+  while(getflywheelspeed() < 184);
+    display();
+  reaper(1);
+  pros::c::delay(400);
+
+}
 void backRed(){
   intake(1);
   targetspeed = 195;
@@ -440,7 +464,7 @@ void autonomous() {
   } else if (aS == 3) {
     backBlue(); // back blue
   } else if (aS == 4) {
-    backRed(); // back red
+    backRedAlignment(); // back red
   } else if (aS == 5) {
     autonskills();
   }
