@@ -376,7 +376,7 @@ void autonskills() {
   pros::c::delay(200);
   // moves to flip first cap
   moveTo(1000, 40);
-  moveTo(-3250);
+  moveTo(-3850);
   leftTurn(90, 30);
   moveTo(3300);
 
