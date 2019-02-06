@@ -556,12 +556,16 @@ void opcontrol() {
       r2Pressed = true;
     } else if (master.get_digital(DIGITAL_R2) == 0) {
       if (getLimit() == 1 && reaperToggle == 1) {
-        master.print(0, 0, "Ball fuck ");
+        master.print(0, 0, "Ball once ");
 
         reaperToggle = 0;
       } else if (getLimit() == 1 && reaperToggle == 0) {
         master.print(0, 0, "Ball");
         reaperToggle = 0;
+      }
+      if(getLimit() == 0)
+      {
+        master.print(0, 0, "         ");
       }
       r2Pressed = false;
     }

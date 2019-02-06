@@ -364,8 +364,9 @@ void autonskills() {
   pros::lcd::print(0, "INIT autonskills");
   targetspeed = 200;
   intake(1);
+  moveTo(3300);
 
-  moveTo(2500); //this is pretty close - 2900 is perfect to intake the ball
+ //this is pretty close - 2900 is perfect to intake the ball
 
   // intakes second ball
   reaper(1);
@@ -375,7 +376,7 @@ void autonskills() {
   pros::c::delay(200);
   // moves to flip first cap
   moveTo(1000, 40);
-  moveTo(-3200);
+  moveTo(-3250);
   leftTurn(90, 30);
   moveTo(3300);
 
@@ -388,7 +389,7 @@ void autonskills() {
   moveTo(2000);
   reaper(1);
   while (getLimit() != 1);
-   pros::c::delay(400);
+   pros::c::delay(200);
   reaper(0);
 
   leftTurn(20, 20);
