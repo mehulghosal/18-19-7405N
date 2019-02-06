@@ -169,7 +169,35 @@ void rightTurn(double mult, int speed = 100) {
   }
 }
 
-void drive(int driveL, int driveR) {
+
+void drive(int driveL, int driveR){
+	double answer = 127.0 * std::pow(driveR / 127.0, 1.2857);
+	int roundedAnswer = (int) std::round(answer);
+  chassisSet(std::min(std::max(driveL + roundedAnswer, -127), 127), std::min(std::max(driveL - roundedAnswer, -127), 127));
+  resetPositions();
+}
+void OldDrive(int driveL, int driveR) {
+  if (abs(driveL) > 15 && driveR < 15 && driveR > -15) {
+
+    double le = frontLeftMtr.get_position();
+    double re = frontRightMtr.get_position();
+    double ble = backLeftMtr.get_position();
+    double bre = backRightMtr.get_position();
+    double diff = le - re;
+    diff = .1 * diff;
+    double samesidediff = le - ble;
+    samesidediff = samesidediff * .1;
+    double backrightadjust = .1 * (le - bre);
+    frontLeftMtr = driveL;
+    frontRightMtr = driveL + diff;
+    backLeftMtr = driveL + samesidediff;
+    backRightMtr = driveL + backrightadjust;
+    //	pros::lcd::print(4, "fLeft encoder: %f",frontLeftMtr.get_position());
+    //	pros::lcd::print(5, "fRight encode %f",frontRightMtr.get_position());
+    //	pros::lcd::print(6, "diff %f",diff);
+    //	pros::lcd::print(2, " FL: %lf",frontLeftMtr.get_actual_velocity());
+    //	pros::lcd::print(3, " FR: %lf",frontRightMtr.get_actual_velocity());
+
   if (abs(driveL) > 15 && driveR < 15 && driveR > -15) {
 
     double le = frontLeftMtr.get_position();
@@ -556,7 +584,7 @@ void opcontrol() {
       r2Pressed = true;
     } else if (master.get_digital(DIGITAL_R2) == 0) {
       if (getLimit() == 1 && reaperToggle == 1) {
-        master.print(0, 0, "Ball once ");
+        master.print(0, 0, "Ball");
 
         reaperToggle = 0;
       } else if (getLimit() == 1 && reaperToggle == 0) {
@@ -564,9 +592,6 @@ void opcontrol() {
         reaperToggle = 0;
       }
       if(getLimit() == 0)
-      {
-        master.print(0, 0, "         ");
-      }
       r2Pressed = false;
     }
 
