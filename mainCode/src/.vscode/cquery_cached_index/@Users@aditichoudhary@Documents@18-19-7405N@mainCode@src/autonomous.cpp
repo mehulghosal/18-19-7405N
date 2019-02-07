@@ -4,7 +4,7 @@
 
 void testfunct();
 void intake(int toggle);
-void reaper(int toggle, int speed = 127);
+void reaper(int toggle);
 void flywheel(bool toggle, int speed = 200);
 void old_flywheel(bool toggle, int speed = 127);
 // void moveTo(double d);
@@ -375,14 +375,14 @@ void autonskills() {
   intake(-1);
   pros::c::delay(200);
   // moves to flip first cap
-  moveTo(1000);
+  moveTo(1000, 40);
   moveTo(-3850);
-  leftTurn(87);
+  leftTurn(90, 30);
   moveTo(3300);
 
   while(getflywheelspeed() < 195);
   reaper(1);
-  pros::c::delay(250);
+  pros::c::delay(400);
   reaper(0);
 
   //allign and shoot middle flag
@@ -392,34 +392,32 @@ void autonskills() {
    pros::c::delay(200);
   reaper(0);
 
-  leftTurn(15);
+  leftTurn(20, 20);
   // scores low flag
-  moveTo(1100);
-  moveTo(-1100);
-  rightTurn(11);
+  moveTo(1100, 40);
+  moveTo(-1100, 40);
+  rightTurn(15, 20);
   // goes to cube
   moveTo(-2000);
-  rightTurn(80);
-  moveTo(-1500);
+  rightTurn(93, 40);
   intake(1);
-  moveTo(2700);
+  moveTo(2300, 40);
   // intakes ball
-  reaper(1);
   while (getLimit() != 1);
   reaper(0);
   intake(-1);
-
+  pros::c::delay(1000);
   // flips second cap
-  moveTo(1000);
+  moveTo(1000, 20);
 
-  leftTurn(90);
-  moveTo(1650);
+  leftTurn(95, 40);
+  moveTo(1650, 40);
   reaper(1);
-  pros::c::delay(300);
+  pros::c::delay(1000);
   leftTurn(15, 20);
   moveTo(1000);
   moveTo(-1400);
-  rightTurn(115, 20);
+  rightTurn(108, 20);
   intake(-1);
   moveTo(1500);
   moveTo(2000, 40);

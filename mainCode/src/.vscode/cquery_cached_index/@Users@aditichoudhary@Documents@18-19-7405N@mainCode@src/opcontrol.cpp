@@ -35,10 +35,10 @@ void setFlywheelspeed(int speed) {
 }
 void setBrake() {
 
-  backLeftMtr.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-  backRightMtr.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-  frontLeftMtr.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-  frontRightMtr.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+  backLeftMtr.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+  backRightMtr.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+  frontLeftMtr.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+  frontRightMtr.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 }
 void old_flywheel(bool toggle, int speed = 127) {
   if (toggle) {
@@ -170,9 +170,10 @@ void rightTurn(double mult, int speed = 100) {
 }
 
 
-void drive(int driveL, int driveR){;
-  chassisSet(std::min(std::max(driveL + driveR, -127), 127), std::min(std::max(driveL - driveR, -127), 127));
-  setBrake();
+void drive(int driveL, int driveR){
+	double answer = 127.0 * std::pow(driveR / 127.0, 1.2857);
+	int roundedAnswer = (int) std::round(answer);
+  chassisSet(std::min(std::max(driveL + roundedAnswer, -127), 127), std::min(std::max(driveL - roundedAnswer, -127), 127));
   resetPositions();
 }
 void OldDrive(int driveL, int driveR) {
@@ -242,15 +243,15 @@ void flywheel(bool toggle, int speed = 200) {
   }
   //	pros::lcd::print(3, "flywheel %d", flyWheelMotor.get_actual_velocity());
 }
-void reaper(int toggle, int speed = 127) {
+void reaper(int toggle) {
   if (toggle == 1) {
-    reaperMotor = speed;
+    reaperMotor = 127;
   } else if (toggle == 0) {
     reaperMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     reaperMotor = 0;
 
   } else {
-    reaperMotor = -speed;
+    reaperMotor = -127;
   }
 }
 
@@ -376,7 +377,7 @@ void moveTo(double d) {
         backRightMtr = -speedCoef + backrightadjust;
 
       } else if (abs(d - frontLeftMtr.get_position()) * kp < 20) {
-        speedCoef = 25;
+        speedCoef = 20;
         frontLeftMtr = -speedCoef;
         frontRightMtr = -speedCoef + sdiff;
         backLeftMtr = -speedCoef + ssamesidediff;
@@ -583,7 +584,6 @@ void opcontrol() {
       }
       r2Pressed = true;
     } else if (master.get_digital(DIGITAL_R2) == 0) {
-
       if (getLimit() == 1 && reaperToggle == 1) {
         master.print(0, 0, "Ball");
 
@@ -593,19 +593,8 @@ void opcontrol() {
         reaperToggle = 0;
       }
       if(getLimit() == 0)
-      {
-        master.print(0, 0, "          ");
-      }
       r2Pressed = false;
     }
-if(master.get_digital(DIGITAL_R1) == 1)
-{
-    master.print(2, 0, "Doubleshot");
-    reaper(1, 115);
-    moveTo(2500, 127);
-    master.print(2, 0, "            ");
-}
-
 
     if (master.get_digital(DIGITAL_B) == 1 && bPressed == false) {
       if (reaperToggle == -1) {
@@ -658,7 +647,13 @@ intakeToggle = 0;
     }
 
     //flywheel toggling
-
+    if (master.get_digital(DIGITAL_R1) == 1 && r1Pressed == false) {
+      flyWheelToggle = !flyWheelToggle;
+      r1Pressed = true;
+      pros::Task::delay(20);
+    } else if (master.get_digital(DIGITAL_R1) == 0) {
+      r1Pressed = false;
+    }
 
 		/*
     if (master.get_digital(DIGITAL_R2) == 1 && r2Pressed == false) {
