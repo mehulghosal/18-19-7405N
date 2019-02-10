@@ -130,7 +130,7 @@ void backRedAlignment(){
   moveTo(2900, 60);
   pros::c::delay(500);
   moveTo(-2900, 60);
-  leftTurn(55);
+  leftTurn(45);
   while(getflywheelspeed() < 195);
     display();
   reaper(1);
@@ -264,13 +264,15 @@ void topRed() {
   leftTurn(15);
   moveTo(1200);
   moveTo(-1500);
-  rightTurn(112);
-  intake(-1);
 
+  rightTurn(112);
+  reaper(0);
+  intake(-1);
   moveTo(1400, 60);
   pros::c::delay(50);
   moveTo(-200, 127);
-  leftTurn(38);
+  leftTurn(45);
+  reaper(1);
   moveTo(4000, 127);
 
   //park
@@ -328,7 +330,7 @@ intake(1);
 
   //allign top flag
   moveTo(-2750);
-  rightTurn(55);
+  rightTurn(46);
   moveTo(-200, 25);
 while(getflywheelspeed() < 194);
   //shoot top flag
@@ -461,7 +463,8 @@ void autonomous() {
 
   int aS = getAutonState();
   if (aS == 1) {
-    autonskills(); // top blue
+    topRed();
+  //  topBlue(); // top blue
   } else if (aS == 2) {
     topRed(); // top red
   } else if (aS == 3) {

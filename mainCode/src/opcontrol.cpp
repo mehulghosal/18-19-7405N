@@ -9,7 +9,7 @@ pros::Motor backLeftMtr(9);
 pros::Motor frontLeftMtr(10);
 pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor reaperMotor(5, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor reaperMotor(6, pros::E_MOTOR_GEARSET_06, true);
 pros::Motor flyWheelMotor(4, pros::E_MOTOR_GEARSET_18);
 pros::Motor intakeMotor(3);
 pros::Motor armMotor(8);
@@ -25,7 +25,7 @@ pros::Motor motors[8] = {
   reaperMotor
 };
 pros::ADIAnalogIn linesens('E');
-pros::ADIAnalogIn linesens2('A');
+pros::ADIAnalogIn linesens2('B');
 void changeFlywheel(bool change);
 double getflywheelspeed() {
   return flyWheelMotor.get_actual_velocity();
