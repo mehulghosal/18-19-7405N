@@ -6,8 +6,6 @@ void testfunct();
 void intake(int toggle);
 void reaper(int toggle, int speed = 127);
 void flywheel(bool toggle, int speed = 200);
-void old_flywheel(bool toggle, int speed = 127);
-// void moveTo(double d);
 void display();
 void moveTo(double d);
 void moveTo(double d, double speed);
@@ -122,29 +120,7 @@ while(getflywheelspeed() < 195);
 
 }
 
-// 35 degrees +
 
-void backRedAlignment(){
-  intake(1);
-  targetspeed = 195;
-  moveTo(2900, 60);
-  pros::c::delay(500);
-  moveTo(-2900, 60);
-  leftTurn(45);
-  while(getflywheelspeed() < 195);
-    display();
-  reaper(1);
-  pros::c::delay(400);
-  targetspeed = 180;
-  while(getLimit() != 1);
-  reaper(0);
-
-  while(getflywheelspeed() < 184);
-    display();
-  reaper(1);
-  pros::c::delay(400);
-
-}
 void backRed(){
   intake(1);
   targetspeed = 195;
@@ -179,59 +155,6 @@ if(getParkState())
 }
 
 }
-
-void armBackRed() { // this is actually back red lmao
-
-  targetspeed = 191;
-  moveTo(250, 40);
-  leftTurn(20);
-  intake(1);
-  changeArm(-127);
-  moveTo(1000);
-  changeArm(127);
-  pros::c::delay(300); // 191 for top flag 180 to shoot middle flag	changeArm(0);
-  changeArm(0);
-  moveTo(-1000);
-  leftTurn(36);
-  //
-  reaper(1);
-  pros::c::delay(600);
-  while (getLimit() != 1);
-  reaper(0);
-  targetspeed = 180;
-  pros::c::delay(900);
-  reaper(1);
-  pros::c::delay(500);
-
-  rightTurn(56);
-  targetspeed = 200;
-  moveTo(3000);
-  while (getLimit() != 1);
-  reaper(0);
-  moveTo(-500);
-  leftTurn(53);
-  reaper(1);
-
-  /*
-  reaper(0);
-  rightTurn(60);
-  moveTo(1450);
-  rightTurn(45);
-  moveTo(1450);
-  changeArm(127);
-  pros::c::delay(500);
-  changeArm(0);
-  moveTo(-1450);
-  leftTurn(45); // 45 to straighten + 30 to flag
-  moveTo(1450);
-  leftTurn(30);
-  reaper(1);
-  while(getLimit() != 1);
-  reaper(0);
-  */
-
-}
-
 
 void topRed() {
   pros::lcd::print(0, "INIT auton2");
@@ -275,37 +198,10 @@ void topRed() {
   reaper(1);
   moveTo(4000, 127);
 
-  //park
-  /*moveTo(-1200);
-  rightTurn(14);
-  moveTo(-1700 - 600);
-  rightTurn(90);
-  moveTo(2500);*/
+  
 
 }
 
-void newTopRedCauseImBored(){
-  targetspeed = 191;
-  intake(1);
-  changeArm(-127);
-  moveTo(1000,70);
-  changeArm(0);
-  moveTo(-1000, 60);
-  leftTurn(128);
-  changeArm(25);
-  moveTo(500);
-  changeArm(0);
-  reaper(1);
-  while(getLimit() != 1);
-  pros::c::delay(400);
-  reaper(1);
-  moveTo(1300);
-  while(getLimit() != 1);
-  pros::c::delay(400);
-  reaper(1);
-  moveTo(1500);
-
-}
 
 void backBlue() {
   pros::lcd::print(0, "INIT auton3");
@@ -470,7 +366,7 @@ void autonomous() {
   } else if (aS == 3) {
     backBlue(); // back blue
   } else if (aS == 4) {
-    backRedAlignment(); // back red
+    backRed(); // back red
   } else if (aS == 5) {
     autonskills();
   }
