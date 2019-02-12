@@ -103,13 +103,21 @@ while(getflywheelspeed() < 195);
   rightTurn(15);
   moveTo(1400);
   moveTo(-1500, 90);
-  leftTurn(100);
-  intake(-1);
-  moveTo(1400, 60);
-  moveTo(-200, 90);
-  intake(0);
-  rightTurn(50);
-  moveTo(4000, 127);
+
+  if (getParkState()){
+
+  }
+  else{
+    //cap and midle flag
+    leftTurn(100);
+    intake(-1);
+    moveTo(1400, 60);
+    moveTo(-200, 90);
+    intake(0);
+    rightTurn(50);
+    moveTo(4000, 127);
+  }
+  
 
   //park
   /*moveTo(-1200);
@@ -359,7 +367,7 @@ void autonomous() {
 
   int aS = getAutonState();
   if (aS == 1) {
-    topRed();
+    topBlue();
   //  topBlue(); // top blue
   } else if (aS == 2) {
     topRed(); // top red
