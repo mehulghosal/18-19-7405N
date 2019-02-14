@@ -105,6 +105,8 @@ while(getflywheelspeed() < 195);
   moveTo(-1500, 90);
 
   if (getParkState()){
+    moveTo(-1400);
+    rightTurn(-15);
 
   }
   else{
@@ -117,14 +119,6 @@ while(getflywheelspeed() < 195);
     rightTurn(50);
     moveTo(4000, 127);
   }
-  
-
-  //park
-  /*moveTo(-1200);
-  leftTurn(14);
-  moveTo(-1700 - 600);
-  leftTurn(90);
-  moveTo(2500);*/
 
 }
 
