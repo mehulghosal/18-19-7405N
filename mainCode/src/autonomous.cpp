@@ -377,12 +377,12 @@ void autonskills() {
   // moves to flip first cap
   moveTo(1000);
   moveTo(-3850);
-  leftTurn(87);
+  leftTurn(86);
   moveTo(3300);
 
   while(getflywheelspeed() < 195);
   reaper(1);
-  pros::c::delay(250);
+  pros::c::delay(150);
   reaper(0);
 
   //allign and shoot middle flag
@@ -394,7 +394,7 @@ void autonskills() {
 
   leftTurn(15);
   // scores low flag
-  moveTo(1100);
+  moveTo(1300);
   moveTo(-1100);
   rightTurn(11);
   // goes to cube
@@ -402,7 +402,7 @@ void autonskills() {
   rightTurn(80);
   moveTo(-1500);
   intake(1);
-  moveTo(2700);
+  moveTo(3200);
   // intakes ball
   reaper(1);
   while (getLimit() != 1);
@@ -417,18 +417,19 @@ void autonskills() {
   reaper(1);
   pros::c::delay(300);
   leftTurn(15, 20);
-  moveTo(1000);
-  moveTo(-1400);
-  rightTurn(115, 20);
+  moveTo(1300);
+  moveTo(-1600);
+  rightTurn(107);
   intake(-1);
   moveTo(1500);
   moveTo(2000, 40);
   moveTo(-1300, 40);
-  rightTurn(90, 20);
+  rightTurn(90);
   moveTo(1400);
-  leftTurn(92, 40);
+  moveTo(-400);
+  leftTurn(92);
   moveTo(1300);
-  rightTurn(92, 40);
+  rightTurn(92);
   moveTo(1600);
   rightTurn(92, 40);
   moveTo(-1000);

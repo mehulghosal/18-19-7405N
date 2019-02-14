@@ -50,7 +50,7 @@ void old_flywheel(bool toggle, int speed = 127) {
 
 void changeArm(int val) {
   armMotor = val;
-  armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  .set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 // VISION SENSOR STUFF//
 //https://www.vexforum.com/index.php/attachment/5be56e847b3f6_1.png
@@ -679,16 +679,18 @@ intakeToggle = 0;
 		*/
 
     // pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;
-    if (master.get_digital(DIGITAL_RIGHT) == 1) {
-      armMotor = 100;
-    } else if (master.get_digital(DIGITAL_LEFT) == 1) {
-      armMotor = -100;
-    } else if (armMotor.get_position() >= 400) {
-      armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-      armMotor = 0;
-    } else if (armMotor.get_position() < 400) {
-      armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-      armMotor = 0;
+    if (master.get_digital(DIGITAL_RIGHT) == 1)
+    {
+      armMotor = 127;
+    } else if (master.get_digital(DIGITAL_LEFT) == 1)
+    {
+      armMotor = -127;
+    }
+    else
+    {
+        armMotor = 0;
+        motor_set_brake_mode(8, E_MOTOR_BRAKE_HOLD);
+        printf("Brake Mode: %d\n", motor_get_brake_mode(8));
     }
 
     if (master.get_digital(DIGITAL_UP) == 1) {
