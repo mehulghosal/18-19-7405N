@@ -577,6 +577,7 @@ void opcontrol()
 	bool rPressed = false;
 	bool xPressed = false;
 	bool rumbCon = false;
+	int currentarm = 0;
 	//pros::ADIDigitalIn limit ('A');
 	//	pros::ADIAnalogIn gyroscope ('B');
 	//	pros::Vision::print_signature(RED_FLAG);
@@ -639,7 +640,7 @@ void opcontrol()
 			}
 			r2Pressed = false;
 		}
-		if (master.get_digital(DIGITAL_R1) == 1)
+		if (master.get_digital(DIGITAL_X) == 1)
 		{
 			master.print(2, 0, "Doubleshot");
 			reaper(1, 115);
@@ -666,19 +667,7 @@ void opcontrol()
 		}
 
 		//intake toggling
-		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false)
-		{
-			reaper(1);
-			pros::c::delay(300);
-			reaper(0);
-			moveTo(-1500);
-			reaper(1);
-			xPressed = true;
-		}
-		else if (master.get_digital(DIGITAL_X) == 0)
-		{
-			xPressed = false;
-		}
+
 
 		intakeToggle = 0;
 		if (master.get_digital(DIGITAL_L2) == 1)
@@ -728,25 +717,24 @@ void opcontrol()
     }
 		*/
 
-		// pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;
-		if (master.get_digital(DIGITAL_RIGHT) == 1)
+		// pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;ja
+		if (master.get_digital(DIGITAL_R1) == 1)
 		{
-			armMotor = 100;
+			changeArm(127);
+			currentarm = armMotor.get_position();
+
 		}
-		else if (master.get_digital(DIGITAL_LEFT) == 1)
+		else if (master.get_digital(DIGITAL_B)
+		 == 1)
 		{
-			armMotor = -100;
+			changeArm(-127);
+			currentarm = armMotor.get_position();
 		}
-		else if (armMotor.get_position() >= 400)
+		else if(armMotor.get_position() > 20)
 		{
-			armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-			armMotor = 0;
+		 armMotor.move_absolute(currentarm - armMotor.get_position(), 80);
 		}
-		else if (armMotor.get_position() < 400)
-		{
-			armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-			armMotor = 0;
-		}
+
 
 		if (master.get_digital(DIGITAL_UP) == 1)
 		{
