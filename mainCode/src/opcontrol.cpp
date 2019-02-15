@@ -583,6 +583,7 @@ void opcontrol()
 	bool rPressed = false;
 	bool xPressed = false;
 	bool rumbCon = false;
+	int currentarm = 0;
 	//pros::ADIDigitalIn limit ('A');
 	//	pros::ADIAnalogIn gyroscope ('B');
 	//	pros::Vision::print_signature(RED_FLAG);
@@ -645,7 +646,7 @@ void opcontrol()
 			}
 			r2Pressed = false;
 		}
-		if (master.get_digital(DIGITAL_R1) == 1)
+		if (master.get_digital(DIGITAL_X) == 1)
 		{
 			master.print(2, 0, "Doubleshot");
 			reaper(1, 115);
@@ -672,19 +673,7 @@ void opcontrol()
 		}
 
 		//intake toggling
-		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false)
-		{
-			reaper(1);
-			pros::c::delay(300);
-			reaper(0);
-			moveTo(-1500);
-			reaper(1);
-			xPressed = true;
-		}
-		else if (master.get_digital(DIGITAL_X) == 0)
-		{
-			xPressed = false;
-		}
+
 
 		intakeToggle = 0;
 		if (master.get_digital(DIGITAL_L2) == 1)
@@ -734,71 +723,24 @@ void opcontrol()
     }
 		*/
 
-<<<<<<< HEAD
-    // pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;
-    if (master.get_digital(DIGITAL_RIGHT) == 1)
-    {
-      armMotor = 127;
-    } else if (master.get_digital(DIGITAL_LEFT) == 1)
-    {
-      armMotor = -127;
-    }
-    else
-    {
-        armMotor = 0;
-        motor_set_brake_mode(8, E_MOTOR_BRAKE_HOLD);
-        printf("Brake Mode: %d\n", motor_get_brake_mode(8));
-    }
-
-    if (master.get_digital(DIGITAL_UP) == 1) {
-      motorStop();
-    }
-    intake(intakeToggle);
-//    flywheel(flyWheelToggle, flyWheelSpeed);
-    drive(driveLeft, driveRight);
-    reaper(reaperToggle);
-
-    prevTravelDist = frontLeftMtr.get_position();
-
-    pros::lcd::print(1, "RPR: %f INT: %d FLY: %f FLYTARG: %d", reaperMotor.get_actual_velocity(), (int) intakeToggle, (flyWheelMotor.get_actual_velocity()), flyWheelSpeed);
-    pros::lcd::print(2, "BL: %lf FL: %lf", backLeftMtr.get_actual_velocity(), frontLeftMtr.get_actual_velocity());
-    pros::lcd::print(3, "BR: %lf FR: %lf", backRightMtr.get_actual_velocity(), frontRightMtr.get_actual_velocity());
-    pros::lcd::print(5, "READ %d", linesens.get_value());
-
-    //pros::lcd::print(4, "MTRDISP: %lf ", disp);
-
-    if (backLeftMtr.get_actual_velocity() != frontLeftMtr.get_actual_velocity() || backRightMtr.get_actual_velocity() != frontRightMtr.get_actual_velocity()) {
-      printf("MOTOR DISPUTE | ");
-      printf(" BL %lf FL %lf |\n", backLeftMtr.get_actual_velocity(), frontLeftMtr.get_actual_velocity());
-      printf(" BR %lf FR %lf |\n", backRightMtr.get_actual_velocity(), frontRightMtr.get_actual_velocity());
-    }
-
-    //pros::lcd::print(3, "GYRO: %d", (gyroscope.get_value()));
-    master.print(1, 0, "Flywheel: %f", getflywheelspeed());
-
-    pros::Task::delay(20);
-
-  }
-=======
-		// pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;
-		if (master.get_digital(DIGITAL_RIGHT) == 1)
+		// pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;ja
+		if (master.get_digital(DIGITAL_R1) == 1)
 		{
-			armMotor = 100;
+			changeArm(127);
+			currentarm = armMotor.get_position();
+
 		}
-		else if (master.get_digital(DIGITAL_LEFT) == 1)
+		else if (master.get_digital(DIGITAL_B)
+		 == 1)
 		{
-			armMotor = -100;
+			changeArm(-127);
+			currentarm = armMotor.get_position();
 		}
-		else if (armMotor.get_position() >= 400)
+		else if(armMotor.get_position() > 20)
 		{
-			armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-			armMotor = 0;
+		 armMotor.move_absolute(currentarm - armMotor.get_position(), 80);
 		}
-		else if (armMotor.get_position() < 400)
-		{
-			armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-			armMotor = 0;
-		}
+
 
 		if (master.get_digital(DIGITAL_UP) == 1)
 		{
