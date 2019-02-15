@@ -55,16 +55,13 @@ void old_flywheel(bool toggle, int speed = 127)
 	}
 }
 
-<<<<<<< HEAD
-void changeArm(int val) {
-  armMotor = val;
-  .set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-=======
+
+
 void changeArm(int val)
 {
 	armMotor = val;
 	armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
->>>>>>> 6b13f1c471aa2cad06bc5c13c4320b47165a8e2b
+
 }
 // VISION SENSOR STUFF//
 //https://www.vexforum.com/index.php/attachment/5be56e847b3f6_1.png
@@ -727,18 +724,18 @@ void opcontrol()
 		if (master.get_digital(DIGITAL_R1) == 1)
 		{
 			changeArm(127);
-			currentarm = armMotor.get_position();
+
 
 		}
 		else if (master.get_digital(DIGITAL_B)
 		 == 1)
 		{
 			changeArm(-127);
-			currentarm = armMotor.get_position();
+
 		}
-		else if(armMotor.get_position() > 20)
+		else
 		{
-		 armMotor.move_absolute(currentarm - armMotor.get_position(), 80);
+		 armMotor.move_absolute(armMotor.get_position(), 115);
 		}
 
 
@@ -773,6 +770,6 @@ void opcontrol()
 		pros::Task::delay(20);
 
 	}
->>>>>>> 6b13f1c471aa2cad06bc5c13c4320b47165a8e2b
+
 
 }
