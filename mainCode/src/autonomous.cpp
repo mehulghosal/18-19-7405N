@@ -176,12 +176,13 @@ void topBlue()
 	else
 	{
 		//cap and midle flag
-		leftTurn(96);
+		moveTo(-1600);
+		leftTurn(100);
 		intake(-1);
 		moveTo(1400, 60);
 		moveTo(-200, 90);
 		intake(0);
-		rightTurn(50);
+		rightTurn(35);
 		moveTo(4000, 127);
 	}
 
