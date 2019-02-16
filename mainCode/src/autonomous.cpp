@@ -165,7 +165,7 @@ void topBlue()
 
 
 
-	if (true)
+	if (false)
 	{
 		moveTo(-5000);
 		leftTurn(95);
@@ -176,7 +176,7 @@ void topBlue()
 	else
 	{
 		//cap and midle flag
-		leftTurn(100);
+		leftTurn(96);
 		intake(-1);
 		moveTo(1400, 60);
 		moveTo(-200, 90);
@@ -388,7 +388,7 @@ void autonomous()
 	int aS = getAutonState();
 	if (aS == 1)
 	{
-		topRed();
+		topBlue();
 		//  topBlue(); // top blue
 	}
 	else if (aS == 2)

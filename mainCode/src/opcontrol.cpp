@@ -745,7 +745,7 @@ void opcontrol()
 		}
 		else
 		{
-		 armMotor.move_absolute(armMotor.get_position(), 115);
+		 armMotor.move_absolute(armMotor.get_position(), 200);
 		}
 
 
