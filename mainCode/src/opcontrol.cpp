@@ -43,6 +43,14 @@ void setBrake()
 	frontLeftMtr.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	frontRightMtr.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 }
+void setBrakehold()
+{
+
+	backLeftMtr.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	backRightMtr.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	frontLeftMtr.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	frontRightMtr.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+}
 void old_flywheel(bool toggle, int speed = 127)
 {
 	if (toggle)
@@ -467,7 +475,7 @@ void moveTo(double d, double speed)
 			//	pros::lcd::print(6, "diff %f", diff);
 			pros::c::delay(170);
 		}
-		setBrake();
+
 		chassisSet(0, 0);
 	}
 
@@ -510,10 +518,10 @@ void moveTo(double d, double speed)
 			pros::c::delay(50);
 
 		}
-		setBrake();
+
 		chassisSet(0, 0);
 	}
-	setBrake();
+	setBrakehold();
 	chassisSet(0, 0);
 	pros::c::delay(300);
 	//	pros::lcd::print(1, "Entered firstLoop");
@@ -643,15 +651,17 @@ void opcontrol()
 			}
 			r2Pressed = false;
 		}
-		if (master.get_digital(DIGITAL_X) == 1)
+		if (master.get_digital(DIGITAL_Y) == 1)
 		{
 			master.print(2, 0, "Doubleshot");
-			reaper(1, 115);
-			moveTo(2500, 127);
+			while(getLimit() == false);
+			reaper(1, 127);
+			pros::c::delay(200);
+			moveTo(2000, 127);
 			master.print(2, 0, "            ");
 		}
 
-		if (master.get_digital(DIGITAL_B) == 1 && bPressed == false)
+		if (master.get_digital(DIGITAL_X) == 1 && bPressed == false)
 		{
 			if (reaperToggle == -1)
 			{
@@ -664,7 +674,7 @@ void opcontrol()
 			bPressed = true;
 
 		}
-		else if (master.get_digital(DIGITAL_B) == 0)
+		else if (master.get_digital(DIGITAL_X) == 0)
 		{
 			bPressed = false;
 		}
