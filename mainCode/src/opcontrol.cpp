@@ -12,7 +12,7 @@ pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor reaperMotor(6, pros::E_MOTOR_GEARSET_06, true);
 pros::Motor flyWheelMotor(4, pros::E_MOTOR_GEARSET_18);
 pros::Motor intakeMotor(3);
-pros::Motor armMotor(8);
+pros::Motor armMotor(19);
 
 pros::Motor motors[8] = {
 	backLeftMtr,
@@ -64,7 +64,11 @@ void old_flywheel(bool toggle, int speed = 127)
 }
 
 
-
+void reapermove(int val)
+{
+	reaperMotor.tare_position();
+	reaperMotor.move_absolute(val, 127);
+}
 void changeArm(int val)
 {
 	armMotor = val;
@@ -270,18 +274,9 @@ void intake(int toggle)
 		intakeMotor = 0;
 	}
 }
-void arm(bool toggle)
+void arm(int val)
 {
-	if (toggle == true)
-	{
-		armMotor.move_absolute(100, 100);
-		armMotor = 0;
-	}
-	else
-	{
-		armMotor.move_absolute(-100, 100);
-		armMotor = -0;
-	}
+armMotor.move_absolute(val, 200);
 }
 
 void moveTo(double d)
@@ -589,6 +584,7 @@ void opcontrol()
 	bool xPressed = false;
 	bool rumbCon = false;
 	int currentarm = 0;
+	int fuckukeshab = 0;
 	//pros::ADIDigitalIn limit ('A');
 	//	pros::ADIAnalogIn gyroscope ('B');
 	//	pros::Vision::print_signature(RED_FLAG);
@@ -657,11 +653,12 @@ void opcontrol()
 			while(getLimit() == false);
 			reaper(1, 127);
 			pros::c::delay(200);
-			moveTo(2000, 127);
+			moveTo(1400, 127);
 			master.print(2, 0, "            ");
+			reaperToggle = 1;
 		}
 
-		if (master.get_digital(DIGITAL_X) == 1 && bPressed == false)
+		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false)
 		{
 			if (reaperToggle == -1)
 			{
@@ -671,12 +668,12 @@ void opcontrol()
 			{
 				reaperToggle = -1;
 			}
-			bPressed = true;
+			xPressed = true;
 
 		}
 		else if (master.get_digital(DIGITAL_X) == 0)
 		{
-			bPressed = false;
+			xPressed = false;
 		}
 
 		//intake toggling
@@ -694,10 +691,7 @@ void opcontrol()
 			intakeToggle = 1;
 
 		}
-		else if (master.get_digital(DIGITAL_L2) == 0)
-		{
-			lPressed = false;
-		}
+
 
 		if (master.get_digital(DIGITAL_L1) == 1)
 		{
@@ -705,10 +699,7 @@ void opcontrol()
 			intakeToggle = -1;
 
 		}
-		else if (master.get_digital(DIGITAL_L1) == 0)
-		{
-			rPressed = false;
-		}
+
 
 		//flywheel toggling
 
@@ -731,22 +722,51 @@ void opcontrol()
 		*/
 
 		// pros::lcd::print(2, "ARM: %d",(int)armMotor.get_position()) ;ja
-		if (master.get_digital(DIGITAL_R1) == 1)
+		if (master.get_digital(DIGITAL_R1) == 1 && rPressed)
 		{
-			changeArm(127);
+			if(currentarm == 0)
+			{
+				armMotor.move_absolute(700, 200);
+				currentarm = 1;
+			}
+			else if(currentarm == 1)
+			{
+				armMotor.move_absolute(1500, 200);
+
+			}
+			rPressed = false;
+	}
+	else if (master.get_digital(DIGITAL_R1) == 0 )
+	{
+		rPressed = true;
+	}
 
 
-		}
-		else if (master.get_digital(DIGITAL_B)
-		 == 1)
+	if (master.get_digital(DIGITAL_B) == 1 && bPressed)
 		{
-			changeArm(-127);
+		armMotor.move_absolute(0, 200);
+		currentarm = 0;
+		bPressed = false;
+		}
+	else if (master.get_digital(DIGITAL_B) == 0)
+	{
+		bPressed = true;
+	}
 
-		}
-		else
-		{
-		 armMotor.move_absolute(armMotor.get_position(), 200);
-		}
+/*if (master.get_digital(DIGITAL_A) == 1)
+{
+	if(fuckukeshab < 2)
+	{
+	rightTurn(91);
+	reaper(1);
+}
+else
+{
+	reaper(1);
+}
+fuckukeshab ++;
+}
+*/
 
 
 		if (master.get_digital(DIGITAL_UP) == 1)
@@ -764,7 +784,7 @@ void opcontrol()
 		pros::lcd::print(2, "BL: %lf FL: %lf", backLeftMtr.get_actual_velocity(), frontLeftMtr.get_actual_velocity());
 		pros::lcd::print(3, "BR: %lf FR: %lf", backRightMtr.get_actual_velocity(), frontRightMtr.get_actual_velocity());
 		pros::lcd::print(5, "READ %d", linesens.get_value());
-
+		pros::lcd::print(6, "ARM POS: %lf", armMotor.get_position());
 		//pros::lcd::print(4, "MTRDISP: %lf ", disp);
 
 		if (backLeftMtr.get_actual_velocity() != frontLeftMtr.get_actual_velocity() || backRightMtr.get_actual_velocity() != frontRightMtr.get_actual_velocity())

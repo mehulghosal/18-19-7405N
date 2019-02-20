@@ -1,7 +1,7 @@
 #include "main.h"
 
 //OPCONTROL//
-
+void reapermove(int val);
 void testfunct();
 void intake(int toggle);
 void reaper(int toggle, int speed = 127);
@@ -15,7 +15,7 @@ void leftTurn(double d, int speed = 100);
 int getAutonState();
 bool getParkState();
 void moveReaper(int dist, bool delay);
-void arm(bool toggle);
+void arm(int val);
 int getLimit();
 void changeArm(int val);
 int targetspeed = 0;
@@ -88,12 +88,12 @@ void topRed()
 
 	//move back and allign top flag
 	moveTo(-2550);
-	leftTurn(91.7, 80);
+	leftTurn(92.1, 80);
 
 	//	moveTo(-400); // adjust this for top flag hitting
 
 	//shoot top flag
-	while (getflywheelspeed() < 195);
+	while (getflywheelspeed() < 193);
 	reaper(1, 127);
 	pros::c::delay(200);
 	moveTo(1400, 127);
@@ -104,12 +104,12 @@ void topRed()
 	reaper(0);
 
 	//allign and ram bottom flag
-	leftTurn(10.1);
+	leftTurn(15);
 	moveTo(1300,50);
 
 
 
-	if (true)
+	if (getParkState())
 	{
 		moveTo(-5000);
 		rightTurn(95);
@@ -120,12 +120,14 @@ void topRed()
 	else
 	{
 		//cap and midle flag
+		moveTo(-1600);
 		rightTurn(100);
 		intake(-1);
 		moveTo(1400, 60);
 		moveTo(-200, 90);
-		intake(0);
-		rightTurn(50);
+		intake(1);
+		reaper(1);
+		leftTurn(33);
 		moveTo(4000, 127);
 	}
 
@@ -149,7 +151,7 @@ void topBlue()
 	//	moveTo(-400); // adjust this for top flag hitting
 
 	//shoot top flag
-	while (getflywheelspeed() < 195);
+	while (getflywheelspeed() < 193);
 	reaper(1, 127);
 	pros::c::delay(200);
 	moveTo(1400, 127);
@@ -165,7 +167,8 @@ void topBlue()
 
 
 
-	if (false)
+
+	if (getParkState())
 	{
 		moveTo(-5000);
 		leftTurn(95);
@@ -176,13 +179,15 @@ void topBlue()
 	else
 	{
 		//cap and midle flag
+
 		moveTo(-1600);
 		leftTurn(100);
 		intake(-1);
 		moveTo(1400, 60);
 		moveTo(-200, 90);
-		intake(0);
-		rightTurn(35);
+		intake(1);
+		reaper(1);
+		rightTurn(33);
 		moveTo(4000, 127);
 	}
 
@@ -190,41 +195,34 @@ void topBlue()
 
 void backRed()
 {
+
 	intake(1);
 	targetspeed = 195;
 	moveTo(2800, 100);
 	pros::c::delay(500);
 	moveTo(-2500, 100);
+		if (getParkState())
+		{
 	leftTurn(61);
 	while (getflywheelspeed() < 195);
 	display();
 	reaper(1);
-	pros::c::delay(400);
-
-	targetspeed = 180;
-	while (getLimit() != 1);
-	reaper(0);
+	pros::c::delay(1000);
+	moveTo(200, 25);
+	leftTurn(35);
+	moveTo(1350, 25);
+	rightTurn(92);
+	intake(-1);
+	moveTo(2000, 127);
+}
 	// second shot speed
-	while (getflywheelspeed() > 184);
-	display();
-	// second shot delay
-	reaper(1);
-	pros::c::delay(400);
-	if (getParkState())
-	{
 
-		moveTo(200, 25);
-		leftTurn(35);
-		moveTo(1350, 25);
-		rightTurn(92);
-		intake(-1);
-		moveTo(2000, 127);
 
-	}
+
 
 }
 
-void backBlue()
+void backBlueassist()
 {
 	pros::lcd::print(0, "INIT auton3");
 
@@ -244,9 +242,11 @@ void backBlue()
 
 	//move forward to ball
 	moveTo(3000); //this is pretty close - 2900 is perfect to intake the ball
-	pros::c::delay(750);
+	pros::c::delay(300);
 
 	//allign top flag
+	if (getParkState())
+	{
 	moveTo(-2750);
 	rightTurn(46);
 	moveTo(-200, 25);
@@ -254,28 +254,23 @@ void backBlue()
 	//shoot top flag
 	display();
 	reaper(1);
-	pros::c::delay(300);
-
-	targetspeed = 180;
-	while (getLimit() != 1);
-	reaper(0);
-
+	pros::c::delay(1000);
+	moveTo(200, 25);
+	rightTurn(35);
+	moveTo(1350, 25);
+	leftTurn(90);
+	intake(-1);
+	moveTo(2500, 127);
+	}
 	//shoot middle flag
-	while (getflywheelspeed() > 184);
-	display();
-	reaper(1);
-	pros::c::delay(500);
+
 
 	//park
-	if (getParkState())
-	{
-		moveTo(200, 25);
-		rightTurn(35);
-		moveTo(1350, 25);
-		leftTurn(90);
-		intake(-1);
-		moveTo(2000, 127);
-	}
+
+
+
+
+
 
 }
 
@@ -284,7 +279,48 @@ void backBlue()
 
 void autonskills() {
   pros::lcd::print(0, "INIT autonskills");
-  targetspeed = 200;
+
+	targetspeed = 195;
+	intake(1);
+
+	//move forward to ball in front
+	moveTo(2800);
+
+	//move back and allign top flag
+	moveTo(-2550);
+	leftTurn(92.1, 80);
+
+	//	moveTo(-400); // adjust this for top flag hitting
+
+	//shoot top flag
+	while (getflywheelspeed() < 193);
+	reaper(1, 127);
+	pros::c::delay(200);
+	moveTo(1400, 127);
+
+	//allign and shoot middle flag
+
+
+	reaper(0);
+
+	//allign and ram bottom flag
+	leftTurn(15);
+	moveTo(1300,50);
+	moveTo(-1500);
+	rightTurn(91);
+	intake(-1);
+	moveTo(2000);
+	moveTo(-2000);
+	leftTurn(90);
+	moveTo(-3500);
+	rightTurn(91);
+	moveTo(6000, 127);
+
+
+
+
+
+  /*targetspeed = 200;
   intake(1);
   moveTo(3300);
 
@@ -369,7 +405,34 @@ void autonskills() {
   */
 }
 
+void backBluecap()
+{
+	targetspeed = 200;
 
+	intake(1);
+
+
+	//move forward to ball
+	moveTo(3000); //this is pretty close - 2900 is perfect to intake the ball
+	pros::c::delay(300);
+	moveTo(-300, 40);
+	rightTurn(120);
+	moveTo(-1450);
+	arm(700);
+	moveTo(850);
+	rightTurn(61);
+	moveTo(2800);
+	arm(1500);
+	arm(1);
+	moveTo(-600);
+	leftTurn(90.7);
+	moveTo(1900);
+	leftTurn(90.7);
+	moveTo(3800);
+
+
+
+}
 void checkAutonSpeed()
 {
 	targetspeed = 160;
@@ -389,7 +452,7 @@ void autonomous()
 	int aS = getAutonState();
 	if (aS == 1)
 	{
-		topBlue();
+		topRed();
 		//  topBlue(); // top blue
 	}
 	else if (aS == 2)
@@ -398,7 +461,7 @@ void autonomous()
 	}
 	else if (aS == 3)
 	{
-		backBlue(); // back blue
+		backBluecap(); // back blue
 	}
 	else if (aS == 4)
 	{
