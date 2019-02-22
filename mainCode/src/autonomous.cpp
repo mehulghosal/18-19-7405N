@@ -210,14 +210,12 @@ void backRedcap()
 
 	//move forward to ball
 	moveTo(2700); //this is pretty close - 2900 is perfect to intake the ball
-	setBrakehold();
-
-	moveTo(-660, 40);
+	moveTo(-660);
 	leftTurn(120);
 	moveTo(-1360);
 	arm(700);
-	moveTo(450);
-	leftTurn(57.5, 40);
+	moveTo(440);
+	leftTurn(60);
 pros::c::delay(300);
 	moveTo(2850);
 	arm(1500);
@@ -225,7 +223,7 @@ pros::c::delay(300);
 	arm(0);
 	moveTo(-2300);
 	rightTurn(90);
-	moveTo(3400, 127);
+	moveTo(3300, 127);
 
 
 	// second shot speed
@@ -474,7 +472,7 @@ void autonomous()
 	int aS = getAutonState();
 	if (aS == 1)
 	{
-			backBluecap();
+			backRedcap();
 		//  topBlue(); // top blue
 	}
 	else if (aS == 2)
