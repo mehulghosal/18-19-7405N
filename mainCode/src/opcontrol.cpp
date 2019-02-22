@@ -12,7 +12,7 @@ pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor reaperMotor(6, pros::E_MOTOR_GEARSET_06, true);
 pros::Motor flyWheelMotor(4, pros::E_MOTOR_GEARSET_18);
 pros::Motor intakeMotor(3);
-pros::Motor armMotor(19);
+pros::Motor armMotor(18);
 
 pros::Motor motors[8] = {
 	backLeftMtr,
@@ -210,8 +210,11 @@ void drive(int driveL, int driveR)
 	int d = controllerDampen(driveL, 9 / 7);
 	int t = controllerDampen(driveR, 9 / 7);
 	chassisSet(d + t, d - t);
+	pros::lcd::print(2, "BL %d", d + t);
+	pros::lcd::print(3, "BR: %d", d - t);
 	setBrake();
 	resetPositions();
+
 }
 
 //OTHER FEATURE CONTROLS//
@@ -296,7 +299,7 @@ void moveTo(double d)
 	{
 		while (frontLeftMtr.get_position() < d && frontRightMtr.get_position() < d)
 		{
-			double kp = .10;
+			double kp = .20;
 
 			if (abs(d - frontLeftMtr.get_position()) *kp > 127)
 			{
@@ -317,9 +320,9 @@ void moveTo(double d)
 				// it then uses this value to adjust by adding and subtracting a fractional part of it to the motors
 
 			}
-			else if (abs(d - frontLeftMtr.get_position()) *kp < 10)
+			else if (abs(d - frontLeftMtr.get_position()) *kp < 25)
 			{
-				speedCoef = 10;
+				speedCoef = 25;
 				frontLeftMtr = speedCoef;
 				frontRightMtr = speedCoef + sdiff;
 				backLeftMtr = speedCoef + ssamesidediff;
@@ -363,7 +366,7 @@ void moveTo(double d)
 	{
 		while (frontLeftMtr.get_position() > d && frontRightMtr.get_position() > d)
 		{
-			double kp = .1;
+			double kp = .20;
 
 			if (abs(d - frontLeftMtr.get_position()) *kp > 127)
 			{
@@ -382,7 +385,7 @@ void moveTo(double d)
 				backRightMtr = -speedCoef + backrightadjust;
 
 			}
-			else if (abs(d - frontLeftMtr.get_position()) *kp < 20)
+			else if (abs(d - frontLeftMtr.get_position()) *kp < 25)
 			{
 				speedCoef = 25;
 				frontLeftMtr = -speedCoef;
@@ -591,10 +594,12 @@ void opcontrol()
 	//	gyroscope.calibrate();
 
 	pros::vision_object_s_t *read_arr = new pros::vision_object_s_t[5];
-
+	master.rumble("_");
 	while (true)
 	{
-
+		if(frontLeftMtr.is_over_temp() || frontRightMtr.is_over_temp() || backLeftMtr.is_over_temp() || backRightMtr.is_over_temp()) {
+				master.rumble("..");
+		}
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y);
 		int driveRight = master.get_analog(ANALOG_RIGHT_X);
 
@@ -649,13 +654,18 @@ void opcontrol()
 		}
 		if (master.get_digital(DIGITAL_Y) == 1)
 		{
-			master.print(2, 0, "Doubleshot");
+
+		 chassisSet(127, 127);
+			pros::c::delay(5000);
+
+		/*	master.print(2, 0, "Doubleshot");
 			while(getLimit() == false);
 			reaper(1, 127);
 			pros::c::delay(200);
 			moveTo(1400, 127);
 			master.print(2, 0, "            ");
 			reaperToggle = 1;
+			*/
 		}
 
 		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false)
@@ -781,8 +791,7 @@ fuckukeshab ++;
 		prevTravelDist = frontLeftMtr.get_position();
 
 		pros::lcd::print(1, "RPR: %f INT: %d FLY: %f FLYTARG: %d", reaperMotor.get_actual_velocity(), (int) intakeToggle, (flyWheelMotor.get_actual_velocity()), flyWheelSpeed);
-		pros::lcd::print(2, "BL: %lf FL: %lf", backLeftMtr.get_actual_velocity(), frontLeftMtr.get_actual_velocity());
-		pros::lcd::print(3, "BR: %lf FR: %lf", backRightMtr.get_actual_velocity(), frontRightMtr.get_actual_velocity());
+
 		pros::lcd::print(5, "READ %d", linesens.get_value());
 		pros::lcd::print(6, "ARM POS: %lf", armMotor.get_position());
 		//pros::lcd::print(4, "MTRDISP: %lf ", disp);

@@ -33,7 +33,7 @@ double flywheelaccel(double error)
 
 	integral += error;
 	derivative = error - previousError;
-	double pid = (error *.8) + (integral * 0) + (derivative *.4);
+	double pid = (error * 1) + (integral * 0) + (derivative *.4);
 
 	previousError = error;
 
@@ -80,15 +80,15 @@ void topRed()
 { // starts about two inches in front of the wall, and 2 inches left of the mat's edge (on the left side)
 	pros::lcd::print(0, "INIT Auton1");
 	//turn on flywheel and intake on first
-	targetspeed = 195;
+	setFlywheelspeed(127);
 	intake(1);
-
+	pros::c::delay(300);
 	//move forward to ball in front
 	moveTo(2800);
 
 	//move back and allign top flag
 	moveTo(-2550);
-	leftTurn(92.1, 80);
+	leftTurn(94, 80);
 
 	//	moveTo(-400); // adjust this for top flag hitting
 
@@ -104,30 +104,34 @@ void topRed()
 	reaper(0);
 
 	//allign and ram bottom flag
-	leftTurn(15);
-	moveTo(1300,50);
+	leftTurn(14);
+	moveTo(800);
+	moveTo(-800);
+	rightTurn(6);
 
 
 
-	if (getParkState())
+	if (false)
 	{
-		moveTo(-5000);
+		moveTo(-3500);
 		rightTurn(95);
-		moveTo(3500);
+		moveTo(3600);
 
 
 	}
 	else
 	{
 		//cap and midle flag
-		moveTo(-1600);
+		moveTo(-200);
 		rightTurn(100);
 		intake(-1);
 		moveTo(1400, 60);
-		moveTo(-200, 90);
+		intake(0);
+	moveTo(-200);
+
 		intake(1);
 		reaper(1);
-		leftTurn(33);
+		leftTurn(45);
 		moveTo(4000, 127);
 	}
 
@@ -138,15 +142,15 @@ void topBlue()
 { // starts about two inches in front of the wall, and 2 inches left of the mat's edge (on the left side)
 	pros::lcd::print(0, "INIT Auton1");
 	//turn on flywheel and intake on first
-	targetspeed = 195;
+	setFlywheelspeed(127);
 	intake(1);
 
 	//move forward to ball in front
 	moveTo(2800);
 
 	//move back and allign top flag
-	moveTo(-2550);
-	rightTurn(91.7, 80);
+	moveTo(-2560);
+	rightTurn(93.2, 80);
 
 	//	moveTo(-400); // adjust this for top flag hitting
 
@@ -162,17 +166,19 @@ void topBlue()
 	reaper(0);
 
 	//allign and ram bottom flag
-	rightTurn(10.1);
-	moveTo(1300,50);
+	rightTurn(16);
+	moveTo(750);
+	pros::c::delay(100);
+	moveTo(-750);
+	leftTurn(14.5);
 
 
 
-
-	if (getParkState())
+	if(false)
 	{
-		moveTo(-5000);
-		leftTurn(95);
-		moveTo(3500);
+		moveTo(-3400);
+		leftTurn(91);
+		moveTo(3500, 127);
 
 
 	}
@@ -180,41 +186,45 @@ void topBlue()
 	{
 		//cap and midle flag
 
-		moveTo(-1600);
+		moveTo(-100);
 		leftTurn(100);
 		intake(-1);
 		moveTo(1400, 60);
 		moveTo(-200, 90);
 		intake(1);
 		reaper(1);
-		rightTurn(33);
+		rightTurn(37);
 		moveTo(4000, 127);
 	}
 
 }
 
-void backRed()
+void backRedcap()
 {
 
+	setFlywheelspeed(127);
+
 	intake(1);
-	targetspeed = 195;
-	moveTo(2800, 100);
-	pros::c::delay(500);
-	moveTo(-2500, 100);
-		if (getParkState())
-		{
-	leftTurn(61);
-	while (getflywheelspeed() < 195);
-	display();
-	reaper(1);
-	pros::c::delay(1000);
-	moveTo(200, 25);
-	leftTurn(35);
-	moveTo(1350, 25);
-	rightTurn(92);
-	intake(-1);
-	moveTo(2000, 127);
-}
+
+
+	//move forward to ball
+	moveTo(2700); //this is pretty close - 2900 is perfect to intake the ball
+	pros::c::delay(300);
+	moveTo(-500, 40);
+	leftTurn(120);
+	moveTo(-1370, 40);
+	arm(700);
+	moveTo(346);
+	leftTurn(62, 40);
+	moveTo(2850);
+	arm(1500);
+	pros::c::delay(1500);
+	arm(0);
+	moveTo(-2350);
+	rightTurn(90);
+	moveTo(3400, 127);
+
+
 	// second shot speed
 
 
@@ -227,7 +237,7 @@ void backBlueassist()
 	pros::lcd::print(0, "INIT auton3");
 
 	//turn on flywheel and intake first
-	/*  targetspeed = 200;
+	/*  setFlywheelspeed(127);
 	  pros::c::delay(7500);
 
 	  targetspeed = 180;
@@ -236,7 +246,7 @@ void backBlueassist()
 	  pros::c::delay(9500);
 
 	*/
-	targetspeed = 200;
+	setFlywheelspeed(127);
 	intake(1);
 	pros::c::delay(1500);
 
@@ -280,20 +290,29 @@ void backBlueassist()
 void autonskills() {
   pros::lcd::print(0, "INIT autonskills");
 
-	targetspeed = 195;
+	setFlywheelspeed(127);
+
 	intake(1);
 
-	//move forward to ball in front
-	moveTo(2800);
 
-	//move back and allign top flag
-	moveTo(-2550);
-	leftTurn(92.1, 80);
+	//move forward to ball
+	moveTo(2700); //this is pretty close - 2900 is perfect to intake the ball
+	pros::c::delay(300);
+	moveTo(-500, 40);
+	leftTurn(120);
+	moveTo(-1370, 40);
+	arm(700);
+	moveTo(346);
+	leftTurn(62, 40);
+	moveTo(2850);
+	arm(1500);
+	pros::c::delay(1500);
+	arm(0);
+	moveTo(-250);
+	rightTurn(95);
+	moveTo(3950);
+	rightTurn(3);
 
-	//	moveTo(-400); // adjust this for top flag hitting
-
-	//shoot top flag
-	while (getflywheelspeed() < 193);
 	reaper(1, 127);
 	pros::c::delay(200);
 	moveTo(1400, 127);
@@ -304,23 +323,24 @@ void autonskills() {
 	reaper(0);
 
 	//allign and ram bottom flag
-	leftTurn(15);
-	moveTo(1300,50);
-	moveTo(-1500);
-	rightTurn(91);
-	intake(-1);
-	moveTo(2000);
-	moveTo(-2000);
-	leftTurn(90);
-	moveTo(-3500);
-	rightTurn(91);
-	moveTo(6000, 127);
+	leftTurn(16);
+	moveTo(800);
+	moveTo(-800);
+	rightTurn(7);
 
 
 
+	if (true)
+	{
+		moveTo(-3450);
+		rightTurn(95);
+		moveTo(5500);
 
 
-  /*targetspeed = 200;
+	}
+
+
+  /*setFlywheelspeed(127);
   intake(1);
   moveTo(3300);
 
@@ -349,7 +369,6 @@ void autonskills() {
   while (getLimit() != 1);
    pros::c::delay(200);
   reaper(0);
-
   leftTurn(15);
   // scores low flag
   moveTo(1300);
@@ -407,28 +426,28 @@ void autonskills() {
 
 void backBluecap()
 {
-	targetspeed = 200;
+	setFlywheelspeed(127);
 
 	intake(1);
 
 
 	//move forward to ball
-	moveTo(3000); //this is pretty close - 2900 is perfect to intake the ball
+	moveTo(2700); //this is pretty close - 2900 is perfect to intake the ball
 	pros::c::delay(300);
-	moveTo(-300, 40);
-	rightTurn(120);
-	moveTo(-1450);
+	moveTo(-400, 40);
+	rightTurn(115);
+	moveTo(-1350, 40);
 	arm(700);
-	moveTo(850);
-	rightTurn(61);
-	moveTo(2800);
+	moveTo(275);
+	rightTurn(70);
+	moveTo(2850);
 	arm(1500);
-	arm(1);
-	moveTo(-600);
-	leftTurn(90.7);
-	moveTo(1900);
-	leftTurn(90.7);
-	moveTo(3800);
+	pros::c::delay(1500);
+	arm(0);
+	moveTo(-2350);
+	leftTurn(90);
+	moveTo(2500, 127);
+
 
 
 
@@ -447,7 +466,7 @@ void test()
 // std::string autonstateNames[] = {"top blue", "top red", "back blue", "back red", "codeSkills"};
 void autonomous()
 {
-	pros::Task flyWhlPID(maintainflywheel);
+
 
 	int aS = getAutonState();
 	if (aS == 1)
@@ -465,7 +484,7 @@ void autonomous()
 	}
 	else if (aS == 4)
 	{
-		backRed(); // back red
+		backRedcap(); // back red
 	}
 	else if (aS == 5)
 	{

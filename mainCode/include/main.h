@@ -53,6 +53,7 @@
 // using namespace pros;
 // using namespace pros::literals;
 // using namespace okapi;
+extern pros::Controller master;
 
 /**
  * Prototypes for the competition control tasks are redefined here to ensure
