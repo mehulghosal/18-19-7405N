@@ -6,7 +6,7 @@ pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 //MOTOR INITS//
 pros::Motor backLeftMtr(9);
-pros::Motor frontLeftMtr(10);
+pros::Motor frontLeftMtr(11);
 pros::Motor frontRightMtr(2, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor backRightMtr(1, pros::E_MOTOR_GEARSET_18, true);
 pros::Motor reaperMotor(6, pros::E_MOTOR_GEARSET_06, true);
@@ -594,12 +594,10 @@ void opcontrol()
 	//	gyroscope.calibrate();
 
 	pros::vision_object_s_t *read_arr = new pros::vision_object_s_t[5];
-	master.rumble("_");
+
 	while (true)
 	{
-		if(frontLeftMtr.is_over_temp() || frontRightMtr.is_over_temp() || backLeftMtr.is_over_temp() || backRightMtr.is_over_temp()) {
-				master.rumble("..");
-		}
+
 		int driveLeft = master.get_analog(ANALOG_LEFT_Y);
 		int driveRight = master.get_analog(ANALOG_RIGHT_X);
 
@@ -655,17 +653,16 @@ void opcontrol()
 		if (master.get_digital(DIGITAL_Y) == 1)
 		{
 
-		 chassisSet(127, 127);
-			pros::c::delay(5000);
 
-		/*	master.print(2, 0, "Doubleshot");
+
+			master.print(2, 0, "Doubleshot");
 			while(getLimit() == false);
 			reaper(1, 127);
 			pros::c::delay(200);
 			moveTo(1400, 127);
 			master.print(2, 0, "            ");
 			reaperToggle = 1;
-			*/
+
 		}
 
 		if (master.get_digital(DIGITAL_X) == 1 && xPressed == false)

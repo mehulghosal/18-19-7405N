@@ -1,6 +1,7 @@
 #include "main.h"
 
 //OPCONTROL//
+void chassisSet(int m1, int m2);
 void reapermove(int val);
 void setBrakehold();
 void testfunct();
@@ -89,7 +90,7 @@ void topRed()
 
 	//move back and allign top flag
 	moveTo(-2550);
-	leftTurn(94, 80);
+	leftTurn(94.4, 80);
 
 	//	moveTo(-400); // adjust this for top flag hitting
 
@@ -105,10 +106,10 @@ void topRed()
 	reaper(0);
 
 	//allign and ram bottom flag
-	leftTurn(16);
+	leftTurn(17);
 	moveTo(800);
 	moveTo(-800);
-	rightTurn(7);
+	rightTurn(2);
 
 
 
@@ -171,7 +172,7 @@ void topBlue()
 	moveTo(750);
 	pros::c::delay(100);
 	moveTo(-750);
-	leftTurn(14.5);
+	leftTurn(3);
 
 
 
@@ -210,20 +211,21 @@ void backRedcap()
 
 	//move forward to ball
 	moveTo(2700); //this is pretty close - 2900 is perfect to intake the ball
-	moveTo(-660);
+
+	moveTo(-400, 40);
 	leftTurn(120);
-	moveTo(-1360);
+	moveTo(-1350, 40);
 	arm(700);
-	moveTo(440);
-	leftTurn(60);
-pros::c::delay(300);
-	moveTo(2850);
+	moveTo(444);
+	leftTurn(70, 40);
+	pros::c::delay(300);
+	moveTo(2850, 80);
 	arm(1500);
 	pros::c::delay(1500);
 	arm(0);
-	moveTo(-2300);
-	rightTurn(90);
-	moveTo(3300, 127);
+	moveTo(-2300, 127);
+	rightTurn(87, 127);
+	moveTo(3500, 127);
 
 
 	// second shot speed
@@ -297,23 +299,31 @@ void autonskills() {
 
 
 	//move forward to ball
+	setFlywheelspeed(127);
+
+	intake(1);
+
+
+	//move forward to ball
 	moveTo(2700); //this is pretty close - 2900 is perfect to intake the ball
-	pros::c::delay(300);
-	moveTo(-500, 40);
+
+	moveTo(-400, 40);
 	leftTurn(120);
-	moveTo(-1370, 40);
+	moveTo(-1350, 40);
 	arm(700);
-	moveTo(346);
-	leftTurn(62, 40);
-	moveTo(2850);
+	moveTo(445);
+	leftTurn(70, 40);
+	pros::c::delay(300);
+	moveTo(2850, 80);
 	arm(1500);
 	pros::c::delay(1500);
 	arm(0);
-	moveTo(-250);
+	moveTo(-350);
 	rightTurn(95);
-	moveTo(3950);
-	rightTurn(3);
-
+	moveTo(3800);
+	pros::c::delay(300);
+	rightTurn(6);
+	pros::c::delay(1000);
 	reaper(1, 127);
 	pros::c::delay(200);
 	moveTo(1400, 127);
@@ -324,18 +334,20 @@ void autonskills() {
 	reaper(0);
 
 	//allign and ram bottom flag
-	leftTurn(16);
+	leftTurn(17);
 	moveTo(800);
 	moveTo(-800);
-	rightTurn(7);
+	rightTurn(9);
 
 
 
 	if (true)
 	{
-		moveTo(-3450);
+		moveTo(-3500);
 		rightTurn(95);
-		moveTo(5500);
+		chassisSet(-50, -50);
+		pros::c::delay(3500);
+		moveTo(6800, 127);
 
 
 	}
@@ -472,7 +484,7 @@ void autonomous()
 	int aS = getAutonState();
 	if (aS == 1)
 	{
-			backRedcap();
+			topBlue();
 		//  topBlue(); // top blue
 	}
 	else if (aS == 2)
