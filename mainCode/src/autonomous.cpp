@@ -2,6 +2,7 @@
 
 //OPCONTROL//
 void reapermove(int val);
+void setBrakehold();
 void testfunct();
 void intake(int toggle);
 void reaper(int toggle, int speed = 127);
@@ -104,14 +105,14 @@ void topRed()
 	reaper(0);
 
 	//allign and ram bottom flag
-	leftTurn(14);
+	leftTurn(16);
 	moveTo(800);
 	moveTo(-800);
-	rightTurn(6);
+	rightTurn(7);
 
 
 
-	if (false)
+	if (true)
 	{
 		moveTo(-3500);
 		rightTurn(95);
@@ -150,7 +151,7 @@ void topBlue()
 
 	//move back and allign top flag
 	moveTo(-2560);
-	rightTurn(93.2, 80);
+	rightTurn(94, 80);
 
 	//	moveTo(-400); // adjust this for top flag hitting
 
@@ -174,7 +175,7 @@ void topBlue()
 
 
 
-	if(false)
+	if(true)
 	{
 		moveTo(-3400);
 		leftTurn(91);
@@ -193,7 +194,7 @@ void topBlue()
 		moveTo(-200, 90);
 		intake(1);
 		reaper(1);
-		rightTurn(37);
+		rightTurn(41);
 		moveTo(4000, 127);
 	}
 
@@ -209,18 +210,20 @@ void backRedcap()
 
 	//move forward to ball
 	moveTo(2700); //this is pretty close - 2900 is perfect to intake the ball
-	pros::c::delay(300);
-	moveTo(-500, 40);
+	setBrakehold();
+
+	moveTo(-660, 40);
 	leftTurn(120);
-	moveTo(-1370, 40);
+	moveTo(-1360);
 	arm(700);
-	moveTo(346);
-	leftTurn(62, 40);
+	moveTo(450);
+	leftTurn(57.5, 40);
+pros::c::delay(300);
 	moveTo(2850);
 	arm(1500);
 	pros::c::delay(1500);
 	arm(0);
-	moveTo(-2350);
+	moveTo(-2300);
 	rightTurn(90);
 	moveTo(3400, 127);
 
@@ -433,20 +436,20 @@ void backBluecap()
 
 	//move forward to ball
 	moveTo(2700); //this is pretty close - 2900 is perfect to intake the ball
-	pros::c::delay(300);
+
 	moveTo(-400, 40);
 	rightTurn(115);
 	moveTo(-1350, 40);
 	arm(700);
 	moveTo(275);
-	rightTurn(70);
+	rightTurn(65);
 	moveTo(2850);
 	arm(1500);
 	pros::c::delay(1500);
 	arm(0);
-	moveTo(-2350);
+	moveTo(-2300);
 	leftTurn(90);
-	moveTo(2500, 127);
+	moveTo(3500, 127);
 
 
 
@@ -471,7 +474,7 @@ void autonomous()
 	int aS = getAutonState();
 	if (aS == 1)
 	{
-		topRed();
+			backBluecap();
 		//  topBlue(); // top blue
 	}
 	else if (aS == 2)
